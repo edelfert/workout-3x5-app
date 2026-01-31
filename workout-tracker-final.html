@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Tracker</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Simple SVG Icons
+        const Calendar = ({ size = 24 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+        );
+
+        const TrendingUp = ({ size = 24 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                <polyline points="17 6 23 6 23 12"></polyline>
+            </svg>
+        );
+
+        const Dumbbell = ({ size = 24 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M14.4 14.4L9.6 9.6"></path>
+                <path d="M18.657 21.485a2 2 0 1 1-2.829-2.828l-1.767 1.768a2 2 0 1 1-2.829-2.829l6.364-6.364a2 2 0 1 1 2.829 2.829l-1.768 1.767a2 2 0 1 1 2.828 2.829z"></path>
+            </svg>
+        );
+
+        const Timer = ({ size = 24 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="14" r="8"></circle>
+                <line x1="12" y1="14" x2="15" y2="11"></line>
+            </svg>
+        );
+
+        const CheckCircle = ({ size = 24, className = "" }) => (
+            <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+        );
+
+        const Settings = ({ size = 24 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+        );
+
+        function WorkoutTracker() {
+            const [workouts, setWorkouts] = useState(() => {
+                const saved = localStorage.getItem('workoutHistory');
+                return saved ? JSON.parse(saved) : [];
+            });
+            
+            const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
+            const [sets, setSets] = useState(() => 
+                Array(setCount).fill(null).map(() => ({ weight: '', reps: '' }))
+            );
+            const [warmupChecklist, setWarmupChecklist] = useState([
+                { id: 1, text: '5 minutes light cardio', done: false },
+                { id: 2, text: '10 arm circles forward', done: false },
+                { id: 3, text: '10 arm circles backward', done: false },
+                { id: 4, text: '10 bodyweight squats', done: false },
+                { id: 5, text: '5 push-ups', done: false },
+                { id: 6, text: '1 light set of each exercise', done: false }
+            ]);
+            const [timerActive, setTimerActive] = useState(false);
+            const [timeLeft, setTimeLeft] = useState(120);
+            const [showHistory, setShowHistory] = useState(false);
+            const [showBackupReminder, setShowBackupReminder] = useState(false);
+            const [showSettings, setShowSettings] = useState(false);
+            const [setCount, setSetCount] = useState(() => {
+                const saved = localStorage.getItem('setCount');
+                return saved ? parseInt(saved) : 3;
+            });
+            const [manualWorkoutOverride, setManualWorkoutOverride] = useState(null);
+            const [autoFillWeights, setAutoFillWeights] = useState(() => {
+                const saved = localStorage.getItem('autoFillWeights');
+                return saved === 'true';
+            });
+            const [failureTracker, setFailureTracker] = useState(() => {
+                const saved = localStorage.getItem('failureTracker');
+                return saved ? JSON.parse(saved) : {};
+            });
+            
+            const [showWarmup, setShowWarmup] = useState(() => {
+                const saved = localStorage.getItem('workoutHistory');
+                const history = saved ? JSON.parse(saved) : [];
+                
+                // Check if workout completed today
+                if (history.length === 0) return true; // No workouts, show warmup
+                
+                const lastWorkout = history[history.length - 1];
+                const lastWorkoutDate = new Date(lastWorkout.date);
+                const today = new Date();
+                const completedToday = (
+                    lastWorkoutDate.getDate() === today.getDate() &&
+                    lastWorkoutDate.getMonth() === today.getMonth() &&
+                    lastWorkoutDate.getFullYear() === today.getFullYear()
+                );
+                
+                // Only show warmup if we haven't completed today
+                return !completedToday;
+            });
+
+            useEffect(() => {
+                localStorage.setItem('workoutHistory', JSON.stringify(workouts));
+            }, [workouts]);
+
+            useEffect(() => {
+                localStorage.setItem('setCount', setCount.toString());
+                // Reset sets array when setCount changes
+                setSets(Array(setCount).fill(null).map(() => ({ weight: '', reps: '' })));
+            }, [setCount]);
+
+            useEffect(() => {
+                localStorage.setItem('autoFillWeights', autoFillWeights.toString());
+            }, [autoFillWeights]);
+
+            useEffect(() => {
+                localStorage.setItem('failureTracker', JSON.stringify(failureTracker));
+            }, [failureTracker]);
+
+            useEffect(() => {
+                const lastBackup = localStorage.getItem('lastBackupDate');
+                const now = new Date();
+                
+                if (!lastBackup) {
+                    localStorage.setItem('lastBackupDate', now.toISOString());
+                } else {
+                    const lastBackupDate = new Date(lastBackup);
+                    const daysSinceBackup = (now - lastBackupDate) / (1000 * 60 * 60 * 24);
+                    
+                    if (daysSinceBackup >= 7 && workouts.length > 0) {
+                        setShowBackupReminder(true);
+                    }
+                }
+            }, [workouts]);
+
+            useEffect(() => {
+                let interval;
+                if (timerActive && timeLeft > 0) {
+                    interval = setInterval(() => {
+                        setTimeLeft(time => time - 1);
+                    }, 1000);
+                } else if (timeLeft === 0) {
+                    setTimerActive(false);
+                }
+                return () => clearInterval(interval);
+            }, [timerActive, timeLeft]);
+
+            const workoutA = [
+                { name: 'Goblet Squat', target: 5 },
+                { name: 'Dumbbell Bench Press', target: 5 },
+                { name: 'Dumbbell Row', target: 5 }
+            ];
+
+            const workoutB = [
+                { name: 'Dumbbell Romanian Deadlift', target: 5 },
+                { name: 'Dumbbell Overhead Press', target: 5 },
+                { name: 'Dumbbell Row', target: 5 }
+            ];
+
+            const startTimer = () => {
+                setTimeLeft(120);
+                setTimerActive(true);
+            };
+
+            const stopTimer = () => {
+                setTimerActive(false);
+                setTimeLeft(120);
+            };
+
+            const toggleWarmupItem = (id) => {
+                setWarmupChecklist(warmupChecklist.map(item => 
+                    item.id === id ? { ...item, done: !item.done } : item
+                ));
+            };
+
+            const finishWarmup = () => {
+                setShowWarmup(false);
+            };
+
+            const exportToCSV = () => {
+                const headers = ['Date', 'Workout Type', 'Exercise', 'Set Number', 'Weight (lbs)', 'Reps'];
+                const rows = [headers];
+
+                workouts.forEach(workout => {
+                    const date = new Date(workout.date).toLocaleDateString('en-US');
+                    workout.exercises.forEach(exercise => {
+                        exercise.sets.forEach((set, setIdx) => {
+                            rows.push([
+                                date,
+                                workout.type,
+                                exercise.name,
+                                setIdx + 1,
+                                set.weight,
+                                set.reps
+                            ]);
+                        });
+                    });
+                });
+
+                const csvContent = rows.map(row => row.join(',')).join('\n');
+                const blob = new Blob([csvContent], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `workout-history-${new Date().toISOString().split('T')[0]}.csv`;
+                link.click();
+                URL.revokeObjectURL(url);
+                
+                localStorage.setItem('lastBackupDate', new Date().toISOString());
+                setShowBackupReminder(false);
+            };
+
+            const importFromCSV = (event) => {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const text = e.target.result;
+                        const lines = text.split('\n').filter(line => line.trim());
+                        const dataLines = lines.slice(1);
+                        
+                        const workoutMap = {};
+                        
+                        dataLines.forEach(line => {
+                            const values = line.split(',');
+                            const [date, workoutType, exerciseName, setNum, weight, reps] = values;
+                            
+                            const key = `${date}-${workoutType}`;
+                            
+                            if (!workoutMap[key]) {
+                                workoutMap[key] = {
+                                    date: new Date(date).toISOString(),
+                                    type: workoutType.trim(),
+                                    exercises: []
+                                };
+                            }
+                            
+                            let exercise = workoutMap[key].exercises.find(ex => ex.name === exerciseName.trim());
+                            if (!exercise) {
+                                exercise = {
+                                    name: exerciseName.trim(),
+                                    sets: []
+                                };
+                                workoutMap[key].exercises.push(exercise);
+                            }
+                            
+                            exercise.sets.push({
+                                weight: weight.trim(),
+                                reps: reps.trim()
+                            });
+                        });
+                        
+                        const importedWorkouts = Object.values(workoutMap).sort((a, b) => 
+                            new Date(a.date) - new Date(b.date)
+                        );
+                        
+                        const existingDates = new Set(workouts.map(w => 
+                            new Date(w.date).toDateString()
+                        ));
+                        
+                        const newWorkouts = importedWorkouts.filter(w => 
+                            !existingDates.has(new Date(w.date).toDateString())
+                        );
+                        
+                        if (newWorkouts.length > 0) {
+                            const merged = [...workouts, ...newWorkouts].sort((a, b) => 
+                                new Date(a.date) - new Date(b.date)
+                            );
+                            setWorkouts(merged);
+                            alert(`Successfully imported ${newWorkouts.length} workout(s)!`);
+                        } else {
+                            alert('No new workouts to import.');
+                        }
+                        
+                    } catch (error) {
+                        alert('Error importing CSV. Please check the file format.');
+                    }
+                };
+                reader.readAsText(file);
+                event.target.value = '';
+            };
+
+            const getCurrentWorkout = () => {
+                // Check for manual override first
+                if (manualWorkoutOverride) {
+                    return manualWorkoutOverride === 'A' 
+                        ? { type: 'A', exercises: workoutA }
+                        : { type: 'B', exercises: workoutB };
+                }
+                
+                if (workouts.length === 0) return { type: 'A', exercises: workoutA };
+                const lastWorkout = workouts[workouts.length - 1];
+                return lastWorkout.type === 'A' 
+                    ? { type: 'B', exercises: workoutB }
+                    : { type: 'A', exercises: workoutA };
+            };
+
+            const currentWorkout = getCurrentWorkout();
+            const currentExercise = currentWorkout.exercises[currentExerciseIndex];
+
+            // Auto-fill weights when exercise changes if preference is enabled
+            useEffect(() => {
+                if (autoFillWeights && currentExercise) {
+                    const lastSession = workouts
+                        .filter(w => w.exercises.some(e => e.name === currentExercise.name))
+                        .pop();
+                    
+                    if (lastSession) {
+                        const exercise = lastSession.exercises.find(e => e.name === currentExercise.name);
+                        if (exercise) {
+                            const failures = failureTracker[currentExercise.name] || 0;
+                            let suggestedWeight;
+                            
+                            if (failures >= 3) {
+                                // Deload by 10%
+                                const lastWeight = parseInt(exercise.sets[0].weight);
+                                suggestedWeight = Math.round(lastWeight * 0.9).toString();
+                            } else {
+                                const allSetsComplete = exercise.sets.every(s => 
+                                    parseInt(s.reps) >= currentExercise.target
+                                );
+                                
+                                suggestedWeight = allSetsComplete 
+                                    ? (parseInt(exercise.sets[0].weight) + 5).toString()
+                                    : exercise.sets[0].weight;
+                            }
+                            
+                            const suggestedReps = currentExercise.target.toString();
+                            
+                            setSets(Array(setCount).fill(null).map(() => ({ 
+                                weight: suggestedWeight, 
+                                reps: suggestedReps 
+                            })));
+                        }
+                    }
+                }
+            }, [currentExerciseIndex, autoFillWeights, currentExercise?.name]);
+
+            const getSuggestedWeight = (exerciseName) => {
+                const lastSession = workouts
+                    .filter(w => w.exercises.some(e => e.name === exerciseName))
+                    .pop();
+                
+                if (!lastSession) return 'Start light';
+                
+                const exercise = lastSession.exercises.find(e => e.name === exerciseName);
+                if (!exercise) return 'Start light';
+
+                // Check if we need to deload (3 consecutive failures)
+                const failures = failureTracker[exerciseName] || 0;
+                if (failures >= 3) {
+                    const lastWeight = parseInt(exercise.sets[0].weight);
+                    const deloadWeight = Math.round(lastWeight * 0.9);
+                    return `${deloadWeight} lbs (DELOAD -10%)`;
+                }
+
+                const allSetsComplete = exercise.sets.every(s => 
+                    parseInt(s.reps) >= currentExercise.target
+                );
+
+                if (allSetsComplete) {
+                    return `${parseInt(exercise.sets[0].weight) + 5} lbs (up 5!)`;
+                } else {
+                    return `${exercise.sets[0].weight} lbs (same)`;
+                }
+            };
+
+            const handleSetChange = (index, field, value) => {
+                const newSets = [...sets];
+                newSets[index][field] = value;
+                setSets(newSets);
+            };
+
+            const completeExercise = () => {
+                const exerciseData = {
+                    name: currentExercise.name,
+                    sets: sets.filter(s => s.weight && s.reps)
+                };
+
+                // Check if all sets hit target reps
+                const allSetsComplete = exerciseData.sets.every(s => 
+                    parseInt(s.reps) >= currentExercise.target
+                );
+
+                // Update failure tracker
+                const newFailureTracker = { ...failureTracker };
+                if (allSetsComplete) {
+                    // Success - reset failure counter
+                    newFailureTracker[currentExercise.name] = 0;
+                } else {
+                    // Failed - increment failure counter
+                    newFailureTracker[currentExercise.name] = (newFailureTracker[currentExercise.name] || 0) + 1;
+                }
+                setFailureTracker(newFailureTracker);
+
+                if (currentExerciseIndex < currentWorkout.exercises.length - 1) {
+                    const updatedWorkout = workouts[workouts.length - 1] || {
+                        date: new Date().toISOString(),
+                        type: currentWorkout.type,
+                        exercises: []
+                    };
+                    
+                    updatedWorkout.exercises.push(exerciseData);
+                    
+                    if (workouts.length === 0) {
+                        setWorkouts([updatedWorkout]);
+                    } else {
+                        setWorkouts([...workouts.slice(0, -1), updatedWorkout]);
+                    }
+
+                    setCurrentExerciseIndex(currentExerciseIndex + 1);
+                    setSets(Array(setCount).fill(null).map(() => ({ weight: '', reps: '' })));
+                    startTimer();
+                } else {
+                    const finalWorkout = workouts[workouts.length - 1] || {
+                        date: new Date().toISOString(),
+                        type: currentWorkout.type,
+                        exercises: []
+                    };
+                    
+                    finalWorkout.exercises.push(exerciseData);
+                    
+                    if (workouts.length === 0) {
+                        setWorkouts([finalWorkout]);
+                    } else {
+                        setWorkouts([...workouts.slice(0, -1), finalWorkout]);
+                    }
+
+                    setCurrentExerciseIndex(0);
+                    setSets(Array(setCount).fill(null).map(() => ({ weight: '', reps: '' })));
+                    setShowWarmup(false); // Don't show warmup - let splash screen show instead
+                    setWarmupChecklist(warmupChecklist.map(item => ({ ...item, done: false })));
+                    setManualWorkoutOverride(null); // Reset override after workout complete
+                }
+            };
+
+            const getLastPerformance = (exerciseName) => {
+                const lastSession = workouts
+                    .filter(w => w.exercises.some(e => e.name === exerciseName))
+                    .pop();
+                
+                if (!lastSession) return null;
+                
+                return lastSession.exercises.find(e => e.name === exerciseName);
+            };
+
+            const lastPerformance = getLastPerformance(currentExercise.name);
+
+            const formatTime = (seconds) => {
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                return `${mins}:${secs.toString().padStart(2, '0')}`;
+            };
+
+            const hasCompletedWorkoutToday = () => {
+                if (workouts.length === 0) return false;
+                
+                const lastWorkout = workouts[workouts.length - 1];
+                const lastWorkoutDate = new Date(lastWorkout.date);
+                const today = new Date();
+                
+                return (
+                    lastWorkoutDate.getDate() === today.getDate() &&
+                    lastWorkoutDate.getMonth() === today.getMonth() &&
+                    lastWorkoutDate.getFullYear() === today.getFullYear()
+                );
+            };
+
+            const getNextWorkoutDay = () => {
+                const today = new Date();
+                const dayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, etc.
+                
+                // Workout days: Sunday (0), Tuesday (2), Friday (5)
+                const workoutDays = [0, 2, 5];
+                
+                // Find next workout day
+                for (let i = 1; i <= 7; i++) {
+                    const nextDay = new Date(today);
+                    nextDay.setDate(today.getDate() + i);
+                    if (workoutDays.includes(nextDay.getDay())) {
+                        return nextDay.toLocaleDateString('en-US', { 
+                            weekday: 'long', 
+                            month: 'long', 
+                            day: 'numeric' 
+                        });
+                    }
+                }
+                return 'Soon';
+            };
+
+            // Workout Complete Splash Screen
+            if (hasCompletedWorkoutToday() && !showHistory && !showSettings) {
+                const lastWorkout = workouts[workouts.length - 1];
+                
+                return (
+                    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-4 flex items-center justify-center">
+                        <div className="max-w-2xl w-full">
+                            <div className="bg-slate-800 rounded-lg p-8 border border-slate-700 text-center">
+                                <div className="mb-6">
+                                    <div className="inline-flex items-center justify-center w-20 h-20 bg-green-500 rounded-full mb-4">
+                                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </div>
+                                    <h1 className="text-4xl font-bold text-white mb-2">
+                                        Workout Complete!
+                                    </h1>
+                                    <p className="text-slate-400 text-lg">
+                                        You finished Workout {lastWorkout.type} today
+                                    </p>
+                                </div>
+
+                                <div className="bg-slate-700 rounded-lg p-6 mb-6">
+                                    <h3 className="text-white font-semibold mb-4">Today's Summary</h3>
+                                    <div className="space-y-2">
+                                        {lastWorkout.exercises.map((ex, i) => (
+                                            <div key={i} className="flex justify-between text-sm">
+                                                <span className="text-slate-300">{ex.name}</span>
+                                                <span className="text-blue-400 font-semibold">
+                                                    {ex.sets[0].weight} lbs × {ex.sets.length} sets
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="bg-blue-900/30 border border-blue-500 rounded-lg p-4 mb-6">
+                                    <p className="text-blue-300 text-sm">
+                                        <strong className="text-white">Next Workout:</strong> {getNextWorkoutDay()}
+                                    </p>
+                                    <p className="text-blue-300 text-sm mt-1">
+                                        You'll be doing Workout {lastWorkout.type === 'A' ? 'B' : 'A'}
+                                    </p>
+                                </div>
+
+                                <div className="flex gap-3">
+                                    <button
+                                        onClick={() => setShowHistory(true)}
+                                        className="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-3 rounded-lg transition-colors"
+                                    >
+                                        View History
+                                    </button>
+                                    <button
+                                        onClick={exportToCSV}
+                                        className="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition-colors"
+                                    >
+                                        Backup Data
+                                    </button>
+                                </div>
+
+                                <button
+                                    onClick={() => {
+                                        if (confirm('Are you sure you want to do another workout today? This will override your rest day.')) {
+                                            setShowWarmup(true);
+                                        }
+                                    }}
+                                    className="w-full mt-3 text-slate-400 hover:text-slate-300 text-sm underline"
+                                >
+                                    Do another workout anyway
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (showWarmup) {
+                const allWarmupDone = warmupChecklist.every(item => item.done);
+                
+                return (
+                    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-4">
+                        <div className="max-w-2xl mx-auto">
+                            <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
+                                <div className="flex items-center justify-between mb-6">
+                                    <h1 className="text-3xl font-bold text-white flex items-center gap-2">
+                                        <Dumbbell />
+                                        Warmup
+                                    </h1>
+                                    <div className="text-right">
+                                        <div className="text-sm text-slate-400">Next Up</div>
+                                        <div className="text-xl font-bold text-blue-400">
+                                            Workout {currentWorkout.type}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="mb-4">
+                                    <div className="text-slate-300 text-sm mb-2">Switch workout:</div>
+                                    <div className="flex gap-2">
+                                        <button
+                                            onClick={() => setManualWorkoutOverride('A')}
+                                            className={`flex-1 py-2 rounded font-semibold transition-colors ${
+                                                currentWorkout.type === 'A'
+                                                    ? 'bg-blue-500 text-white'
+                                                    : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                                            }`}
+                                        >
+                                            Workout A
+                                        </button>
+                                        <button
+                                            onClick={() => setManualWorkoutOverride('B')}
+                                            className={`flex-1 py-2 rounded font-semibold transition-colors ${
+                                                currentWorkout.type === 'B'
+                                                    ? 'bg-blue-500 text-white'
+                                                    : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                                            }`}
+                                        >
+                                            Workout B
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-3 mb-6">
+                                    {warmupChecklist.map(item => (
+                                        <div
+                                            key={item.id}
+                                            onClick={() => toggleWarmupItem(item.id)}
+                                            className={`p-4 rounded-lg cursor-pointer transition-all ${
+                                                item.done 
+                                                    ? 'bg-green-900/30 border-2 border-green-500' 
+                                                    : 'bg-slate-700 border-2 border-slate-600'
+                                            }`}
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                <CheckCircle 
+                                                    className={item.done ? 'text-green-400' : 'text-slate-500'}
+                                                    size={24}
+                                                />
+                                                <span className={`${item.done ? 'text-green-300 line-through' : 'text-white'}`}>
+                                                    {item.text}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <button
+                                    onClick={finishWarmup}
+                                    disabled={!allWarmupDone}
+                                    className="w-full bg-blue-500 hover:bg-blue-600 disabled:bg-slate-600 disabled:cursor-not-allowed text-white font-bold py-4 rounded-lg transition-colors"
+                                >
+                                    {allWarmupDone ? 'Start Workout' : 'Complete warmup first'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-4">
+                    <div className="max-w-2xl mx-auto">
+                        <div className="bg-slate-800 rounded-lg p-6 mb-6 border border-slate-700">
+                            <div className="flex items-center justify-between mb-4">
+                                <h1 className="text-3xl font-bold text-white flex items-center gap-2">
+                                    <Dumbbell />
+                                    Workout Tracker
+                                </h1>
+                                <div className="flex items-center gap-4">
+                                    <button
+                                        onClick={() => {
+                                            setShowSettings(!showSettings);
+                                            setShowHistory(false);
+                                        }}
+                                        className="text-slate-400 hover:text-slate-300"
+                                    >
+                                        <Settings size={20} />
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            setShowHistory(!showHistory);
+                                            setShowSettings(false);
+                                        }}
+                                        className="text-blue-400 hover:text-blue-300 font-semibold text-sm underline"
+                                    >
+                                        {showHistory ? 'Current' : 'History'}
+                                    </button>
+                                    <div className="text-right">
+                                        <div className="text-sm text-slate-400">Today</div>
+                                        <div className="text-2xl font-bold text-blue-400">
+                                            Workout {currentWorkout.type}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-2 text-slate-300">
+                                    <Calendar size={16} />
+                                    <span>{new Date().toLocaleDateString('en-US', { 
+                                        weekday: 'long', 
+                                        month: 'long', 
+                                        day: 'numeric' 
+                                    })}</span>
+                                </div>
+                                <div className="flex gap-2">
+                                    <button
+                                        onClick={exportToCSV}
+                                        disabled={workouts.length === 0}
+                                        className="bg-green-600 hover:bg-green-700 disabled:bg-slate-600 text-white px-3 py-1 rounded text-sm font-semibold"
+                                    >
+                                        Export
+                                    </button>
+                                    <label className="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded text-sm font-semibold cursor-pointer">
+                                        Import
+                                        <input type="file" accept=".csv" onChange={importFromCSV} className="hidden" />
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        {showBackupReminder && (
+                            <div className="bg-yellow-600 rounded-lg p-4 mb-6">
+                                <div className="flex items-center justify-between">
+                                    <div className="text-white font-bold">Time to backup!</div>
+                                    <div className="flex gap-2">
+                                        <button onClick={exportToCSV} className="bg-white text-yellow-700 px-3 py-1 rounded font-semibold">
+                                            Backup Now
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                localStorage.setItem('lastBackupDate', new Date().toISOString());
+                                                setShowBackupReminder(false);
+                                            }}
+                                            className="bg-yellow-700 text-white px-3 py-1 rounded font-semibold"
+                                        >
+                                            Later
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {showSettings ? (
+                            <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
+                                <h2 className="text-2xl font-bold text-white mb-6">Settings</h2>
+                                
+                                <div className="space-y-6">
+                                    <div>
+                                        <label className="block text-white font-semibold mb-3">
+                                            Sets Per Exercise
+                                        </label>
+                                        <div className="flex gap-4">
+                                            <button
+                                                onClick={() => setSetCount(3)}
+                                                className={`flex-1 py-3 rounded-lg font-semibold transition-colors ${
+                                                    setCount === 3
+                                                        ? 'bg-blue-500 text-white'
+                                                        : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                                                }`}
+                                            >
+                                                3 Sets (3x5)
+                                            </button>
+                                            <button
+                                                onClick={() => setSetCount(5)}
+                                                className={`flex-1 py-3 rounded-lg font-semibold transition-colors ${
+                                                    setCount === 5
+                                                        ? 'bg-blue-500 text-white'
+                                                        : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                                                }`}
+                                            >
+                                                5 Sets (5x5)
+                                            </button>
+                                        </div>
+                                        <p className="text-slate-400 text-sm mt-2">
+                                            Current: {setCount} sets per exercise
+                                        </p>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-white font-semibold mb-3">
+                                            Auto-Fill Weights
+                                        </label>
+                                        <button
+                                            onClick={() => setAutoFillWeights(!autoFillWeights)}
+                                            className={`w-full py-3 rounded-lg font-semibold transition-colors ${
+                                                autoFillWeights
+                                                    ? 'bg-green-600 text-white'
+                                                    : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                                            }`}
+                                        >
+                                            {autoFillWeights ? '✓ Auto-Fill Enabled' : 'Auto-Fill Disabled'}
+                                        </button>
+                                        <p className="text-slate-400 text-sm mt-2">
+                                            {autoFillWeights 
+                                                ? 'Weights and reps will be pre-filled based on last workout'
+                                                : 'You\'ll need to enter weights manually each time'
+                                            }
+                                        </p>
+                                    </div>
+
+                                    <div className="border-t border-slate-700 pt-6">
+                                        <h3 className="text-white font-semibold mb-3">About</h3>
+                                        <div className="space-y-2 text-slate-400 text-sm">
+                                            <p><strong className="text-white">Date/Time:</strong> Uses your device's system time</p>
+                                            <p><strong className="text-white">Data Storage:</strong> Saved locally in browser</p>
+                                            <p><strong className="text-white">Backup Reminder:</strong> Every 7 days</p>
+                                            <p><strong className="text-white">Schedule:</strong> Sun/Tue/Fri (adjustable)</p>
+                                            <p><strong className="text-white">Deload:</strong> After 3 consecutive failures (-10% weight)</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="border-t border-slate-700 pt-6">
+                                        <h3 className="text-white font-semibold mb-3">Progress Tracking</h3>
+                                        {Object.keys(failureTracker).length > 0 ? (
+                                            <div className="space-y-2">
+                                                {Object.entries(failureTracker).map(([exercise, failures]) => (
+                                                    <div key={exercise} className="flex justify-between text-sm">
+                                                        <span className="text-slate-300">{exercise}</span>
+                                                        <span className={`font-semibold ${
+                                                            failures >= 3 ? 'text-orange-400' : 
+                                                            failures > 0 ? 'text-yellow-400' : 'text-green-400'
+                                                        }`}>
+                                                            {failures >= 3 ? '⚠️ Deload needed' : 
+                                                             failures > 0 ? `${failures} failure${failures > 1 ? 's' : ''}` : 
+                                                             '✓ On track'}
+                                                        </span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <p className="text-slate-400 text-sm">No exercises tracked yet</p>
+                                        )}
+                                    </div>
+
+                                    <div className="border-t border-slate-700 pt-6">
+                                        <h3 className="text-white font-semibold mb-3">Data Management</h3>
+                                        <button
+                                            onClick={() => {
+                                                if (confirm('This will delete ALL workout history. Are you sure?')) {
+                                                    localStorage.removeItem('workoutHistory');
+                                                    localStorage.removeItem('lastBackupDate');
+                                                    setWorkouts([]);
+                                                    alert('All data cleared!');
+                                                }
+                                            }}
+                                            className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg"
+                                        >
+                                            Clear All Data
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        ) : showHistory ? (
+                            <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
+                                <div className="flex items-center justify-between mb-6">
+                                    <h2 className="text-2xl font-bold text-white">History</h2>
+                                    <button
+                                        onClick={() => {
+                                            setShowHistory(false);
+                                            setShowSettings(false);
+                                        }}
+                                        className="text-blue-400 hover:text-blue-300 font-semibold text-sm"
+                                    >
+                                        ← Back
+                                    </button>
+                                </div>
+                                
+                                {workouts.length === 0 ? (
+                                    <div className="text-center text-slate-400 py-8">
+                                        No workouts yet!
+                                    </div>
+                                ) : (
+                                    <div className="space-y-6">
+                                        {workouts.slice().reverse().map((workout, idx) => (
+                                            <div key={idx} className="bg-slate-700 rounded-lg p-5">
+                                                <div className="flex justify-between mb-4 pb-3 border-b border-slate-600">
+                                                    <div>
+                                                        <div className="text-xl font-bold text-white">
+                                                            Workout {workout.type}
+                                                        </div>
+                                                        <div className="text-sm text-slate-400">
+                                                            {new Date(workout.date).toLocaleDateString('en-US', {
+                                                                weekday: 'long',
+                                                                month: 'long',
+                                                                day: 'numeric'
+                                                            })}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div className="space-y-4">
+                                                    {workout.exercises.map((ex, i) => (
+                                                        <div key={i} className="bg-slate-600 rounded p-4">
+                                                            <div className="font-semibold text-white mb-2">
+                                                                {ex.name}
+                                                            </div>
+                                                            <div className="grid grid-cols-3 gap-2">
+                                                                {ex.sets.map((set, setIdx) => (
+                                                                    <div key={setIdx} className="bg-slate-700 rounded p-2 text-center">
+                                                                        <div className="text-xs text-slate-400">Set {setIdx + 1}</div>
+                                                                        <div className="text-white font-bold">{set.weight} lbs</div>
+                                                                        <div className="text-blue-400 text-sm">{set.reps} reps</div>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        ) : (
+                            <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
+                                <div className="mb-6">
+                                    <div className="flex items-center justify-between mb-2">
+                                        <h2 className="text-2xl font-bold text-white">
+                                            {currentExercise.name}
+                                        </h2>
+                                        <span className="text-slate-400 text-sm">
+                                            {currentExerciseIndex + 1} of {currentWorkout.exercises.length}
+                                        </span>
+                                    </div>
+                                    <div className="text-blue-400 font-semibold">
+                                        Target: {setCount} × {currentExercise.target} reps
+                                    </div>
+                                </div>
+
+                                {failureTracker[currentExercise.name] >= 3 && (
+                                    <div className="bg-orange-600 rounded-lg p-4 mb-6 border border-orange-500">
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                                <line x1="12" y1="9" x2="12" y2="13"></line>
+                                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                            </svg>
+                                            <span className="text-white font-bold">Deload Time!</span>
+                                        </div>
+                                        <p className="text-orange-100 text-sm">
+                                            You've failed this exercise 3 times in a row. Time to reduce weight by 10% and rebuild strength.
+                                        </p>
+                                    </div>
+                                )}
+
+                                <div className="bg-slate-700 rounded-lg p-4 mb-6">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <TrendingUp size={20} />
+                                        <span className="text-white font-semibold">Suggested</span>
+                                    </div>
+                                    <div className="text-2xl font-bold text-green-400">
+                                        {getSuggestedWeight(currentExercise.name)}
+                                    </div>
+                                    {lastPerformance && (
+                                        <div className="mt-2 text-sm text-slate-400">
+                                            Last: {lastPerformance.sets[0].weight} lbs × {
+                                                lastPerformance.sets.map(s => s.reps).join(', ')
+                                            }
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="bg-slate-700 rounded-lg p-4 mb-6">
+                                    <div className="flex items-center justify-between mb-3">
+                                        <div className="flex items-center gap-2">
+                                            <Timer size={20} />
+                                            <span className="text-white font-semibold">Rest</span>
+                                        </div>
+                                        <div className={`text-3xl font-bold ${timeLeft <= 10 && timerActive ? 'text-red-400' : 'text-blue-400'}`}>
+                                            {formatTime(timeLeft)}
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <button
+                                            onClick={startTimer}
+                                            disabled={timerActive}
+                                            className="flex-1 bg-blue-500 hover:bg-blue-600 disabled:bg-slate-600 text-white font-semibold py-2 rounded"
+                                        >
+                                            Start
+                                        </button>
+                                        <button
+                                            onClick={stopTimer}
+                                            className="flex-1 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded"
+                                        >
+                                            Reset
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-4 mb-6">
+                                    {sets.map((set, index) => (
+                                        <div key={index} className="bg-slate-700 rounded-lg p-4">
+                                            <div className="text-white font-semibold mb-3">
+                                                Set {index + 1}
+                                            </div>
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <div>
+                                                    <label className="block text-slate-300 text-sm mb-2">
+                                                        Weight (lbs)
+                                                    </label>
+                                                    <input
+                                                        type="number"
+                                                        value={set.weight}
+                                                        onChange={(e) => handleSetChange(index, 'weight', e.target.value)}
+                                                        className="w-full bg-slate-600 text-white rounded px-4 py-2"
+                                                        placeholder="30"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-slate-300 text-sm mb-2">
+                                                        Reps
+                                                    </label>
+                                                    <input
+                                                        type="number"
+                                                        value={set.reps}
+                                                        onChange={(e) => handleSetChange(index, 'reps', e.target.value)}
+                                                        className="w-full bg-slate-600 text-white rounded px-4 py-2"
+                                                        placeholder="5"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <button
+                                    onClick={completeExercise}
+                                    disabled={!sets.some(s => s.weight && s.reps)}
+                                    className="w-full bg-blue-500 hover:bg-blue-600 disabled:bg-slate-600 text-white font-bold py-4 rounded-lg"
+                                >
+                                    {currentExerciseIndex < currentWorkout.exercises.length - 1
+                                        ? 'Next Exercise'
+                                        : 'Complete Workout'}
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<WorkoutTracker />, document.getElementById('root'));
+    </script>
+</body>
+</html>
