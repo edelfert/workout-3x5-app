@@ -254,7 +254,7 @@
 
             const [autoFillWeights, setAutoFillWeights] = useState(() => {
                 const saved = localStorage.getItem('autoFillWeights');
-                return saved === 'true';
+                return saved === null ? true : saved === 'true';
             });
 
             const [failureTracker, setFailureTracker] = useState(() => {
@@ -268,15 +268,45 @@
 
             // Workout templates
             const workoutA = [
-                { name: 'Squat', target: 5, description: 'Barbell Back Squat or Goblet Squat' },
-                { name: 'Bench Press', target: 5, description: 'Barbell or Dumbbell Bench Press' },
-                { name: 'Barbell Row', target: 5, description: 'Bent Over Barbell Row' }
+                {
+                    name: 'Squat',
+                    target: 5,
+                    description: 'Barbell Back Squat or Goblet Squat',
+                    howTo: '1. Bar on upper back/traps 2. Feet shoulder-width, toes slightly out 3. Break at hips and knees together 4. Descend until hip crease below knee 5. Drive through heels, keep chest up 6. Squeeze glutes at top'
+                },
+                {
+                    name: 'Bench Press',
+                    target: 5,
+                    description: 'Barbell or Dumbbell Bench Press',
+                    howTo: '1. Lie flat, feet planted on floor 2. Grip bar slightly wider than shoulders 3. Arch lower back slightly 4. Lower bar to mid-chest with control 5. Press up explosively, keep shoulder blades retracted 6. Lock out arms at top'
+                },
+                {
+                    name: 'Barbell Row',
+                    target: 5,
+                    description: 'Bent Over Barbell Row',
+                    howTo: '1. Bend at hips ~45 degrees, knees slightly bent 2. Grip bar shoulder-width, overhand 3. Pull bar to lower chest/upper abs 4. Keep elbows close to body 5. Squeeze shoulder blades together 6. Lower with control, maintain back angle'
+                }
             ];
 
             const workoutB = [
-                { name: 'Squat', target: 5, description: 'Barbell Back Squat or Goblet Squat' },
-                { name: 'Overhead Press', target: 5, description: 'Barbell or Dumbbell Press' },
-                { name: 'Deadlift', target: 5, description: 'Conventional Deadlift' }
+                {
+                    name: 'Squat',
+                    target: 5,
+                    description: 'Barbell Back Squat or Goblet Squat',
+                    howTo: '1. Bar on upper back/traps 2. Feet shoulder-width, toes slightly out 3. Break at hips and knees together 4. Descend until hip crease below knee 5. Drive through heels, keep chest up 6. Squeeze glutes at top'
+                },
+                {
+                    name: 'Overhead Press',
+                    target: 5,
+                    description: 'Barbell or Dumbbell Press',
+                    howTo: '1. Stand with feet shoulder-width 2. Bar at shoulder height, grip just outside shoulders 3. Brace core, squeeze glutes 4. Press bar straight up, past your face 5. Lock out overhead with biceps by ears 6. Lower to shoulders with control'
+                },
+                {
+                    name: 'Deadlift',
+                    target: 5,
+                    description: 'Conventional Deadlift',
+                    howTo: '1. Bar over mid-foot, touching shins 2. Feet hip-width apart 3. Grip bar just outside legs 4. Chest up, shoulders over bar 5. Drive through heels, extend hips and knees together 6. Stand tall, squeeze glutes, lower with control'
+                }
             ];
 
             const allExercises = [
@@ -515,6 +545,71 @@
                 link.download = `workout-history-${new Date().toISOString().split('T')[0]}.csv`;
                 link.click();
                 URL.revokeObjectURL(url);
+            };
+
+            const importFromCSV = () => {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.csv';
+                input.onchange = (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        try {
+                            const csv = event.target.result;
+                            const lines = csv.split('\n');
+                            const importedWorkouts = {};
+
+                            // Skip header row
+                            for (let i = 1; i < lines.length; i++) {
+                                const line = lines[i].trim();
+                                if (!line) continue;
+
+                                const [dateStr, type, exerciseName, setNum, weight, reps] = line.split(',');
+                                if (!dateStr || !type || !exerciseName) continue;
+
+                                const date = new Date(dateStr).toISOString();
+                                const workoutKey = `${date}-${type}`;
+
+                                if (!importedWorkouts[workoutKey]) {
+                                    importedWorkouts[workoutKey] = {
+                                        date,
+                                        type,
+                                        exercises: []
+                                    };
+                                }
+
+                                let exercise = importedWorkouts[workoutKey].exercises.find(e => e.name === exerciseName);
+                                if (!exercise) {
+                                    exercise = { name: exerciseName, sets: [] };
+                                    importedWorkouts[workoutKey].exercises.push(exercise);
+                                }
+
+                                exercise.sets.push({
+                                    weight: weight?.trim() || '0',
+                                    reps: reps?.trim() || '0'
+                                });
+                            }
+
+                            const newWorkouts = Object.values(importedWorkouts);
+                            if (newWorkouts.length === 0) {
+                                alert('No valid workout data found in CSV!');
+                                return;
+                            }
+
+                            if (confirm(`Import ${newWorkouts.length} workouts? This will replace your current data.`)) {
+                                setWorkouts(newWorkouts);
+                                alert(`Successfully imported ${newWorkouts.length} workouts!`);
+                            }
+                        } catch (error) {
+                            alert('Error importing CSV: ' + error.message);
+                        }
+                    };
+                    reader.readAsText(file);
+                };
+                input.click();
             };
 
             const currentWorkout = currentSession
@@ -884,33 +979,14 @@
                                 </div>
                             )}
 
-                            {/* Rest Timer */}
+                            {/* Exercise Instructions */}
                             <div className="glass-dark rounded-2xl p-5 mb-4">
-                                <div className="flex items-center justify-between mb-4">
-                                    <div className="flex items-center gap-3">
-                                        <Timer size={24} />
-                                        <span className="text-white font-bold text-lg">Rest Timer</span>
-                                    </div>
-                                    <div className={`text-4xl font-black ${timeLeft <= 10 && timerActive ? 'text-red-400' : 'text-white'}`}>
-                                        {formatTime(timeLeft)}
-                                    </div>
+                                <div className="flex items-center gap-2 mb-3">
+                                    <span className="text-white font-bold text-lg">📋 How To Perform</span>
                                 </div>
-                                <div className="flex gap-3">
-                                    <button
-                                        onClick={startTimer}
-                                        disabled={timerActive}
-                                        className="flex-1 glass-button disabled:opacity-50 text-white font-bold py-3 rounded-xl shadow-lg"
-                                    >
-                                        Start
-                                    </button>
-                                    <button
-                                        onClick={stopTimer}
-                                        className="flex-1 glass-input text-white font-bold py-3 rounded-xl hover:scale-105"
-                                        style={{background: 'rgba(239, 68, 68, 0.3)', border: '1px solid rgba(239, 68, 68, 0.5)'}}
-                                    >
-                                        Reset
-                                    </button>
-                                </div>
+                                <p className="text-blue-100 text-sm leading-relaxed font-medium">
+                                    {currentExercise.howTo}
+                                </p>
                             </div>
 
                             {/* Sets */}
@@ -1057,9 +1133,15 @@
                                         <button
                                             onClick={exportToCSV}
                                             disabled={workouts.length === 0}
-                                            className="w-full glass-success disabled:opacity-50 text-white font-bold py-4 rounded-xl mb-3 shadow-lg"
+                                            className="w-full glass-success disabled:opacity-50 text-white font-bold py-4 rounded-xl shadow-lg"
                                         >
-                                            Export Data (CSV)
+                                            📤 Export Data (CSV)
+                                        </button>
+                                        <button
+                                            onClick={importFromCSV}
+                                            className="w-full glass-button text-white font-bold py-4 rounded-xl shadow-lg"
+                                        >
+                                            📥 Import Data (CSV)
                                         </button>
                                         <button
                                             onClick={() => {
@@ -1136,12 +1218,25 @@
                                     </h3>
 
                                     <div className="space-y-3 mb-6">
-                                        {currentWorkout.exercises.map((ex, i) => (
-                                            <div key={i} className="flex justify-between items-center glass rounded-xl p-4">
-                                                <span className="text-white font-bold text-lg">{ex.name}</span>
-                                                <span className="text-blue-200 font-bold">{setCount} × {ex.target}</span>
-                                            </div>
-                                        ))}
+                                        {currentWorkout.exercises.map((ex, i) => {
+                                            const suggestion = getSuggestedWeight(ex.name);
+                                            const weightMatch = suggestion.match(/^\d+/);
+                                            const weight = weightMatch ? weightMatch[0] : '?';
+                                            const status = suggestion.includes('up 5') ? '📈' : suggestion.includes('DELOAD') ? '⚠️' : '➡️';
+
+                                            return (
+                                                <div key={i} className="glass rounded-xl p-4">
+                                                    <div className="flex justify-between items-center mb-2">
+                                                        <span className="text-white font-bold text-lg">{ex.name}</span>
+                                                        <span className="text-blue-200 font-bold">{setCount} × {ex.target}</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="text-2xl">{status}</span>
+                                                        <span className="text-blue-100 text-sm font-medium">{suggestion}</span>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
                                     </div>
 
                                     <button
@@ -1150,6 +1245,23 @@
                                     >
                                         Start Workout 💪
                                     </button>
+                                </div>
+
+                                {/* Next Next Workout Preview */}
+                                <div className="glass-dark rounded-3xl p-6 mb-6">
+                                    <h2 className="text-lg text-blue-200 mb-2 font-medium">Coming Up After</h2>
+                                    <h3 className="text-2xl font-black text-white mb-4">
+                                        Workout {currentWorkout.type === 'A' ? 'B' : 'A'}
+                                    </h3>
+
+                                    <div className="space-y-2">
+                                        {(currentWorkout.type === 'A' ? workoutB : workoutA).map((ex, i) => (
+                                            <div key={i} className="flex justify-between items-center glass rounded-xl p-3">
+                                                <span className="text-white font-semibold">{ex.name}</span>
+                                                <span className="text-blue-200 text-sm font-bold">{setCount} × {ex.target}</span>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
 
                                 {/* Stats */}
