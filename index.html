@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>3x5 Workout Tracker</title>
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="./manifest.json">
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -253,26 +253,28 @@
 
             const getSuggestedWeight = (exerciseName) => {
                 const lastSession = workouts
-                    .filter(w => w.exercises.some(e => e.name === exerciseName))
+                    .filter(w => w.exercises?.some(e => e.name === exerciseName))
                     .pop();
 
                 if (!lastSession) {
-                    return startingWeights[exerciseName] || 'Set starting weight';
+                    return startingWeights[exerciseName] ? `${startingWeights[exerciseName]} lbs (start)` : 'Set starting weight';
                 }
 
-                const exercise = lastSession.exercises.find(e => e.name === exerciseName);
-                if (!exercise) return startingWeights[exerciseName] || 'Set starting weight';
+                const exercise = lastSession.exercises?.find(e => e.name === exerciseName);
+                if (!exercise || !exercise.sets || exercise.sets.length === 0) {
+                    return startingWeights[exerciseName] ? `${startingWeights[exerciseName]} lbs (start)` : 'Set starting weight';
+                }
 
                 const failures = failureTracker[exerciseName] || 0;
-                const lastWeight = parseInt(exercise.sets[0]?.weight) || 0;
+                const lastWeight = parseInt(exercise.sets[0]?.weight) || parseInt(startingWeights[exerciseName]) || 45;
 
                 if (failures >= 3) {
                     const deloadWeight = Math.round(lastWeight * 0.9);
                     return `${deloadWeight} lbs (DELOAD -10%)`;
                 }
 
-                const allSetsComplete = exercise.sets.every(s =>
-                    parseInt(s.reps) >= 5
+                const allSetsComplete = exercise.sets.length > 0 && exercise.sets.every(s =>
+                    parseInt(s?.reps) >= 5
                 );
 
                 if (allSetsComplete) {
@@ -297,6 +299,11 @@
             };
 
             const completeExercise = () => {
+                if (!currentExercise) {
+                    console.error('No current exercise defined');
+                    return;
+                }
+
                 const filledSets = sets.filter(s => s.weight && s.reps);
                 const exerciseData = {
                     name: currentExercise.name,
@@ -365,20 +372,28 @@
             };
 
             const exportToCSV = () => {
+                if (workouts.length === 0) {
+                    alert('No workout data to export!');
+                    return;
+                }
+
                 const headers = ['Date', 'Workout Type', 'Exercise', 'Set Number', 'Weight (lbs)', 'Reps'];
                 const rows = [headers];
 
                 workouts.forEach(workout => {
+                    if (!workout || !workout.date || !workout.exercises) return;
                     const date = new Date(workout.date).toLocaleDateString('en-US');
                     workout.exercises.forEach(exercise => {
+                        if (!exercise || !exercise.sets) return;
                         exercise.sets.forEach((set, setIdx) => {
+                            if (!set) return;
                             rows.push([
                                 date,
-                                workout.type,
-                                exercise.name,
+                                workout.type || 'Unknown',
+                                exercise.name || 'Unknown',
                                 setIdx + 1,
-                                set.weight,
-                                set.reps
+                                set.weight || '0',
+                                set.reps || '0'
                             ]);
                         });
                     });
@@ -544,10 +559,27 @@
                                         ))}
                                     </div>
 
-                                    <div className="bg-blue-900/30 border border-blue-500 rounded-lg p-4 mb-6">
+                                    <div className="bg-blue-900/30 border border-blue-500 rounded-lg p-4 mb-4">
                                         <p className="text-blue-300 text-sm">
                                             💡 <strong>Tip:</strong> If you're new to lifting, start with the bar (45 lbs) for Squat/Bench/Deadlift and 20-25 lbs for Overhead Press and Rows.
                                         </p>
+                                    </div>
+
+                                    <div className="bg-slate-700 rounded-lg p-4 mb-6">
+                                        <div className="flex items-center justify-between mb-2">
+                                            <span className="text-white font-semibold">Progress</span>
+                                            <span className="text-blue-400 font-bold">
+                                                {Object.keys(tempStartingWeights).filter(k => tempStartingWeights[k] && parseInt(tempStartingWeights[k]) > 0).length}/{allExercises.length}
+                                            </span>
+                                        </div>
+                                        <div className="w-full bg-slate-600 rounded-full h-2">
+                                            <div
+                                                className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                                                style={{
+                                                    width: `${(Object.keys(tempStartingWeights).filter(k => tempStartingWeights[k] && parseInt(tempStartingWeights[k]) > 0).length / allExercises.length) * 100}%`
+                                                }}
+                                            ></div>
+                                        </div>
                                     </div>
 
                                     <div className="flex gap-3">
@@ -559,8 +591,8 @@
                                         </button>
                                         <button
                                             onClick={completeOnboarding}
-                                            disabled={Object.keys(tempStartingWeights).length === 0}
-                                            className="flex-1 bg-blue-500 hover:bg-blue-600 disabled:bg-slate-600 text-white font-bold py-3 rounded-lg transition-colors"
+                                            disabled={!allExercises.every(ex => tempStartingWeights[ex.name] && parseInt(tempStartingWeights[ex.name]) > 0)}
+                                            className="flex-1 bg-blue-500 hover:bg-blue-600 disabled:bg-slate-600 disabled:cursor-not-allowed text-white font-bold py-3 rounded-lg transition-colors"
                                         >
                                             Start Training
                                         </button>
@@ -655,14 +687,14 @@
                                 <div className="bg-slate-700 rounded-lg p-6 mb-6">
                                     <h3 className="text-white font-semibold mb-4">Today's Summary</h3>
                                     <div className="space-y-2">
-                                        {lastWorkout.exercises.map((ex, i) => (
+                                        {lastWorkout.exercises?.map((ex, i) => (
                                             <div key={i} className="flex justify-between text-sm">
                                                 <span className="text-slate-300">{ex.name}</span>
                                                 <span className="text-blue-400 font-semibold">
-                                                    {ex.sets[0].weight} lbs × {ex.sets.length} sets
+                                                    {ex.sets?.[0]?.weight || '?'} lbs × {ex.sets?.length || 0} sets
                                                 </span>
                                             </div>
-                                        ))}
+                                        )) || <p className="text-slate-400">No exercises recorded</p>}
                                     </div>
                                 </div>
 
@@ -1037,9 +1069,9 @@
         // Register service worker for PWA
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(reg => console.log('Service Worker registered'))
-                    .catch(err => console.log('Service Worker registration failed'));
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('Service Worker registered:', reg.scope))
+                    .catch(err => console.error('Service Worker registration failed:', err));
             });
         }
     </script>

@@ -2,7 +2,7 @@
   "name": "3x5 Workout Tracker",
   "short_name": "3x5 Tracker",
   "description": "Progressive strength training tracker for 3x5 and 5x5 programs",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#0f172a",
