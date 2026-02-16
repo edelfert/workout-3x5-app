@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>SVG to PNG Converter</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        h1 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        .preview {
+            margin: 30px 0;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .icon-box {
+            text-align: center;
+        }
+        canvas {
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+        .success {
+            background: #10b981;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 SVG → PNG Converter</h1>
+        <p>Converting icon.svg to PNG formats...</p>
+
+        <div id="status">Click "Generate PNGs" to start</div>
+
+        <button onclick="convertSVGtoPNG()">Generate PNGs</button>
+
+        <div class="preview" id="preview"></div>
+    </div>
+
+    <script>
+        async function convertSVGtoPNG() {
+            const status = document.getElementById('status');
+            const preview = document.getElementById('preview');
+
+            status.innerHTML = '⏳ Loading SVG...';
+
+            try {
+                // Fetch the SVG file
+                const response = await fetch('./icon.svg');
+                const svgText = await response.text();
+
+                // Create an image from SVG
+                const img = new Image();
+                const svgBlob = new Blob([svgText], { type: 'image/svg+xml' });
+                const url = URL.createObjectURL(svgBlob);
+
+                img.onload = () => {
+                    const sizes = [192, 512];
+                    preview.innerHTML = '';
+
+                    sizes.forEach(size => {
+                        // Create canvas
+                        const canvas = document.createElement('canvas');
+                        canvas.width = size;
+                        canvas.height = size;
+                        const ctx = canvas.getContext('2d');
+
+                        // Draw SVG to canvas
+                        ctx.drawImage(img, 0, 0, size, size);
+
+                        // Create preview
+                        const box = document.createElement('div');
+                        box.className = 'icon-box';
+
+                        const previewCanvas = document.createElement('canvas');
+                        previewCanvas.width = 150;
+                        previewCanvas.height = 150;
+                        const previewCtx = previewCanvas.getContext('2d');
+                        previewCtx.drawImage(canvas, 0, 0, 150, 150);
+
+                        const label = document.createElement('div');
+                        label.textContent = `${size}×${size}`;
+                        label.style.fontWeight = 'bold';
+                        label.style.color = '#667eea';
+                        label.style.marginBottom = '10px';
+
+                        const downloadBtn = document.createElement('button');
+                        downloadBtn.textContent = `Download ${size}px`;
+                        downloadBtn.onclick = () => {
+                            canvas.toBlob(blob => {
+                                const url = URL.createObjectURL(blob);
+                                const a = document.createElement('a');
+                                a.href = url;
+                                a.download = `icon-${size}.png`;
+                                a.click();
+                                URL.revokeObjectURL(url);
+                            }, 'image/png');
+                        };
+
+                        box.appendChild(label);
+                        box.appendChild(previewCanvas);
+                        box.appendChild(downloadBtn);
+                        preview.appendChild(box);
+                    });
+
+                    status.innerHTML = '<div class="success">✅ Ready! Click the download buttons below.</div>';
+                    URL.revokeObjectURL(url);
+                };
+
+                img.onerror = () => {
+                    status.innerHTML = '❌ Error loading SVG. Make sure icon.svg exists in the same folder.';
+                };
+
+                img.src = url;
+
+            } catch (error) {
+                status.innerHTML = `❌ Error: ${error.message}`;
+            }
+        }
+
+        // Auto-convert on load
+        window.onload = () => {
+            convertSVGtoPNG();
+        };
+    </script>
+</body>
+</html>
