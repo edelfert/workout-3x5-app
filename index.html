@@ -382,7 +382,7 @@
                 }
 
                 const allSetsComplete = exercise.sets.length > 0 && exercise.sets.every(s =>
-                    parseInt(s?.reps) >= 5
+                    parseInt(s?.reps) >= (exercise.target || 5)
                 );
 
                 if (allSetsComplete) {
