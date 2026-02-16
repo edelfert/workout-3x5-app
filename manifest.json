@@ -4,8 +4,8 @@
   "description": "Progressive strength training tracker for 3x5 and 5x5 programs",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#0f172a",
-  "theme_color": "#0f172a",
+  "background_color": "#667eea",
+  "theme_color": "#667eea",
   "orientation": "portrait",
   "icons": [
     {

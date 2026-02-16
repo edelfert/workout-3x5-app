@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#0f172a">
+    <meta name="theme-color" content="#667eea">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>3x5 Workout Tracker</title>
@@ -13,20 +13,128 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
         * {
             -webkit-tap-highlight-color: transparent;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
+
         body {
             overscroll-behavior: none;
             touch-action: pan-x pan-y;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
         }
+
         input[type="number"]::-webkit-inner-spin-button,
         input[type="number"]::-webkit-outer-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
+
         input[type="number"] {
             -moz-appearance: textfield;
+        }
+
+        /* Glassmorphism styles */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .glass-dark {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .glass-input {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .glass-input:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(99, 102, 241, 0.5);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .glass-button {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.8) 0%, rgba(139, 92, 246, 0.8) 100%);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .glass-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.6);
+        }
+
+        .glass-button:active {
+            transform: translateY(0);
+        }
+
+        .glass-success {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.8) 0%, rgba(5, 150, 105, 0.8) 100%);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .glass-success:hover {
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.6);
+        }
+
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Smooth transitions */
+        * {
+            transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
         }
     </style>
 </head>
@@ -435,87 +543,87 @@
             if (showOnboarding) {
                 if (onboardingStep === 0) {
                     return (
-                        <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-4 flex items-center justify-center">
+                        <div className="min-h-screen p-4 flex items-center justify-center" style={{background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}}>
                             <div className="max-w-md w-full">
-                                <div className="bg-slate-800 rounded-lg p-8 border border-slate-700">
+                                <div className="glass-dark rounded-3xl p-8 animate-float">
                                     <div className="text-center mb-8">
-                                        <div className="inline-flex items-center justify-center w-20 h-20 bg-blue-500 rounded-full mb-4">
-                                            <Dumbbell size={48} />
+                                        <div className="inline-flex items-center justify-center w-24 h-24 rounded-full mb-6 glass-button shadow-2xl">
+                                            <Dumbbell size={56} />
                                         </div>
-                                        <h1 className="text-4xl font-bold text-white mb-2">
+                                        <h1 className="text-5xl font-black mb-3" style={{background: 'linear-gradient(135deg, #fff 0%, #a5b4fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>
                                             Welcome to 3x5
                                         </h1>
-                                        <p className="text-slate-400 text-lg">
+                                        <p className="text-blue-100 text-lg font-medium">
                                             Your strength training companion
                                         </p>
                                     </div>
 
                                     <div className="space-y-4 mb-8">
-                                        <div className="flex items-start gap-3">
-                                            <div className="flex-shrink-0 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">
+                                        <div className="flex items-start gap-4 glass p-4 rounded-2xl">
+                                            <div className="flex-shrink-0 w-10 h-10 glass-success rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">
                                                 1
                                             </div>
                                             <div>
-                                                <h3 className="text-white font-semibold">Progressive Overload</h3>
-                                                <p className="text-slate-400 text-sm">Add 5 lbs each successful workout</p>
+                                                <h3 className="text-white font-bold text-lg">Progressive Overload</h3>
+                                                <p className="text-blue-100 text-sm">Add 5 lbs each successful workout</p>
                                             </div>
                                         </div>
-                                        <div className="flex items-start gap-3">
-                                            <div className="flex-shrink-0 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">
+                                        <div className="flex items-start gap-4 glass p-4 rounded-2xl">
+                                            <div className="flex-shrink-0 w-10 h-10 glass-success rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">
                                                 2
                                             </div>
                                             <div>
-                                                <h3 className="text-white font-semibold">A/B Split Workouts</h3>
-                                                <p className="text-slate-400 text-sm">Alternate between two full-body routines</p>
+                                                <h3 className="text-white font-bold text-lg">A/B Split Workouts</h3>
+                                                <p className="text-blue-100 text-sm">Alternate between two full-body routines</p>
                                             </div>
                                         </div>
-                                        <div className="flex items-start gap-3">
-                                            <div className="flex-shrink-0 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">
+                                        <div className="flex items-start gap-4 glass p-4 rounded-2xl">
+                                            <div className="flex-shrink-0 w-10 h-10 glass-success rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">
                                                 3
                                             </div>
                                             <div>
-                                                <h3 className="text-white font-semibold">Track Everything</h3>
-                                                <p className="text-slate-400 text-sm">Log weights, reps, and view progress</p>
+                                                <h3 className="text-white font-bold text-lg">Track Everything</h3>
+                                                <p className="text-blue-100 text-sm">Log weights, reps, and view progress</p>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div className="bg-slate-700 rounded-lg p-4 mb-6">
-                                        <label className="block text-white font-semibold mb-3">
+                                    <div className="glass rounded-2xl p-5 mb-6">
+                                        <label className="block text-white font-bold mb-4 text-lg">
                                             Choose Your Program
                                         </label>
                                         <div className="flex gap-3">
                                             <button
                                                 onClick={() => setSetCount(3)}
-                                                className={`flex-1 py-3 rounded-lg font-semibold transition-colors ${
+                                                className={`flex-1 py-4 rounded-xl font-bold transition-all ${
                                                     setCount === 3
-                                                        ? 'bg-blue-500 text-white'
-                                                        : 'bg-slate-600 text-slate-300 hover:bg-slate-500'
+                                                        ? 'glass-button text-white shadow-2xl scale-105'
+                                                        : 'glass-input text-blue-100 hover:scale-105'
                                                 }`}
                                             >
                                                 3x5
-                                                <div className="text-xs opacity-75">3 sets × 5 reps</div>
+                                                <div className="text-xs opacity-80 font-medium">3 sets × 5 reps</div>
                                             </button>
                                             <button
                                                 onClick={() => setSetCount(5)}
-                                                className={`flex-1 py-3 rounded-lg font-semibold transition-colors ${
+                                                className={`flex-1 py-4 rounded-xl font-bold transition-all ${
                                                     setCount === 5
-                                                        ? 'bg-blue-500 text-white'
-                                                        : 'bg-slate-600 text-slate-300 hover:bg-slate-500'
+                                                        ? 'glass-button text-white shadow-2xl scale-105'
+                                                        : 'glass-input text-blue-100 hover:scale-105'
                                                 }`}
                                             >
                                                 5x5
-                                                <div className="text-xs opacity-75">5 sets × 5 reps</div>
+                                                <div className="text-xs opacity-80 font-medium">5 sets × 5 reps</div>
                                             </button>
                                         </div>
                                     </div>
 
                                     <button
                                         onClick={() => setOnboardingStep(1)}
-                                        className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 rounded-lg transition-colors flex items-center justify-center gap-2"
+                                        className="w-full glass-button text-white font-bold py-5 rounded-2xl flex items-center justify-center gap-2 text-lg shadow-2xl"
                                     >
                                         Set Starting Weights
-                                        <ChevronRight size={20} />
+                                        <ChevronRight size={24} />
                                     </button>
                                 </div>
                             </div>
@@ -524,23 +632,23 @@
                 } else {
                     // Step 1: Set starting weights
                     return (
-                        <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-4">
-                            <div className="max-w-md mx-auto">
-                                <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
-                                    <h2 className="text-2xl font-bold text-white mb-2">
+                        <div className="min-h-screen p-4" style={{background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}}>
+                            <div className="max-w-md mx-auto pt-8">
+                                <div className="glass-dark rounded-3xl p-6">
+                                    <h2 className="text-3xl font-black text-white mb-2">
                                         Set Your Starting Weights
                                     </h2>
-                                    <p className="text-slate-400 mb-6">
+                                    <p className="text-blue-100 mb-6 font-medium">
                                         Start conservative. You'll progress 5 lbs per workout.
                                     </p>
 
-                                    <div className="space-y-4 mb-6">
+                                    <div className="space-y-3 mb-6">
                                         {allExercises.map(ex => (
-                                            <div key={ex.name} className="bg-slate-700 rounded-lg p-4">
-                                                <label className="block text-white font-semibold mb-1">
+                                            <div key={ex.name} className="glass rounded-2xl p-4">
+                                                <label className="block text-white font-bold mb-1 text-lg">
                                                     {ex.name}
                                                 </label>
-                                                <p className="text-slate-400 text-sm mb-3">{ex.description}</p>
+                                                <p className="text-blue-100 text-sm mb-3">{ex.description}</p>
                                                 <div className="flex items-center gap-3">
                                                     <input
                                                         type="number"
@@ -550,31 +658,31 @@
                                                             ...prev,
                                                             [ex.name]: e.target.value
                                                         }))}
-                                                        className="flex-1 bg-slate-600 text-white text-lg rounded px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                        className="flex-1 glass-input text-white text-xl font-bold rounded-xl px-4 py-4 focus:outline-none"
                                                         placeholder="0"
                                                     />
-                                                    <span className="text-slate-300 font-semibold">lbs</span>
+                                                    <span className="text-white font-bold text-lg">lbs</span>
                                                 </div>
                                             </div>
                                         ))}
                                     </div>
 
-                                    <div className="bg-blue-900/30 border border-blue-500 rounded-lg p-4 mb-4">
-                                        <p className="text-blue-300 text-sm">
+                                    <div className="glass rounded-2xl p-4 mb-4" style={{background: 'rgba(59, 130, 246, 0.2)', border: '1px solid rgba(59, 130, 246, 0.3)'}}>
+                                        <p className="text-blue-50 text-sm font-medium">
                                             💡 <strong>Tip:</strong> If you're new to lifting, start with the bar (45 lbs) for Squat/Bench/Deadlift and 20-25 lbs for Overhead Press and Rows.
                                         </p>
                                     </div>
 
-                                    <div className="bg-slate-700 rounded-lg p-4 mb-6">
-                                        <div className="flex items-center justify-between mb-2">
-                                            <span className="text-white font-semibold">Progress</span>
-                                            <span className="text-blue-400 font-bold">
+                                    <div className="glass rounded-2xl p-4 mb-6">
+                                        <div className="flex items-center justify-between mb-3">
+                                            <span className="text-white font-bold">Progress</span>
+                                            <span className="text-blue-200 font-black text-lg">
                                                 {Object.keys(tempStartingWeights).filter(k => tempStartingWeights[k] && parseInt(tempStartingWeights[k]) > 0).length}/{allExercises.length}
                                             </span>
                                         </div>
-                                        <div className="w-full bg-slate-600 rounded-full h-2">
+                                        <div className="w-full glass-input rounded-full h-3 overflow-hidden">
                                             <div
-                                                className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                                                className="glass-button h-3 rounded-full transition-all duration-500"
                                                 style={{
                                                     width: `${(Object.keys(tempStartingWeights).filter(k => tempStartingWeights[k] && parseInt(tempStartingWeights[k]) > 0).length / allExercises.length) * 100}%`
                                                 }}
@@ -585,14 +693,14 @@
                                     <div className="flex gap-3">
                                         <button
                                             onClick={() => setOnboardingStep(0)}
-                                            className="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-3 rounded-lg transition-colors"
+                                            className="flex-1 glass-input text-white font-bold py-4 rounded-xl hover:scale-105"
                                         >
                                             Back
                                         </button>
                                         <button
                                             onClick={completeOnboarding}
                                             disabled={!allExercises.every(ex => tempStartingWeights[ex.name] && parseInt(tempStartingWeights[ex.name]) > 0)}
-                                            className="flex-1 bg-blue-500 hover:bg-blue-600 disabled:bg-slate-600 disabled:cursor-not-allowed text-white font-bold py-3 rounded-lg transition-colors"
+                                            className="flex-1 glass-button disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-4 rounded-xl shadow-2xl"
                                         >
                                             Start Training
                                         </button>
@@ -609,17 +717,17 @@
                 const allWarmupDone = warmupChecklist.every(item => item.done);
 
                 return (
-                    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-4">
+                    <div className="min-h-screen p-4 pt-8" style={{background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}}>
                         <div className="max-w-2xl mx-auto">
-                            <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
-                                <div className="flex items-center justify-between mb-6">
-                                    <h1 className="text-3xl font-bold text-white flex items-center gap-2">
-                                        <Dumbbell />
+                            <div className="glass-dark rounded-3xl p-6">
+                                <div className="flex items-center justify-between mb-8">
+                                    <h1 className="text-4xl font-black text-white flex items-center gap-3">
+                                        <Dumbbell size={40} />
                                         Warmup
                                     </h1>
                                     <div className="text-right">
-                                        <div className="text-sm text-slate-400">Next Up</div>
-                                        <div className="text-xl font-bold text-blue-400">
+                                        <div className="text-sm text-blue-200 font-medium">Next Up</div>
+                                        <div className="text-2xl font-black text-white">
                                             Workout {currentWorkout.type}
                                         </div>
                                     </div>
@@ -630,18 +738,19 @@
                                         <div
                                             key={item.id}
                                             onClick={() => toggleWarmupItem(item.id)}
-                                            className={`p-4 rounded-lg cursor-pointer transition-all ${
+                                            className={`p-5 rounded-2xl cursor-pointer transition-all ${
                                                 item.done
-                                                    ? 'bg-green-900/30 border-2 border-green-500'
-                                                    : 'bg-slate-700 border-2 border-slate-600'
+                                                    ? 'glass-success scale-98'
+                                                    : 'glass hover:scale-102'
                                             }`}
+                                            style={{transform: item.done ? 'scale(0.98)' : 'scale(1)'}}
                                         >
-                                            <div className="flex items-center gap-3">
+                                            <div className="flex items-center gap-4">
                                                 <CheckCircle
-                                                    className={item.done ? 'text-green-400' : 'text-slate-500'}
-                                                    size={24}
+                                                    className={item.done ? 'text-white' : 'text-blue-200'}
+                                                    size={28}
                                                 />
-                                                <span className={`${item.done ? 'text-green-300 line-through' : 'text-white'}`}>
+                                                <span className={`text-lg font-semibold ${item.done ? 'text-white line-through' : 'text-white'}`}>
                                                     {item.text}
                                                 </span>
                                             </div>
@@ -652,9 +761,9 @@
                                 <button
                                     onClick={finishWarmup}
                                     disabled={!allWarmupDone}
-                                    className="w-full bg-blue-500 hover:bg-blue-600 disabled:bg-slate-600 disabled:cursor-not-allowed text-white font-bold py-4 rounded-lg transition-colors"
+                                    className="w-full glass-button disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-5 rounded-2xl text-lg shadow-2xl"
                                 >
-                                    {allWarmupDone ? 'Start Workout' : 'Complete warmup first'}
+                                    {allWarmupDone ? 'Start Workout 💪' : 'Complete warmup first'}
                                 </button>
                             </div>
                         </div>
@@ -667,47 +776,47 @@
                 const lastWorkout = workouts[workouts.length - 1];
 
                 return (
-                    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-4 flex items-center justify-center">
+                    <div className="min-h-screen p-4 flex items-center justify-center" style={{background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}}>
                         <div className="max-w-2xl w-full">
-                            <div className="bg-slate-800 rounded-lg p-8 border border-slate-700 text-center">
-                                <div className="mb-6">
-                                    <div className="inline-flex items-center justify-center w-20 h-20 bg-green-500 rounded-full mb-4">
-                                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3">
+                            <div className="glass-dark rounded-3xl p-8 text-center">
+                                <div className="mb-8">
+                                    <div className="inline-flex items-center justify-center w-28 h-28 glass-success rounded-full mb-6 shadow-2xl animate-float">
+                                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3">
                                             <polyline points="20 6 9 17 4 12"></polyline>
                                         </svg>
                                     </div>
-                                    <h1 className="text-4xl font-bold text-white mb-2">
+                                    <h1 className="text-5xl font-black mb-3" style={{background: 'linear-gradient(135deg, #fff 0%, #a5b4fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>
                                         Workout Complete!
                                     </h1>
-                                    <p className="text-slate-400 text-lg">
+                                    <p className="text-blue-100 text-xl font-medium">
                                         You finished Workout {lastWorkout.type} today
                                     </p>
                                 </div>
 
-                                <div className="bg-slate-700 rounded-lg p-6 mb-6">
-                                    <h3 className="text-white font-semibold mb-4">Today's Summary</h3>
-                                    <div className="space-y-2">
+                                <div className="glass rounded-2xl p-6 mb-6">
+                                    <h3 className="text-white font-bold mb-4 text-lg">Today's Summary</h3>
+                                    <div className="space-y-3">
                                         {lastWorkout.exercises?.map((ex, i) => (
-                                            <div key={i} className="flex justify-between text-sm">
-                                                <span className="text-slate-300">{ex.name}</span>
-                                                <span className="text-blue-400 font-semibold">
+                                            <div key={i} className="flex justify-between glass-input p-3 rounded-xl">
+                                                <span className="text-white font-semibold">{ex.name}</span>
+                                                <span className="text-blue-200 font-bold">
                                                     {ex.sets?.[0]?.weight || '?'} lbs × {ex.sets?.length || 0} sets
                                                 </span>
                                             </div>
-                                        )) || <p className="text-slate-400">No exercises recorded</p>}
+                                        )) || <p className="text-blue-100">No exercises recorded</p>}
                                     </div>
                                 </div>
 
                                 <div className="flex flex-col sm:flex-row gap-3">
                                     <button
                                         onClick={() => setShowHistory(true)}
-                                        className="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-3 rounded-lg transition-colors"
+                                        className="flex-1 glass-input hover:scale-105 text-white font-bold py-4 rounded-xl"
                                     >
                                         View History
                                     </button>
                                     <button
                                         onClick={exportToCSV}
-                                        className="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition-colors"
+                                        className="flex-1 glass-success hover:scale-105 text-white font-bold py-4 rounded-xl shadow-lg"
                                     >
                                         Export Data
                                     </button>
@@ -719,7 +828,7 @@
                                             setShowWarmup(true);
                                         }
                                     }}
-                                    className="w-full mt-3 text-slate-400 hover:text-slate-300 text-sm underline"
+                                    className="w-full mt-4 text-blue-200 hover:text-white text-sm underline font-medium"
                                 >
                                     Do another workout anyway
                                 </button>
@@ -732,20 +841,20 @@
             // MAIN WORKOUT SCREEN
             if (currentSession) {
                 return (
-                    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-4">
+                    <div className="min-h-screen p-4 pt-8" style={{background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}}>
                         <div className="max-w-2xl mx-auto">
                             {/* Header */}
-                            <div className="bg-slate-800 rounded-lg p-4 mb-4 border border-slate-700">
+                            <div className="glass-dark rounded-2xl p-5 mb-4">
                                 <div className="flex items-center justify-between">
                                     <div>
-                                        <div className="text-slate-400 text-sm">Workout {currentWorkout.type}</div>
-                                        <div className="text-white text-xl font-bold">
+                                        <div className="text-blue-200 text-sm font-medium">Workout {currentWorkout.type}</div>
+                                        <div className="text-white text-2xl font-black">
                                             {currentExercise.name}
                                         </div>
                                     </div>
                                     <div className="text-right">
-                                        <div className="text-slate-400 text-sm">Exercise</div>
-                                        <div className="text-blue-400 text-xl font-bold">
+                                        <div className="text-blue-200 text-sm font-medium">Exercise</div>
+                                        <div className="text-white text-2xl font-black">
                                             {currentExerciseIndex + 1}/{currentWorkout.exercises.length}
                                         </div>
                                     </div>
@@ -753,50 +862,51 @@
                             </div>
 
                             {/* Suggested Weight */}
-                            <div className="bg-slate-800 rounded-lg p-4 mb-4 border border-slate-700">
+                            <div className="glass-dark rounded-2xl p-5 mb-4">
                                 <div className="flex items-center gap-2 mb-2">
-                                    <TrendingUp size={20} />
-                                    <span className="text-white font-semibold">Suggested Weight</span>
+                                    <TrendingUp size={24} />
+                                    <span className="text-white font-bold text-lg">Suggested Weight</span>
                                 </div>
-                                <div className="text-2xl font-bold text-green-400">
+                                <div className="text-3xl font-black text-white">
                                     {getSuggestedWeight(currentExercise.name)}
                                 </div>
                             </div>
 
                             {/* Deload Warning */}
                             {failureTracker[currentExercise.name] >= 3 && (
-                                <div className="bg-orange-600 rounded-lg p-4 mb-4 border border-orange-500">
+                                <div className="glass rounded-2xl p-5 mb-4" style={{background: 'rgba(251, 146, 60, 0.3)', border: '1px solid rgba(251, 146, 60, 0.5)'}}>
                                     <div className="flex items-center gap-2 mb-1">
-                                        <span className="text-white font-bold">⚠️ Deload Time!</span>
+                                        <span className="text-white font-black text-lg">⚠️ Deload Time!</span>
                                     </div>
-                                    <p className="text-orange-100 text-sm">
+                                    <p className="text-orange-50 text-sm font-medium">
                                         Failed 3 times. Reduce weight by 10% and rebuild.
                                     </p>
                                 </div>
                             )}
 
                             {/* Rest Timer */}
-                            <div className="bg-slate-800 rounded-lg p-4 mb-4 border border-slate-700">
-                                <div className="flex items-center justify-between mb-3">
-                                    <div className="flex items-center gap-2">
-                                        <Timer size={20} />
-                                        <span className="text-white font-semibold">Rest Timer</span>
+                            <div className="glass-dark rounded-2xl p-5 mb-4">
+                                <div className="flex items-center justify-between mb-4">
+                                    <div className="flex items-center gap-3">
+                                        <Timer size={24} />
+                                        <span className="text-white font-bold text-lg">Rest Timer</span>
                                     </div>
-                                    <div className={`text-3xl font-bold ${timeLeft <= 10 && timerActive ? 'text-red-400' : 'text-blue-400'}`}>
+                                    <div className={`text-4xl font-black ${timeLeft <= 10 && timerActive ? 'text-red-400' : 'text-white'}`}>
                                         {formatTime(timeLeft)}
                                     </div>
                                 </div>
-                                <div className="flex gap-2">
+                                <div className="flex gap-3">
                                     <button
                                         onClick={startTimer}
                                         disabled={timerActive}
-                                        className="flex-1 bg-blue-500 hover:bg-blue-600 disabled:bg-slate-600 text-white font-semibold py-2 rounded-lg"
+                                        className="flex-1 glass-button disabled:opacity-50 text-white font-bold py-3 rounded-xl shadow-lg"
                                     >
                                         Start
                                     </button>
                                     <button
                                         onClick={stopTimer}
-                                        className="flex-1 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg"
+                                        className="flex-1 glass-input text-white font-bold py-3 rounded-xl hover:scale-105"
+                                        style={{background: 'rgba(239, 68, 68, 0.3)', border: '1px solid rgba(239, 68, 68, 0.5)'}}
                                     >
                                         Reset
                                     </button>
@@ -806,13 +916,13 @@
                             {/* Sets */}
                             <div className="space-y-3 mb-4">
                                 {sets.map((set, index) => (
-                                    <div key={index} className="bg-slate-800 rounded-lg p-4 border border-slate-700">
-                                        <div className="text-white font-semibold mb-3">
+                                    <div key={index} className="glass-dark rounded-2xl p-5">
+                                        <div className="text-white font-black mb-4 text-lg">
                                             Set {index + 1}
                                         </div>
-                                        <div className="grid grid-cols-2 gap-3">
+                                        <div className="grid grid-cols-2 gap-4">
                                             <div>
-                                                <label className="block text-slate-300 text-sm mb-2">
+                                                <label className="block text-blue-200 text-sm mb-2 font-bold">
                                                     Weight (lbs)
                                                 </label>
                                                 <input
@@ -820,12 +930,12 @@
                                                     inputMode="numeric"
                                                     value={set.weight}
                                                     onChange={(e) => handleSetChange(index, 'weight', e.target.value)}
-                                                    className="w-full bg-slate-700 text-white text-lg rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                    className="w-full glass-input text-white text-2xl font-bold rounded-xl px-4 py-4 focus:outline-none"
                                                     placeholder="0"
                                                 />
                                             </div>
                                             <div>
-                                                <label className="block text-slate-300 text-sm mb-2">
+                                                <label className="block text-blue-200 text-sm mb-2 font-bold">
                                                     Reps
                                                 </label>
                                                 <input
@@ -833,7 +943,7 @@
                                                     inputMode="numeric"
                                                     value={set.reps}
                                                     onChange={(e) => handleSetChange(index, 'reps', e.target.value)}
-                                                    className="w-full bg-slate-700 text-white text-lg rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                    className="w-full glass-input text-white text-2xl font-bold rounded-xl px-4 py-4 focus:outline-none"
                                                     placeholder="5"
                                                 />
                                             </div>
@@ -845,7 +955,7 @@
                             <button
                                 onClick={completeExercise}
                                 disabled={!sets.some(s => s.weight && s.reps)}
-                                className="w-full bg-blue-500 hover:bg-blue-600 disabled:bg-slate-600 text-white font-bold py-4 rounded-lg text-lg"
+                                className="w-full glass-button disabled:opacity-50 text-white font-black py-5 rounded-2xl text-xl shadow-2xl"
                             >
                                 {currentExerciseIndex < currentWorkout.exercises.length - 1
                                     ? 'Next Exercise →'
@@ -858,26 +968,26 @@
 
             // HOME/DASHBOARD SCREEN
             return (
-                <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-4">
+                <div className="min-h-screen p-4 pt-8" style={{background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}}>
                     <div className="max-w-2xl mx-auto">
                         {/* Header */}
-                        <div className="bg-slate-800 rounded-lg p-6 mb-6 border border-slate-700">
+                        <div className="glass-dark rounded-3xl p-6 mb-6">
                             <div className="flex items-center justify-between mb-4">
-                                <h1 className="text-3xl font-bold text-white flex items-center gap-2">
-                                    <Dumbbell />
+                                <h1 className="text-4xl font-black text-white flex items-center gap-3">
+                                    <Dumbbell size={40} />
                                     3x5 Tracker
                                 </h1>
                                 <button
                                     onClick={() => setShowSettings(!showSettings)}
-                                    className="text-slate-400 hover:text-slate-300"
+                                    className="glass-input p-3 rounded-xl text-blue-200 hover:text-white hover:scale-110"
                                 >
-                                    <Settings size={24} />
+                                    <Settings size={28} />
                                 </button>
                             </div>
                             <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2 text-slate-300">
-                                    <Calendar size={16} />
-                                    <span>{new Date().toLocaleDateString('en-US', {
+                                <div className="flex items-center gap-2 text-blue-100 font-medium">
+                                    <Calendar size={18} />
+                                    <span className="text-sm">{new Date().toLocaleDateString('en-US', {
                                         weekday: 'long',
                                         month: 'long',
                                         day: 'numeric'
@@ -885,7 +995,7 @@
                                 </div>
                                 <button
                                     onClick={() => setShowHistory(!showHistory)}
-                                    className="text-blue-400 hover:text-blue-300 font-semibold text-sm underline"
+                                    className="text-white hover:text-blue-100 font-bold text-sm underline"
                                 >
                                     View History
                                 </button>
@@ -893,31 +1003,31 @@
                         </div>
 
                         {showSettings ? (
-                            <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
-                                <h2 className="text-2xl font-bold text-white mb-6">Settings</h2>
+                            <div className="glass-dark rounded-3xl p-6">
+                                <h2 className="text-3xl font-black text-white mb-6">Settings</h2>
 
                                 <div className="space-y-6">
                                     <div>
-                                        <label className="block text-white font-semibold mb-3">
+                                        <label className="block text-white font-bold mb-3 text-lg">
                                             Program Type
                                         </label>
                                         <div className="flex gap-4">
                                             <button
                                                 onClick={() => setSetCount(3)}
-                                                className={`flex-1 py-3 rounded-lg font-semibold transition-colors ${
+                                                className={`flex-1 py-4 rounded-xl font-bold transition-all ${
                                                     setCount === 3
-                                                        ? 'bg-blue-500 text-white'
-                                                        : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                                                        ? 'glass-button text-white shadow-2xl scale-105'
+                                                        : 'glass-input text-blue-100 hover:scale-105'
                                                 }`}
                                             >
                                                 3 Sets (3x5)
                                             </button>
                                             <button
                                                 onClick={() => setSetCount(5)}
-                                                className={`flex-1 py-3 rounded-lg font-semibold transition-colors ${
+                                                className={`flex-1 py-4 rounded-xl font-bold transition-all ${
                                                     setCount === 5
-                                                        ? 'bg-blue-500 text-white'
-                                                        : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                                                        ? 'glass-button text-white shadow-2xl scale-105'
+                                                        : 'glass-input text-blue-100 hover:scale-105'
                                                 }`}
                                             >
                                                 5 Sets (5x5)
@@ -926,26 +1036,28 @@
                                     </div>
 
                                     <div>
-                                        <label className="block text-white font-semibold mb-3">
+                                        <label className="block text-white font-bold mb-3 text-lg">
                                             Auto-Fill Weights
                                         </label>
                                         <button
                                             onClick={() => setAutoFillWeights(!autoFillWeights)}
-                                            className={`w-full py-3 rounded-lg font-semibold transition-colors ${
+                                            className={`w-full py-4 rounded-xl font-bold transition-all ${
                                                 autoFillWeights
-                                                    ? 'bg-green-600 text-white'
-                                                    : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                                                    ? 'glass-success text-white shadow-lg'
+                                                    : 'glass-input text-blue-100 hover:scale-105'
                                             }`}
                                         >
                                             {autoFillWeights ? '✓ Enabled' : 'Disabled'}
                                         </button>
                                     </div>
 
-                                    <div className="border-t border-slate-700 pt-6">
+                                    <div className="glass-input rounded-xl h-px my-6"></div>
+
+                                    <div className="space-y-3">
                                         <button
                                             onClick={exportToCSV}
                                             disabled={workouts.length === 0}
-                                            className="w-full bg-green-600 hover:bg-green-700 disabled:bg-slate-600 text-white font-semibold py-3 rounded-lg mb-3"
+                                            className="w-full glass-success disabled:opacity-50 text-white font-bold py-4 rounded-xl mb-3 shadow-lg"
                                         >
                                             Export Data (CSV)
                                         </button>
@@ -956,7 +1068,8 @@
                                                     window.location.reload();
                                                 }
                                             }}
-                                            className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg"
+                                            className="w-full glass-input hover:scale-105 text-white font-bold py-4 rounded-xl"
+                                            style={{background: 'rgba(239, 68, 68, 0.3)', border: '1px solid rgba(239, 68, 68, 0.5)'}}
                                         >
                                             Reset All Data
                                         </button>
@@ -964,23 +1077,23 @@
                                 </div>
                             </div>
                         ) : showHistory ? (
-                            <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
-                                <h2 className="text-2xl font-bold text-white mb-6">Workout History</h2>
+                            <div className="glass-dark rounded-3xl p-6">
+                                <h2 className="text-3xl font-black text-white mb-6">Workout History</h2>
 
                                 {workouts.length === 0 ? (
-                                    <div className="text-center text-slate-400 py-8">
+                                    <div className="text-center text-blue-100 py-12 font-medium text-lg">
                                         No workouts yet! Start your first workout.
                                     </div>
                                 ) : (
                                     <div className="space-y-4">
                                         {workouts.slice().reverse().map((workout, idx) => (
-                                            <div key={idx} className="bg-slate-700 rounded-lg p-4">
-                                                <div className="flex justify-between mb-3 pb-3 border-b border-slate-600">
+                                            <div key={idx} className="glass rounded-2xl p-5">
+                                                <div className="flex justify-between mb-4 pb-4" style={{borderBottom: '1px solid rgba(255, 255, 255, 0.1)'}}>
                                                     <div>
-                                                        <div className="text-lg font-bold text-white">
+                                                        <div className="text-xl font-black text-white">
                                                             Workout {workout.type}
                                                         </div>
-                                                        <div className="text-sm text-slate-400">
+                                                        <div className="text-sm text-blue-100 font-medium">
                                                             {new Date(workout.date).toLocaleDateString('en-US', {
                                                                 weekday: 'long',
                                                                 month: 'long',
@@ -992,16 +1105,16 @@
 
                                                 <div className="space-y-3">
                                                     {workout.exercises.map((ex, i) => (
-                                                        <div key={i} className="bg-slate-600 rounded p-3">
-                                                            <div className="font-semibold text-white mb-2">
+                                                        <div key={i} className="glass-input rounded-xl p-4">
+                                                            <div className="font-bold text-white mb-3 text-lg">
                                                                 {ex.name}
                                                             </div>
                                                             <div className="flex gap-2 flex-wrap">
                                                                 {ex.sets.map((set, setIdx) => (
-                                                                    <div key={setIdx} className="bg-slate-700 rounded px-3 py-1 text-sm">
-                                                                        <span className="text-white font-bold">{set.weight}</span>
-                                                                        <span className="text-slate-400"> lbs × </span>
-                                                                        <span className="text-blue-400 font-semibold">{set.reps}</span>
+                                                                    <div key={setIdx} className="glass-dark rounded-lg px-4 py-2 text-sm">
+                                                                        <span className="text-white font-black">{set.weight}</span>
+                                                                        <span className="text-blue-200"> lbs × </span>
+                                                                        <span className="text-blue-200 font-bold">{set.reps}</span>
                                                                     </div>
                                                                 ))}
                                                             </div>
@@ -1016,43 +1129,43 @@
                         ) : (
                             <div>
                                 {/* Next Workout Card */}
-                                <div className="bg-slate-800 rounded-lg p-6 mb-6 border border-slate-700">
-                                    <h2 className="text-lg text-slate-400 mb-2">Next Workout</h2>
-                                    <h3 className="text-3xl font-bold text-white mb-4">
+                                <div className="glass-dark rounded-3xl p-6 mb-6">
+                                    <h2 className="text-lg text-blue-200 mb-2 font-medium">Next Workout</h2>
+                                    <h3 className="text-4xl font-black text-white mb-6">
                                         Workout {currentWorkout.type}
                                     </h3>
 
                                     <div className="space-y-3 mb-6">
                                         {currentWorkout.exercises.map((ex, i) => (
-                                            <div key={i} className="flex justify-between items-center">
-                                                <span className="text-white font-semibold">{ex.name}</span>
-                                                <span className="text-slate-400">{setCount} × {ex.target}</span>
+                                            <div key={i} className="flex justify-between items-center glass rounded-xl p-4">
+                                                <span className="text-white font-bold text-lg">{ex.name}</span>
+                                                <span className="text-blue-200 font-bold">{setCount} × {ex.target}</span>
                                             </div>
                                         ))}
                                     </div>
 
                                     <button
                                         onClick={() => setShowWarmup(true)}
-                                        className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 rounded-lg text-lg"
+                                        className="w-full glass-button text-white font-black py-5 rounded-2xl text-xl shadow-2xl"
                                     >
-                                        Start Workout
+                                        Start Workout 💪
                                     </button>
                                 </div>
 
                                 {/* Stats */}
                                 {workouts.length > 0 && (
-                                    <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
-                                        <h3 className="text-lg font-semibold text-white mb-4">Your Progress</h3>
+                                    <div className="glass-dark rounded-3xl p-6">
+                                        <h3 className="text-2xl font-black text-white mb-6">Your Progress</h3>
                                         <div className="grid grid-cols-2 gap-4">
-                                            <div className="bg-slate-700 rounded-lg p-4 text-center">
-                                                <div className="text-2xl font-bold text-blue-400">{workouts.length}</div>
-                                                <div className="text-slate-400 text-sm">Total Workouts</div>
+                                            <div className="glass rounded-2xl p-5 text-center">
+                                                <div className="text-4xl font-black text-white mb-2">{workouts.length}</div>
+                                                <div className="text-blue-200 text-sm font-medium">Total Workouts</div>
                                             </div>
-                                            <div className="bg-slate-700 rounded-lg p-4 text-center">
-                                                <div className="text-2xl font-bold text-green-400">
+                                            <div className="glass rounded-2xl p-5 text-center">
+                                                <div className="text-4xl font-black text-white mb-2">
                                                     {Object.values(failureTracker).filter(f => f === 0).length}/{Object.keys(failureTracker).length}
                                                 </div>
-                                                <div className="text-slate-400 text-sm">On Track</div>
+                                                <div className="text-blue-200 text-sm font-medium">On Track</div>
                                             </div>
                                         </div>
                                     </div>
