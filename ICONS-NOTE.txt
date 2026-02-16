@@ -1,0 +1,28 @@
+IMPORTANT: Generate PNG Icons Before Deploying
+==============================================
+
+The app needs icon-192.png and icon-512.png for PWA installation.
+
+Quick Options:
+
+1. Online Converter (Easiest):
+   - Go to: https://cloudconvert.com/svg-to-png
+   - Upload icon.svg
+   - Convert to 192x192 → save as icon-192.png
+   - Convert to 512x512 → save as icon-512.png
+   - Place both files in this directory
+
+2. Using ImageMagick:
+   convert icon.svg -resize 192x192 icon-192.png
+   convert icon.svg -resize 512x512 icon-512.png
+
+3. Using Inkscape:
+   inkscape icon.svg --export-filename=icon-192.png --export-width=192
+   inkscape icon.svg --export-filename=icon-512.png --export-width=512
+
+The app will work without icons, but they're needed for:
+- Nice home screen icon when installed on Android
+- App splash screen
+- Better user experience
+
+After generating, delete this file!

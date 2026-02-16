@@ -1,0 +1,10 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" fill="#3b82f6"/>
+  <g transform="translate(256, 256)">
+    <!-- Dumbbell icon -->
+    <path d="M-100,-50 L-100,-80 L-120,-80 L-120,-100 L-140,-100 L-140,100 L-120,100 L-120,80 L-100,80 L-100,50 L100,50 L100,80 L120,80 L120,100 L140,100 L140,-100 L120,-100 L120,-80 L100,-80 L100,-50 Z" fill="white"/>
+
+    <!-- 3x5 text -->
+    <text x="0" y="170" font-family="Arial, sans-serif" font-size="80" font-weight="bold" fill="white" text-anchor="middle">3×5</text>
+  </g>
+</svg>
