@@ -3,1619 +3,732 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#667eea">
+    <meta name="theme-color" content="#0f172a">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>3x5 Workout Tracker</title>
+    <title>3x5 Strength</title>
     <link rel="manifest" href="./manifest.json">
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/recharts@2.10.3/umd/Recharts.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-
-        * {
-            -webkit-tap-highlight-color: transparent;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        }
-
-        body {
-            overscroll-behavior: none;
-            touch-action: pan-x pan-y;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
-
-        input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        input[type="number"] {
-            -moz-appearance: textfield;
-        }
-
-        /* Glassmorphism styles */
-        .glass {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-        }
-
-        .glass-dark {
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-        }
-
-        .glass-input {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .glass-input:focus {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(99, 102, 241, 0.5);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-        }
-
-        .glass-button {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.8) 0%, rgba(139, 92, 246, 0.8) 100%);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
-            transition: all 0.3s ease;
-        }
-
-        .glass-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.6);
-        }
-
-        .glass-button:active {
-            transform: translateY(0);
-        }
-
-        .glass-success {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.8) 0%, rgba(5, 150, 105, 0.8) 100%);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
-        }
-
-        .glass-success:hover {
-            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.6);
-        }
-
-        .animate-float {
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .gradient-text {
-            background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        /* Smooth transitions */
-        * {
-            transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
-        }
-
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
+        * { -webkit-tap-highlight-color: transparent; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+        body { overscroll-behavior: none; background: #0f172a; min-height: 100vh; margin: 0; }
+        input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type="number"] { -moz-appearance: textfield; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
     </style>
 </head>
 <body>
     <div id="root"></div>
-
     <script type="text/babel">
-        const { useState, useEffect, useMemo } = React;
+        const { useState, useEffect, useRef, useCallback, useMemo } = React;
+        const { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceDot } = Recharts;
 
-        // ========================================
+        // ============================================================
+        // CONSTANTS
+        // ============================================================
+        const BAR_WEIGHT_LBS = 45;
+        const BAR_WEIGHT_KG = 20;
+        const PLATES_LBS = [45, 35, 25, 10, 5, 2.5];
+        const PLATES_KG = [20, 15, 10, 5, 2.5, 1.25];
+        const DEFAULT_REST_SECONDS = 90;
+        const REST_OPTIONS = [
+            { label: '60s', value: 60 },
+            { label: '90s', value: 90 },
+            { label: '3 min', value: 180 },
+            { label: '5 min', value: 300 },
+        ];
+        const DEFAULT_STARTING_WEIGHTS_LBS = { 'Squat': 45, 'Bench Press': 45, 'Barbell Row': 45, 'Overhead Press': 45, 'Deadlift': 45 };
+        const DEFAULT_DEADLIFT_THRESHOLD_LBS = 135;
+        const DEFAULT_DEADLIFT_THRESHOLD_KG = 60;
+        const MOTIVATIONAL_MESSAGES = [
+            "Beast mode activated!",
+            "Consistency is the key to greatness.",
+            "You showed up. That's what champions do.",
+            "Stronger than yesterday.",
+            "Iron sharpens iron.",
+            "Another step toward your best self.",
+            "The bar doesn't lie. You earned this.",
+            "Discipline beats motivation every time.",
+        ];
+
+        // ============================================================
         // UTILITY FUNCTIONS
-        // ========================================
+        // ============================================================
+        const roundToIncrement = (val, increment) => Math.round(val / increment) * increment;
 
-        // Plate Calculator
-        const calculatePlates = (targetWeight, barWeight = 45) => {
-            const availablePlates = [45, 35, 25, 10, 5, 2.5];
-            // Work in tenths to avoid floating point issues
-            let perSideTenths = Math.round(((targetWeight - barWeight) / 2) * 10);
-
-            if (perSideTenths < 0) return { plates: [], remaining: 0, perSide: 0 };
-
-            const plates = [];
-
-            for (let plate of availablePlates) {
-                const plateTenths = Math.round(plate * 10);
-                while (perSideTenths >= plateTenths) {
-                    plates.push(plate);
-                    perSideTenths -= plateTenths;
-                }
+        const getIncrement = (exerciseName, unit, deadliftTransitioned) => {
+            if (exerciseName === 'Deadlift' && deadliftTransitioned) {
+                return unit === 'kg' ? 2.5 : 5;
             }
-
-            const remaining = perSideTenths / 10;
-            const perSide = ((targetWeight - barWeight) / 2);
-
-            return {
-                plates,
-                remaining: Math.round(remaining * 10) / 10,
-                perSide: Math.round(perSide * 10) / 10
-            };
+            return unit === 'kg' ? 1.25 : 2.5;
         };
 
-        // Warmup Calculator
-        const calculateWarmupSets = (workingWeight, barWeight = 45) => {
-            if (workingWeight <= barWeight) {
-                return [{ weight: barWeight, reps: 5, label: 'Bar only' }];
-            }
+        const getBarWeight = (unit) => unit === 'kg' ? BAR_WEIGHT_KG : BAR_WEIGHT_LBS;
 
-            const warmupSets = [];
-            const percentages = [0.4, 0.6, 0.8];
+        const convertWeight = (lbs, toUnit) => {
+            if (toUnit === 'kg') return roundToIncrement(lbs * 0.453592, 1.25);
+            return lbs;
+        };
+
+        const calculatePlates = (targetWeight, unit) => {
+            const barWeight = getBarWeight(unit);
+            const plates = unit === 'kg' ? PLATES_KG : PLATES_LBS;
+            let perSide = (targetWeight - barWeight) / 2;
+            if (perSide < 0) return { plates: [], remaining: 0, perSide: 0 };
+            const result = [];
+            let rem = Math.round(perSide * 100);
+            for (const plate of plates) {
+                const p = Math.round(plate * 100);
+                while (rem >= p) { result.push(plate); rem -= p; }
+            }
+            return { plates: result, remaining: Math.round(rem) / 100, perSide: Math.round(perSide * 100) / 100 };
+        };
+
+        const calculateWarmupSets = (workingWeight, unit) => {
+            const barWeight = getBarWeight(unit);
+            if (workingWeight <= barWeight) return [{ weight: barWeight, reps: 5, label: 'Bar only' }];
+            const sets = [{ weight: barWeight, reps: 5, label: 'Bar warm-up' }];
+            const pcts = [0.4, 0.6, 0.8];
             const reps = [5, 5, 3];
-
-            // Start with bar
-            warmupSets.push({ weight: barWeight, reps: 5, label: 'Bar (warm-up)' });
-
-            // Add percentage-based sets
-            percentages.forEach((pct, idx) => {
-                const weight = Math.round((workingWeight * pct) / 5) * 5; // Round to nearest 5
-                if (weight > barWeight) {
-                    warmupSets.push({
-                        weight,
-                        reps: reps[idx],
-                        label: `${Math.round(pct * 100)}% warm-up`
-                    });
-                }
+            const inc = unit === 'kg' ? 2.5 : 5;
+            pcts.forEach((p, i) => {
+                const w = roundToIncrement(workingWeight * p, inc);
+                if (w > barWeight) sets.push({ weight: w, reps: reps[i], label: `${Math.round(p * 100)}% warm-up` });
             });
-
-            return warmupSets;
+            return sets;
         };
 
-        // 1RM Estimation (Epley Formula)
         const estimate1RM = (weight, reps) => {
-            // Validate inputs
             if (weight <= 0 || reps <= 0) return 0;
             if (reps === 1) return weight;
-            // Epley formula is most accurate for 1-10 reps, cap at 12
-            const cappedReps = Math.min(reps, 12);
-            return Math.round(weight * (1 + cappedReps / 30));
+            return Math.round(weight * (1 + Math.min(reps, 12) / 30));
         };
 
-        // Calculate workout volume
         const calculateVolume = (exercises) => {
             let total = 0;
-            exercises?.forEach(ex => {
-                ex.sets?.forEach(set => {
-                    const weight = parseInt(set.weight) || 0;
-                    const reps = parseInt(set.reps) || 0;
-                    total += weight * reps;
-                });
-            });
+            exercises?.forEach(ex => ex.sets?.forEach(s => {
+                total += (parseFloat(s.weight) || 0) * (parseInt(s.reps) || 0);
+            }));
             return total;
         };
 
-        // Calculate workout streak
         const calculateStreak = (workouts) => {
-            if (workouts.length === 0) return { current: 0, longest: 0, lastWorkout: null };
-
-            // Get unique dates (normalize to day precision)
-            const uniqueDates = [...new Set(workouts.map(w => {
-                const d = new Date(w.date);
-                return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
-            }))].sort((a, b) => b - a); // Newest first
-
-            if (uniqueDates.length === 0) return { current: 0, longest: 0, lastWorkout: null };
-
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-
-            // Calculate current streak (from today backwards)
-            let currentStreak = 0;
-            const daysSinceLast = Math.floor((today - uniqueDates[0]) / (1000 * 60 * 60 * 24));
-
-            if (daysSinceLast <= 2) { // Within 2 days = streak is active
-                currentStreak = 1;
-                for (let i = 1; i < uniqueDates.length; i++) {
-                    const diffDays = Math.floor((uniqueDates[i-1] - uniqueDates[i]) / (1000 * 60 * 60 * 24));
-                    if (diffDays <= 3) { // Allow up to 2 rest days between workouts
-                        currentStreak++;
-                    } else {
-                        break; // Streak broken
-                    }
+            if (!workouts.length) return { current: 0, longest: 0 };
+            const dates = [...new Set(workouts.map(w => {
+                const d = new Date(w.date); return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+            }))].sort((a, b) => b - a);
+            const today = new Date(); today.setHours(0,0,0,0);
+            let current = 0;
+            if (Math.floor((today - dates[0]) / 86400000) <= 2) {
+                current = 1;
+                for (let i = 1; i < dates.length; i++) {
+                    if (Math.floor((dates[i-1] - dates[i]) / 86400000) <= 3) current++; else break;
                 }
             }
-
-            // Calculate longest streak ever
-            let longestStreak = 1;
-            let tempStreak = 1;
-
-            for (let i = 1; i < uniqueDates.length; i++) {
-                const diffDays = Math.floor((uniqueDates[i-1] - uniqueDates[i]) / (1000 * 60 * 60 * 24));
-
-                if (diffDays <= 3) {
-                    tempStreak++;
-                    longestStreak = Math.max(longestStreak, tempStreak);
-                } else {
-                    tempStreak = 1;
-                }
+            let longest = 1, temp = 1;
+            for (let i = 1; i < dates.length; i++) {
+                if (Math.floor((dates[i-1] - dates[i]) / 86400000) <= 3) { temp++; longest = Math.max(longest, temp); }
+                else temp = 1;
             }
-
-            return {
-                current: currentStreak,
-                longest: Math.max(longestStreak, currentStreak),
-                lastWorkout: new Date(uniqueDates[0])
-            };
+            return { current, longest: Math.max(longest, current) };
         };
 
-        // Calculate Personal Records
         const calculatePRs = (workouts) => {
             const prs = {};
-
-            workouts.forEach(workout => {
-                workout.exercises?.forEach(exercise => {
-                    if (!prs[exercise.name]) {
-                        prs[exercise.name] = {
-                            maxWeight: 0,
-                            maxWeightDate: null,
-                            maxVolume: 0,
-                            maxVolumeDate: null,
-                            estimated1RM: 0
-                        };
-                    }
-
-                    const pr = prs[exercise.name];
-
-                    exercise.sets?.forEach(set => {
-                        const weight = parseInt(set.weight) || 0;
-                        const reps = parseInt(set.reps) || 0;
-                        const volume = weight * reps;
-                        const est1RM = estimate1RM(weight, reps);
-
-                        // Max weight
-                        if (weight > pr.maxWeight) {
-                            pr.maxWeight = weight;
-                            pr.maxWeightDate = workout.date;
-                        }
-
-                        // Max volume
-                        if (volume > pr.maxVolume) {
-                            pr.maxVolume = volume;
-                            pr.maxVolumeDate = workout.date;
-                        }
-
-                        // Estimated 1RM
-                        if (est1RM > pr.estimated1RM) {
-                            pr.estimated1RM = est1RM;
-                        }
-                    });
+            workouts.forEach(w => w.exercises?.forEach(ex => {
+                if (!prs[ex.name]) prs[ex.name] = { maxWeight: 0, maxWeightDate: null, estimated1RM: 0 };
+                const pr = prs[ex.name];
+                ex.sets?.forEach(s => {
+                    const wt = parseFloat(s.weight) || 0;
+                    const rp = parseInt(s.reps) || 0;
+                    if (wt > pr.maxWeight) { pr.maxWeight = wt; pr.maxWeightDate = w.date; }
+                    const e = estimate1RM(wt, rp);
+                    if (e > pr.estimated1RM) pr.estimated1RM = e;
                 });
-            });
-
+            }));
             return prs;
         };
 
-        // Input validation
-        const validateWeight = (value) => {
-            const num = parseFloat(value);
-            if (isNaN(num) || num <= 0 || num > 1000) return false;
-            return true;
-        };
-
-        const validateReps = (value) => {
-            const num = parseInt(value);
-            if (isNaN(num) || num <= 0 || num > 50) return false;
-            return true;
-        };
-
-        // Format date nicely
         const formatDate = (date) => {
             const d = new Date(date);
             const now = new Date();
-            const diffDays = Math.floor((now - d) / (1000 * 60 * 60 * 24));
-
-            if (diffDays === 0) return 'Today';
-            if (diffDays === 1) return 'Yesterday';
-            if (diffDays < 7) return `${diffDays} days ago`;
-
+            const diff = Math.floor((now - d) / 86400000);
+            if (diff === 0) return 'Today';
+            if (diff === 1) return 'Yesterday';
+            if (diff < 7) return `${diff} days ago`;
             return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
         };
 
-        // ========================================
-        // SVG ICONS
-        // ========================================
+        const playBeep = () => {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain); gain.connect(ctx.destination);
+                osc.frequency.value = 880;
+                osc.type = 'sine';
+                gain.gain.setValueAtTime(0.5, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+                osc.start(ctx.currentTime);
+                osc.stop(ctx.currentTime + 0.5);
+                // Second beep
+                setTimeout(() => {
+                    try {
+                        const osc2 = ctx.createOscillator();
+                        const gain2 = ctx.createGain();
+                        osc2.connect(gain2); gain2.connect(ctx.destination);
+                        osc2.frequency.value = 1100;
+                        osc2.type = 'sine';
+                        gain2.gain.setValueAtTime(0.5, ctx.currentTime);
+                        gain2.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+                        osc2.start(ctx.currentTime);
+                        osc2.stop(ctx.currentTime + 0.5);
+                    } catch(e) {}
+                }, 300);
+            } catch (e) { /* Web Audio not available */ }
+        };
 
-        const Calendar = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                <line x1="16" y1="2" x2="16" y2="6"></line>
-                <line x1="8" y1="2" x2="8" y2="6"></line>
-                <line x1="3" y1="10" x2="21" y2="10"></line>
-            </svg>
-        );
+        // ============================================================
+        // STORAGE HELPERS
+        // ============================================================
+        const loadJSON = (key, fallback) => {
+            try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }
+            catch { return fallback; }
+        };
+        const saveJSON = (key, value) => {
+            try { localStorage.setItem(key, JSON.stringify(value)); }
+            catch (e) { console.warn('Storage write failed:', e); }
+        };
+        const loadStr = (key, fallback) => {
+            try { return localStorage.getItem(key) || fallback; } catch { return fallback; }
+        };
 
-        const TrendingUp = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-                <polyline points="17 6 23 6 23 12"></polyline>
-            </svg>
-        );
+        // ============================================================
+        // MAIN APP COMPONENT
+        // ============================================================
+        function WorkoutApp() {
+            // --- Persisted State ---
+            const [workouts, setWorkouts] = useState(() => loadJSON('w3x5_history', []));
+            const [startingWeights, setStartingWeights] = useState(() => loadJSON('w3x5_startWeights', {}));
+            const [failureTracker, setFailureTracker] = useState(() => loadJSON('w3x5_failures', {}));
+            const [unit, setUnit] = useState(() => loadStr('w3x5_unit', 'lbs'));
+            const [restDuration, setRestDuration] = useState(() => parseInt(loadStr('w3x5_restDuration', String(DEFAULT_REST_SECONDS))));
+            const [hasOnboarded, setHasOnboarded] = useState(() => loadStr('w3x5_onboarded', '') === 'true');
+            const [deadliftTransitioned, setDeadliftTransitioned] = useState(() => loadStr('w3x5_dlTransitioned', '') === 'true');
+            const [deadliftThreshold, setDeadliftThreshold] = useState(() => parseFloat(loadStr('w3x5_dlThreshold', String(DEFAULT_DEADLIFT_THRESHOLD_LBS))));
+            const [dlPromptDismissedAt, setDlPromptDismissedAt] = useState(() => parseFloat(loadStr('w3x5_dlDismissedAt', '0')));
 
-        const Dumbbell = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M14.4 14.4L9.6 9.6"></path>
-                <path d="M18.657 21.485a2 2 0 1 1-2.829-2.828l-1.767 1.768a2 2 0 1 1-2.829-2.829l6.364-6.364a2 2 0 1 1 2.829 2.829l-1.768 1.767a2 2 0 1 1 2.828 2.829z"></path>
-            </svg>
-        );
-
-        const Timer = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="14" r="8"></circle>
-                <line x1="12" y1="14" x2="15" y2="11"></line>
-            </svg>
-        );
-
-        const CheckCircle = ({ size = 24, className = "" }) => (
-            <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                <polyline points="22 4 12 14.01 9 11.01"></polyline>
-            </svg>
-        );
-
-        const Settings = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
-                <circle cx="12" cy="12" r="3"></circle>
-            </svg>
-        );
-
-        const ChevronRight = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
-        );
-
-        const Award = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="8" r="7"></circle>
-                <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
-            </svg>
-        );
-
-        const Flame = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path>
-            </svg>
-        );
-
-        const BarChart = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <line x1="12" y1="20" x2="12" y2="10"></line>
-                <line x1="18" y1="20" x2="18" y2="4"></line>
-                <line x1="6" y1="20" x2="6" y2="16"></line>
-            </svg>
-        );
-
-        const Weight = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="3"></circle>
-                <path d="M3 12h3m12 0h3M12 3v3m0 12v3"></path>
-                <path d="M7.5 7.5l2.5 2.5m4.5-2.5l-2.5 2.5m2.5 4.5l-2.5-2.5m-4.5 2.5l2.5-2.5"></path>
-            </svg>
-        );
-
-        const Calculator = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <rect x="4" y="2" width="16" height="20" rx="2"></rect>
-                <line x1="8" y1="6" x2="16" y2="6"></line>
-                <line x1="16" y1="14" x2="16" y2="14.01"></line>
-                <line x1="12" y1="14" x2="12" y2="14.01"></line>
-                <line x1="8" y1="14" x2="8" y2="14.01"></line>
-                <line x1="16" y1="18" x2="16" y2="18.01"></line>
-                <line x1="12" y1="18" x2="12" y2="18.01"></line>
-                <line x1="8" y1="18" x2="8" y2="18.01"></line>
-            </svg>
-        );
-
-        function WorkoutTracker() {
-            // Persistent state
-            const [workouts, setWorkouts] = useState(() => {
-                try {
-                    const saved = localStorage.getItem('workoutHistory');
-                    return saved ? JSON.parse(saved) : [];
-                } catch {
-                    return [];
-                }
-            });
-
-            const [setCount, setSetCount] = useState(() => {
-                const saved = localStorage.getItem('setCount');
-                return saved ? parseInt(saved) : 3;
-            });
-
-            const [startingWeights, setStartingWeights] = useState(() => {
-                try {
-                    const saved = localStorage.getItem('startingWeights');
-                    return saved ? JSON.parse(saved) : {};
-                } catch {
-                    return {};
-                }
-            });
-
-            const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(() => {
-                return localStorage.getItem('hasCompletedOnboarding') === 'true';
-            });
-
-            // Session state
+            // --- Session State ---
+            const [activeTab, setActiveTab] = useState('workout'); // workout | history | progress | settings
             const [currentSession, setCurrentSession] = useState(null);
             const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
-            const [sets, setSets] = useState(() =>
-                Array(setCount).fill(null).map(() => ({ weight: '', reps: '' }))
-            );
-
-            // Warmup state
-            const [warmupChecklist, setWarmupChecklist] = useState([
-                { id: 1, text: '5 minutes light cardio', done: false },
-                { id: 2, text: '10 arm circles each way', done: false },
-                { id: 3, text: '10 bodyweight squats', done: false },
-                { id: 4, text: '5 push-ups', done: false },
-                { id: 5, text: '1 light warmup set', done: false }
-            ]);
-
-            // Timer state
-            const [timerActive, setTimerActive] = useState(false);
-            const [timeLeft, setTimeLeft] = useState(180); // 3 minutes default
-
-            // UI state
-            const [showHistory, setShowHistory] = useState(false);
-            const [showSettings, setShowSettings] = useState(false);
-            const [showWarmup, setShowWarmup] = useState(false);
-            const [showOnboarding, setShowOnboarding] = useState(!hasCompletedOnboarding && workouts.length === 0);
+            const [setResults, setSetResults] = useState([]); // array of { status: 'pending'|'complete'|'failed', weight: number }
+            const [showOnboarding, setShowOnboarding] = useState(!hasOnboarded);
             const [onboardingStep, setOnboardingStep] = useState(0);
-            const [tempStartingWeights, setTempStartingWeights] = useState({});
-            const [showPlateCalculator, setShowPlateCalculator] = useState(false);
-            const [plateCalcWeight, setPlateCalcWeight] = useState(0);
-            const [showWarmupSets, setShowWarmupSets] = useState(false);
-            const [showPRs, setShowPRs] = useState(false);
-            const [showProgress, setShowProgress] = useState(false);
+            const [tempWeights, setTempWeights] = useState({});
+            const [showPlateCalc, setShowPlateCalc] = useState(false);
+            const [plateCalcWeight, setPlateCalcWeight] = useState('');
+            const [showDlPrompt, setShowDlPrompt] = useState(false);
+            const [pendingDlConfirm, setPendingDlConfirm] = useState(false);
 
-            const [autoFillWeights, setAutoFillWeights] = useState(() => {
-                const saved = localStorage.getItem('autoFillWeights');
-                return saved === null ? true : saved === 'true';
-            });
+            // --- Timer State ---
+            const [timerActive, setTimerActive] = useState(false);
+            const [timeLeft, setTimeLeft] = useState(restDuration);
+            const timerRef = useRef(null);
+            const beepFiredRef = useRef(false);
 
-            const [failureTracker, setFailureTracker] = useState(() => {
-                try {
-                    const saved = localStorage.getItem('failureTracker');
-                    return saved ? JSON.parse(saved) : {};
-                } catch {
-                    return {};
-                }
-            });
+            // --- Persist on change ---
+            useEffect(() => saveJSON('w3x5_history', workouts), [workouts]);
+            useEffect(() => saveJSON('w3x5_startWeights', startingWeights), [startingWeights]);
+            useEffect(() => saveJSON('w3x5_failures', failureTracker), [failureTracker]);
+            useEffect(() => { localStorage.setItem('w3x5_unit', unit); }, [unit]);
+            useEffect(() => { localStorage.setItem('w3x5_restDuration', String(restDuration)); }, [restDuration]);
+            useEffect(() => { localStorage.setItem('w3x5_dlTransitioned', String(deadliftTransitioned)); }, [deadliftTransitioned]);
+            useEffect(() => { localStorage.setItem('w3x5_dlThreshold', String(deadliftThreshold)); }, [deadliftThreshold]);
+            useEffect(() => { localStorage.setItem('w3x5_dlDismissedAt', String(dlPromptDismissedAt)); }, [dlPromptDismissedAt]);
 
-            // Workout templates
-            const workoutA = [
-                {
-                    name: 'Squat',
-                    target: 5,
-                    description: 'Barbell Back Squat or Goblet Squat',
-                    howTo: '1. Bar on upper back/traps 2. Feet shoulder-width, toes slightly out 3. Break at hips and knees together 4. Descend until hip crease below knee 5. Drive through heels, keep chest up 6. Squeeze glutes at top'
-                },
-                {
-                    name: 'Bench Press',
-                    target: 5,
-                    description: 'Barbell or Dumbbell Bench Press',
-                    howTo: '1. Lie flat, feet planted on floor 2. Grip bar slightly wider than shoulders 3. Arch lower back slightly 4. Lower bar to mid-chest with control 5. Press up explosively, keep shoulder blades retracted 6. Lock out arms at top'
-                },
-                {
-                    name: 'Barbell Row',
-                    target: 5,
-                    description: 'Bent Over Barbell Row',
-                    howTo: '1. Bend at hips ~45 degrees, knees slightly bent 2. Grip bar shoulder-width, overhand 3. Pull bar to lower chest/upper abs 4. Keep elbows close to body 5. Squeeze shoulder blades together 6. Lower with control, maintain back angle'
-                }
-            ];
+            // --- Workout Templates ---
+            const getDeadliftSets = useCallback(() => deadliftTransitioned ? 1 : 3, [deadliftTransitioned]);
 
-            const workoutB = [
-                {
-                    name: 'Squat',
-                    target: 5,
-                    description: 'Barbell Back Squat or Goblet Squat',
-                    howTo: '1. Bar on upper back/traps 2. Feet shoulder-width, toes slightly out 3. Break at hips and knees together 4. Descend until hip crease below knee 5. Drive through heels, keep chest up 6. Squeeze glutes at top'
-                },
-                {
-                    name: 'Overhead Press',
-                    target: 5,
-                    description: 'Barbell or Dumbbell Press',
-                    howTo: '1. Stand with feet shoulder-width 2. Bar at shoulder height, grip just outside shoulders 3. Brace core, squeeze glutes 4. Press bar straight up, past your face 5. Lock out overhead with biceps by ears 6. Lower to shoulders with control'
-                },
-                {
-                    name: 'Deadlift',
-                    target: 5,
-                    description: 'Conventional Deadlift',
-                    howTo: '1. Bar over mid-foot, touching shins 2. Feet hip-width apart 3. Grip bar just outside legs 4. Chest up, shoulders over bar 5. Drive through heels, extend hips and knees together 6. Stand tall, squeeze glutes, lower with control'
-                }
-            ];
+            const workoutA = useMemo(() => [
+                { name: 'Squat', targetReps: 5, sets: 3 },
+                { name: 'Bench Press', targetReps: 5, sets: 3 },
+                { name: 'Barbell Row', targetReps: 5, sets: 3 },
+            ], []);
 
-            const allExercises = [
-                ...new Set([...workoutA, ...workoutB].map(e => e.name))
-            ].map(name => {
-                const ex = [...workoutA, ...workoutB].find(e => e.name === name);
-                return { ...ex };
-            });
+            const workoutB = useMemo(() => [
+                { name: 'Squat', targetReps: 5, sets: 3 },
+                { name: 'Overhead Press', targetReps: 5, sets: 3 },
+                { name: 'Deadlift', targetReps: 5, sets: getDeadliftSets() },
+            ], [getDeadliftSets]);
 
-            // Persist data
-            useEffect(() => {
-                localStorage.setItem('workoutHistory', JSON.stringify(workouts));
-            }, [workouts]);
+            const allExerciseNames = ['Squat', 'Bench Press', 'Barbell Row', 'Overhead Press', 'Deadlift'];
 
-            useEffect(() => {
-                localStorage.setItem('setCount', setCount.toString());
-                setSets(Array(setCount).fill(null).map(() => ({ weight: '', reps: '' })));
-            }, [setCount]);
-
-            useEffect(() => {
-                localStorage.setItem('autoFillWeights', autoFillWeights.toString());
-            }, [autoFillWeights]);
-
-            useEffect(() => {
-                localStorage.setItem('failureTracker', JSON.stringify(failureTracker));
-            }, [failureTracker]);
-
-            useEffect(() => {
-                localStorage.setItem('startingWeights', JSON.stringify(startingWeights));
-            }, [startingWeights]);
-
-            // Timer
-            useEffect(() => {
-                let interval;
-                if (timerActive && timeLeft > 0) {
-                    interval = setInterval(() => {
-                        setTimeLeft(time => time - 1);
-                    }, 1000);
-                } else if (timeLeft === 0) {
-                    setTimerActive(false);
-                    // Play notification sound or vibrate
-                    if (navigator.vibrate) {
-                        navigator.vibrate([200, 100, 200]);
-                    }
-                }
-                return () => clearInterval(interval);
-            }, [timerActive, timeLeft]);
-
-            const startTimer = () => {
-                setTimeLeft(180);
-                setTimerActive(true);
-            };
-
-            const stopTimer = () => {
-                setTimerActive(false);
-                setTimeLeft(180);
-            };
-
-            const formatTime = (seconds) => {
-                const mins = Math.floor(seconds / 60);
-                const secs = seconds % 60;
-                return `${mins}:${secs.toString().padStart(2, '0')}`;
-            };
-
-            // Onboarding functions
-            const completeOnboarding = () => {
-                setStartingWeights(tempStartingWeights);
-                setHasCompletedOnboarding(true);
-                localStorage.setItem('hasCompletedOnboarding', 'true');
-                setShowOnboarding(false);
-                setShowWarmup(true);
-            };
-
-            // Workout logic
-            const getCurrentWorkout = () => {
-                if (workouts.length === 0) return { type: 'A', exercises: workoutA };
-                const lastWorkout = workouts[workouts.length - 1];
-                return lastWorkout.type === 'A'
+            const getNextWorkout = useCallback(() => {
+                if (!workouts.length) return { type: 'A', exercises: workoutA };
+                return workouts[workouts.length - 1].type === 'A'
                     ? { type: 'B', exercises: workoutB }
                     : { type: 'A', exercises: workoutA };
-            };
+            }, [workouts, workoutA, workoutB]);
 
-            const getSuggestedWeight = (exerciseName) => {
-                const lastSession = workouts
-                    .filter(w => w.exercises?.some(e => e.name === exerciseName))
-                    .pop();
-
-                if (!lastSession) {
-                    return startingWeights[exerciseName] ? `${startingWeights[exerciseName]} lbs (start)` : 'Set starting weight';
+            const currentWorkout = useMemo(() => {
+                if (currentSession) {
+                    return { type: currentSession.type, exercises: currentSession.type === 'A' ? workoutA : workoutB };
                 }
+                return getNextWorkout();
+            }, [currentSession, workoutA, workoutB, getNextWorkout]);
 
-                const exercise = lastSession.exercises?.find(e => e.name === exerciseName);
-                if (!exercise || !exercise.sets || exercise.sets.length === 0) {
-                    return startingWeights[exerciseName] ? `${startingWeights[exerciseName]} lbs (start)` : 'Set starting weight';
-                }
+            const currentExercise = currentWorkout.exercises[currentExerciseIndex];
 
+            // --- Weight Suggestion ---
+            const getSuggestedWeight = useCallback((exerciseName) => {
+                const lastSession = [...workouts].reverse().find(w => w.exercises?.some(e => e.name === exerciseName));
+                const sw = startingWeights[exerciseName] || (unit === 'kg' ? 20 : 45);
+                if (!lastSession) return sw;
+
+                const ex = lastSession.exercises.find(e => e.name === exerciseName);
+                if (!ex?.sets?.length) return sw;
+
+                const lastWeight = parseFloat(ex.sets[0].weight) || sw;
                 const failures = failureTracker[exerciseName] || 0;
-                const lastWeight = parseInt(exercise.sets[0]?.weight) || parseInt(startingWeights[exerciseName]) || 45;
+                const increment = getIncrement(exerciseName, unit, deadliftTransitioned);
+                const barWeight = getBarWeight(unit);
 
                 if (failures >= 3) {
-                    // Deload 10% and round to nearest 5
-                    const deloadWeight = Math.round((lastWeight * 0.9) / 5) * 5;
-                    return `${deloadWeight} lbs (DELOAD -10%)`;
+                    const deloaded = roundToIncrement(lastWeight * 0.9, increment);
+                    return Math.max(deloaded, barWeight);
                 }
 
-                const allSetsComplete = exercise.sets.length > 0 && exercise.sets.every(s =>
-                    parseInt(s?.reps) >= (exercise.target || 5)
-                );
+                const targetReps = ex.targetReps || 5;
+                const targetSets = ex.targetSets || 3;
+                const allComplete = ex.sets.length >= targetSets && ex.sets.every(s => parseInt(s.reps) >= targetReps);
+                if (allComplete) return lastWeight + increment;
+                return lastWeight;
+            }, [workouts, startingWeights, failureTracker, unit, deadliftTransitioned]);
 
-                if (allSetsComplete) {
-                    return `${lastWeight + 5} lbs (up 5!)`;
-                } else {
-                    return `${lastWeight} lbs (same)`;
+            // --- Timer ---
+            useEffect(() => {
+                if (timerActive && timeLeft > 0) {
+                    timerRef.current = setTimeout(() => setTimeLeft(t => t - 1), 1000);
+                } else if (timerActive && timeLeft <= 0) {
+                    setTimerActive(false);
+                    if (!beepFiredRef.current) {
+                        playBeep();
+                        if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+                        beepFiredRef.current = true;
+                    }
                 }
-            };
+                return () => clearTimeout(timerRef.current);
+            }, [timerActive, timeLeft]);
 
-            const hasCompletedWorkoutToday = () => {
-                if (workouts.length === 0) return false;
+            const startTimer = useCallback(() => {
+                beepFiredRef.current = false;
+                setTimeLeft(restDuration);
+                setTimerActive(true);
+            }, [restDuration]);
 
-                const lastWorkout = workouts[workouts.length - 1];
-                const lastWorkoutDate = new Date(lastWorkout.date);
-                const today = new Date();
+            const stopTimer = useCallback(() => {
+                setTimerActive(false);
+                setTimeLeft(restDuration);
+            }, [restDuration]);
 
-                return (
-                    lastWorkoutDate.getDate() === today.getDate() &&
-                    lastWorkoutDate.getMonth() === today.getMonth() &&
-                    lastWorkoutDate.getFullYear() === today.getFullYear()
-                );
-            };
+            const formatTime = (secs) => `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')}`;
 
-            const completeExercise = () => {
-                if (!currentExercise) {
-                    console.error('No current exercise defined');
-                    return;
+            // --- PRs & Stats ---
+            const personalRecords = useMemo(() => calculatePRs(workouts), [workouts]);
+            const streak = useMemo(() => calculateStreak(workouts), [workouts]);
+
+            // --- Deadlift Transition Check ---
+            const checkDeadliftTransition = useCallback((weight) => {
+                if (deadliftTransitioned) return;
+                const threshold = unit === 'kg' ? (deadliftThreshold * 0.453592) : deadliftThreshold;
+                const effectiveThreshold = unit === 'kg' ? roundToIncrement(threshold, 2.5) : deadliftThreshold;
+                if (weight >= effectiveThreshold) {
+                    if (dlPromptDismissedAt === 0 || weight >= dlPromptDismissedAt + 10) {
+                        setShowDlPrompt(true);
+                    }
                 }
+            }, [deadliftTransitioned, deadliftThreshold, unit, dlPromptDismissedAt]);
 
-                const filledSets = sets.filter(s => s.weight && s.reps);
+            // --- Start Workout ---
+            const startWorkout = useCallback(() => {
+                const next = getNextWorkout();
+                setCurrentSession({ date: new Date().toISOString(), type: next.type, exercises: [] });
+                setCurrentExerciseIndex(0);
+                const ex = next.exercises[0];
+                const w = getSuggestedWeight(ex.name);
+                setSetResults(Array(ex.sets).fill(null).map(() => ({ status: 'pending', weight: w })));
+                setActiveTab('workout');
+            }, [getNextWorkout, getSuggestedWeight]);
+
+            // --- Initialize sets for current exercise ---
+            const initSetsForExercise = useCallback((exerciseIdx, workout) => {
+                const ex = workout.exercises[exerciseIdx];
+                if (!ex) return;
+                const w = getSuggestedWeight(ex.name);
+                setSetResults(Array(ex.sets).fill(null).map(() => ({ status: 'pending', weight: w })));
+            }, [getSuggestedWeight]);
+
+            // --- Log Set ---
+            const logSet = useCallback((setIdx, status) => {
+                setSetResults(prev => {
+                    const next = [...prev];
+                    next[setIdx] = { ...next[setIdx], status };
+                    return next;
+                });
+                // Auto-start rest timer
+                startTimer();
+            }, [startTimer]);
+
+            // --- Complete Exercise ---
+            const completeExercise = useCallback(() => {
+                if (!currentExercise || !currentSession) return;
+
+                const completedSets = setResults.map((s, i) => ({
+                    weight: String(s.weight),
+                    reps: s.status === 'complete' ? String(currentExercise.targetReps) : s.status === 'failed' ? '0' : '0',
+                }));
+
                 const exerciseData = {
                     name: currentExercise.name,
-                    sets: filledSets
+                    sets: completedSets,
+                    targetReps: currentExercise.targetReps,
+                    targetSets: currentExercise.sets,
                 };
 
-                const allSetsComplete = filledSets.length === setCount &&
-                    filledSets.every(s => parseInt(s.reps) >= currentExercise.target);
-
-                const newFailureTracker = { ...failureTracker };
-                if (allSetsComplete) {
-                    newFailureTracker[currentExercise.name] = 0;
+                const allSuccess = setResults.every(s => s.status === 'complete');
+                const newFailures = { ...failureTracker };
+                if (allSuccess) {
+                    newFailures[currentExercise.name] = 0;
+                    // Check deadlift transition
+                    if (currentExercise.name === 'Deadlift') {
+                        checkDeadliftTransition(setResults[0]?.weight || 0);
+                    }
                 } else {
-                    newFailureTracker[currentExercise.name] = (newFailureTracker[currentExercise.name] || 0) + 1;
+                    newFailures[currentExercise.name] = (newFailures[currentExercise.name] || 0) + 1;
                 }
-                setFailureTracker(newFailureTracker);
-
-                const baseSession = currentSession || {
-                    date: new Date().toISOString(),
-                    type: currentWorkout.type,
-                    exercises: []
-                };
+                setFailureTracker(newFailures);
 
                 const updatedSession = {
-                    ...baseSession,
-                    exercises: [...baseSession.exercises, exerciseData]
+                    ...currentSession,
+                    exercises: [...currentSession.exercises, exerciseData],
                 };
+
+                stopTimer();
 
                 if (currentExerciseIndex < currentWorkout.exercises.length - 1) {
                     setCurrentSession(updatedSession);
-                    setCurrentExerciseIndex(currentExerciseIndex + 1);
-                    setSets(Array(setCount).fill(null).map(() => ({ weight: '', reps: '' })));
-                    startTimer();
+                    const nextIdx = currentExerciseIndex + 1;
+                    setCurrentExerciseIndex(nextIdx);
+                    initSetsForExercise(nextIdx, currentWorkout);
                 } else {
+                    // Workout complete
                     setWorkouts(prev => [...prev, updatedSession]);
                     setCurrentSession(null);
                     setCurrentExerciseIndex(0);
-                    setSets(Array(setCount).fill(null).map(() => ({ weight: '', reps: '' })));
-                    setShowWarmup(false);
-                    setWarmupChecklist(items => items.map(item => ({ ...item, done: false })));
                 }
-            };
+            }, [currentExercise, currentSession, setResults, failureTracker, currentExerciseIndex, currentWorkout, stopTimer, checkDeadliftTransition, initSetsForExercise]);
 
-            const finishWarmup = () => {
-                const selectedWorkout = getCurrentWorkout();
-                setCurrentSession({
-                    date: new Date().toISOString(),
-                    type: selectedWorkout.type,
-                    exercises: []
-                });
-                setCurrentExerciseIndex(0);
-                setSets(Array(setCount).fill(null).map(() => ({ weight: '', reps: '' })));
-                setShowWarmup(false);
-            };
+            // --- Deadlift Transition Handlers ---
+            const confirmDlTransition = useCallback(() => {
+                setDeadliftTransitioned(true);
+                setShowDlPrompt(false);
+                // Log transition in a special way
+                const note = { date: new Date().toISOString(), type: 'NOTE', exercises: [{ name: 'Deadlift Transition', sets: [{ weight: 'Switched to 1x5 conventional', reps: '0' }] }] };
+                setWorkouts(prev => [...prev, note]);
+            }, []);
 
-            const toggleWarmupItem = (id) => {
-                setWarmupChecklist(prev => prev.map(item =>
-                    item.id === id ? { ...item, done: !item.done } : item
-                ));
-            };
+            const dismissDlPrompt = useCallback(() => {
+                const currentDlWeight = getSuggestedWeight('Deadlift');
+                setDlPromptDismissedAt(currentDlWeight);
+                localStorage.setItem('w3x5_dlDismissedAt', String(currentDlWeight));
+                setShowDlPrompt(false);
+            }, [getSuggestedWeight]);
 
-            const handleSetChange = (index, field, value) => {
-                // Input validation - allow empty or valid values
-                if (value !== '') {
-                    if (field === 'weight') {
-                        const num = parseFloat(value);
-                        if (isNaN(num) || num <= 0 || num > 1000) {
-                            return; // Reject invalid input
-                        }
-                    } else if (field === 'reps') {
-                        const num = parseInt(value);
-                        if (isNaN(num) || num <= 0 || num > 50) {
-                            return; // Reject invalid input
-                        }
+            // --- Onboarding ---
+            const completeOnboarding = useCallback(() => {
+                setStartingWeights(tempWeights);
+                setHasOnboarded(true);
+                localStorage.setItem('w3x5_onboarded', 'true');
+                setShowOnboarding(false);
+            }, [tempWeights]);
+
+            // --- Reset ---
+            const resetAll = useCallback(() => {
+                if (confirm('This will delete ALL workout data and settings. Are you sure?')) {
+                    if (confirm('Final confirmation: Reset everything and return to setup?')) {
+                        Object.keys(localStorage).filter(k => k.startsWith('w3x5_')).forEach(k => localStorage.removeItem(k));
+                        window.location.reload();
                     }
                 }
+            }, []);
 
-                setSets(prev => prev.map((s, i) => (
-                    i === index ? { ...s, [field]: value } : s
-                )));
-            };
+            // --- Unit display helper ---
+            const wu = unit; // shorthand for unit label
 
-            const exportToCSV = () => {
-                if (workouts.length === 0) {
-                    alert('No workout data to export!');
-                    return;
-                }
-
-                const headers = ['Date', 'Workout Type', 'Exercise', 'Set Number', 'Weight (lbs)', 'Reps'];
-                const rows = [headers];
-
-                workouts.forEach(workout => {
-                    if (!workout || !workout.date || !workout.exercises) return;
-                    const date = new Date(workout.date).toLocaleDateString('en-US');
-                    workout.exercises.forEach(exercise => {
-                        if (!exercise || !exercise.sets) return;
-                        exercise.sets.forEach((set, setIdx) => {
-                            if (!set) return;
-                            rows.push([
-                                date,
-                                workout.type || 'Unknown',
-                                exercise.name || 'Unknown',
-                                setIdx + 1,
-                                set.weight || '0',
-                                set.reps || '0'
-                            ]);
-                        });
-                    });
-                });
-
-                const csvContent = rows.map(row => row.join(',')).join('\n');
-                const blob = new Blob([csvContent], { type: 'text/csv' });
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = `workout-history-${new Date().toISOString().split('T')[0]}.csv`;
-                link.click();
-                URL.revokeObjectURL(url);
-            };
-
-            const importFromCSV = () => {
-                const input = document.createElement('input');
-                input.type = 'file';
-                input.accept = '.csv';
-                input.onchange = (e) => {
-                    const file = e.target.files[0];
-                    if (!file) return;
-
-                    const reader = new FileReader();
-                    reader.onload = (event) => {
-                        try {
-                            const csv = event.target.result;
-                            const lines = csv.split('\n');
-                            const importedWorkouts = {};
-
-                            // Skip header row
-                            for (let i = 1; i < lines.length; i++) {
-                                const line = lines[i].trim();
-                                if (!line) continue;
-
-                                const [dateStr, type, exerciseName, setNum, weight, reps] = line.split(',');
-                                if (!dateStr || !type || !exerciseName) continue;
-
-                                const date = new Date(dateStr).toISOString();
-                                const workoutKey = `${date}-${type}`;
-
-                                if (!importedWorkouts[workoutKey]) {
-                                    importedWorkouts[workoutKey] = {
-                                        date,
-                                        type,
-                                        exercises: []
-                                    };
-                                }
-
-                                let exercise = importedWorkouts[workoutKey].exercises.find(e => e.name === exerciseName);
-                                if (!exercise) {
-                                    exercise = { name: exerciseName, sets: [] };
-                                    importedWorkouts[workoutKey].exercises.push(exercise);
-                                }
-
-                                exercise.sets.push({
-                                    weight: weight?.trim() || '0',
-                                    reps: reps?.trim() || '0'
-                                });
-                            }
-
-                            const newWorkouts = Object.values(importedWorkouts);
-                            if (newWorkouts.length === 0) {
-                                alert('No valid workout data found in CSV!');
-                                return;
-                            }
-
-                            // Auto-backup before import
-                            if (workouts.length > 0 && confirm(`Import ${newWorkouts.length} workouts? This will replace your current data.\n\nA backup will be automatically downloaded first.`)) {
-                                // Create backup before replacing
-                                exportToCSV();
-
-                                // Small delay to allow download to start
-                                setTimeout(() => {
-                                    setWorkouts(newWorkouts);
-                                    alert(`Successfully imported ${newWorkouts.length} workouts!\n\nYour previous data was backed up.`);
-                                }, 500);
-                            } else if (workouts.length === 0) {
-                                // No existing data, safe to import without backup
-                                setWorkouts(newWorkouts);
-                                alert(`Successfully imported ${newWorkouts.length} workouts!`);
-                            }
-                        } catch (error) {
-                            alert('Error importing CSV: ' + error.message);
-                        }
-                    };
-                    reader.readAsText(file);
-                };
-                input.click();
-            };
-
-            const currentWorkout = currentSession
-                ? {
-                    type: currentSession.type,
-                    exercises: currentSession.type === 'A' ? workoutA : workoutB
-                  }
-                : getCurrentWorkout();
-            const currentExercise = currentWorkout.exercises[currentExerciseIndex];
-
-            // Computed values (memoized for performance)
-            const personalRecords = useMemo(() => calculatePRs(workouts), [workouts]);
-            const workoutStreak = useMemo(() => calculateStreak(workouts), [workouts]);
-            const totalVolume = useMemo(() => {
-                return workouts.reduce((sum, w) => sum + calculateVolume(w.exercises), 0);
-            }, [workouts]);
-
-            // Auto-fill weights
-            useEffect(() => {
-                if (autoFillWeights && currentExercise) {
-                    const suggestion = getSuggestedWeight(currentExercise.name);
-                    const weightMatch = suggestion.match(/^\d+/);
-                    if (weightMatch) {
-                        setSets(Array(setCount).fill(null).map(() => ({
-                            weight: weightMatch[0],
-                            reps: currentExercise.target.toString()
-                        })));
-                    }
-                }
-                // eslint-disable-next-line react-hooks/exhaustive-deps
-            }, [currentExerciseIndex, autoFillWeights, currentExercise?.name, setCount, workouts.length, failureTracker, startingWeights]);
-
-            // ========================================
-            // PLATE CALCULATOR MODAL
-            // ========================================
-            const PlateCalculatorModal = () => {
-                if (!showPlateCalculator) return null;
-
-                const result = calculatePlates(plateCalcWeight);
-
-                return (
-                    <div
-                        className="fixed inset-0 flex items-center justify-center p-4 z-50"
-                        style={{background: 'rgba(0, 0, 0, 0.7)', backdropFilter: 'blur(10px)'}}
-                        onClick={() => setShowPlateCalculator(false)}
-                    >
-                        <div className="glass-dark rounded-3xl p-6 max-w-md w-full" onClick={(e) => e.stopPropagation()}>
-                            <div className="flex items-center justify-between mb-6">
-                                <div className="flex items-center gap-3">
-                                    <Calculator size={32} />
-                                    <h2 className="text-3xl font-black text-white">Plate Calculator</h2>
-                                </div>
-                                <button
-                                    onClick={() => setShowPlateCalculator(false)}
-                                    className="text-blue-200 hover:text-white text-3xl font-bold w-10 h-10"
-                                >
-                                    ×
-                                </button>
-                            </div>
-
-                            <div className="mb-6">
-                                <label className="block text-blue-200 text-sm mb-2 font-bold">Target Weight (lbs)</label>
-                                <input
-                                    type="number"
-                                    inputMode="numeric"
-                                    value={plateCalcWeight}
-                                    onChange={(e) => setPlateCalcWeight(e.target.value)}
-                                    className="w-full glass-input text-white text-3xl font-bold rounded-xl px-4 py-4 focus:outline-none text-center"
-                                    placeholder="135"
-                                />
-                            </div>
-
-                            {plateCalcWeight >= 45 && (
-                                <div className="space-y-4">
-                                    <div className="glass rounded-2xl p-5">
-                                        <div className="text-center mb-4">
-                                            <div className="text-blue-200 text-sm font-bold mb-2">Each Side</div>
-                                            <div className="text-4xl font-black text-white">{result.perSide} lbs</div>
-                                        </div>
-
-                                        {result.plates.length > 0 ? (
-                                            <div>
-                                                <div className="text-blue-200 text-sm font-bold mb-3 text-center">Load these plates:</div>
-                                                <div className="flex flex-wrap gap-2 justify-center">
-                                                    {result.plates.map((plate, idx) => (
-                                                        <div
-                                                            key={`plate-${idx}-${plate}`}
-                                                            className="glass-button rounded-xl px-4 py-2 text-white font-black text-lg shadow-lg"
-                                                        >
-                                                            {plate}
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        ) : (
-                                            <div className="text-center text-blue-200 text-sm">Bar only (45 lbs)</div>
-                                        )}
-
-                                        {result.remaining > 0 && (
-                                            <div className="mt-4 glass-input rounded-xl p-3 text-center">
-                                                <span className="text-orange-300 text-sm font-bold">
-                                                    ⚠️ Missing {result.remaining} lbs per side
-                                                </span>
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    <div className="glass-input rounded-xl p-4 text-center">
-                                        <div className="text-blue-200 text-xs font-bold mb-2">VISUAL GUIDE</div>
-                                        <div className="flex items-center justify-center gap-1 flex-wrap">
-                                            <div className="bg-gray-600 rounded px-3 py-1 text-white text-xs font-bold">45</div>
-                                            {result.plates.map((plate, idx) => (
-                                                <div
-                                                    key={`visual-${idx}-${plate}`}
-                                                    className="rounded px-2 py-1 text-white text-xs font-bold"
-                                                    style={{
-                                                        background: plate >= 45 ? '#ef4444' :
-                                                                   plate >= 25 ? '#f97316' :
-                                                                   plate >= 10 ? '#eab308' :
-                                                                   plate >= 5 ? '#22c55e' : '#3b82f6',
-                                                        height: plate >= 45 ? '32px' :
-                                                               plate >= 25 ? '28px' :
-                                                               plate >= 10 ? '24px' :
-                                                               plate >= 5 ? '20px' : '16px'
-                                                    }}
-                                                >
-                                                    {plate}
-                                                </div>
-                                            ))}
-                                            <div className="bg-gray-600 rounded px-3 py-1 text-white text-xs font-bold">45</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                );
-            };
-
-            // ========================================
-            // WARMUP SETS MODAL
-            // ========================================
-            const WarmupSetsModal = () => {
-                if (!showWarmupSets || !currentExercise) return null;
-
-                const suggestion = getSuggestedWeight(currentExercise.name);
-                const weightMatch = suggestion.match(/^\d+/);
-                const workingWeight = weightMatch ? parseInt(weightMatch[0]) : 45;
-                const warmupSets = calculateWarmupSets(workingWeight);
-
-                return (
-                    <div
-                        className="fixed inset-0 flex items-center justify-center p-4 z-50"
-                        style={{background: 'rgba(0, 0, 0, 0.7)', backdropFilter: 'blur(10px)'}}
-                        onClick={() => setShowWarmupSets(false)}
-                    >
-                        <div className="glass-dark rounded-3xl p-6 max-w-md w-full" onClick={(e) => e.stopPropagation()}>
-                            <div className="flex items-center justify-between mb-6">
-                                <div>
-                                    <h2 className="text-3xl font-black text-white">Warmup Sets</h2>
-                                    <p className="text-blue-200 text-sm font-medium">{currentExercise.name}</p>
-                                </div>
-                                <button
-                                    onClick={() => setShowWarmupSets(false)}
-                                    className="text-blue-200 hover:text-white text-3xl font-bold w-10 h-10"
-                                >
-                                    ×
-                                </button>
-                            </div>
-
-                            <div className="space-y-3 mb-4">
-                                {warmupSets.map((set, idx) => (
-                                    <div key={idx} className="glass rounded-xl p-4">
-                                        <div className="flex items-center justify-between">
-                                            <div>
-                                                <div className="text-white font-bold">{set.label}</div>
-                                                <div className="text-blue-200 text-sm">{set.reps} reps</div>
-                                            </div>
-                                            <div className="text-2xl font-black text-white">{set.weight} lbs</div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-
-                            <div className="glass rounded-xl p-4 mb-4">
-                                <div className="flex items-center justify-between">
-                                    <div>
-                                        <div className="text-white font-bold">Working Sets</div>
-                                        <div className="text-blue-200 text-sm">{setCount} × {currentExercise.target}</div>
-                                    </div>
-                                    <div className="text-3xl font-black text-white">{workingWeight} lbs</div>
-                                </div>
-                            </div>
-
-                            <button
-                                onClick={() => setShowWarmupSets(false)}
-                                className="w-full glass-button text-white font-bold py-4 rounded-xl shadow-lg"
-                            >
-                                Got it!
-                            </button>
-                        </div>
-                    </div>
-                );
-            };
-
-            // ========================================
-            // PERSONAL RECORDS SCREEN
-            // ========================================
-            if (showPRs) {
-                return (
-                    <div className="min-h-screen p-4 pt-8" style={{background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}}>
-                        <div className="max-w-2xl mx-auto">
-                            <div className="glass-dark rounded-3xl p-6">
-                                <div className="flex items-center justify-between mb-6">
-                                    <div className="flex items-center gap-3">
-                                        <Award size={40} />
-                                        <h2 className="text-4xl font-black text-white">Personal Records</h2>
-                                    </div>
-                                    <button
-                                        onClick={() => setShowPRs(false)}
-                                        className="glass-input p-3 rounded-xl text-blue-200 hover:text-white"
-                                    >
-                                        ✕
-                                    </button>
-                                </div>
-
-                                {Object.keys(personalRecords).length === 0 ? (
-                                    <div className="text-center text-blue-100 py-12">
-                                        <div className="text-6xl mb-4">🏆</div>
-                                        <p className="text-lg font-medium">Complete your first workout to set PRs!</p>
-                                    </div>
-                                ) : (
-                                    <div className="space-y-4">
-                                        {Object.entries(personalRecords).map(([exercise, pr]) => (
-                                            <div key={exercise} className="glass rounded-2xl p-5">
-                                                <h3 className="text-2xl font-black text-white mb-4">{exercise}</h3>
-
-                                                <div className="grid grid-cols-2 gap-3">
-                                                    <div className="glass-input rounded-xl p-3 text-center">
-                                                        <div className="text-blue-200 text-xs font-bold mb-1">MAX WEIGHT</div>
-                                                        <div className="text-2xl font-black text-white">{pr.maxWeight} lbs</div>
-                                                        <div className="text-blue-200 text-xs mt-1">{formatDate(pr.maxWeightDate)}</div>
-                                                    </div>
-
-                                                    <div className="glass-input rounded-xl p-3 text-center">
-                                                        <div className="text-blue-200 text-xs font-bold mb-1">EST. 1RM</div>
-                                                        <div className="text-2xl font-black text-white">{pr.estimated1RM} lbs</div>
-                                                        <div className="text-blue-200 text-xs mt-1">Estimated</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                );
-            }
-
-            // ========================================
-            // PROGRESS CHARTS SCREEN
-            // ========================================
-            if (showProgress) {
-                // Calculate progress data for each exercise
-                const progressData = {};
-
-                allExercises.forEach(ex => {
-                    const data = [];
-                    workouts.forEach((workout, idx) => {
-                        const exercise = workout.exercises?.find(e => e.name === ex.name);
-                        if (exercise && exercise.sets && exercise.sets.length > 0) {
-                            const weight = parseInt(exercise.sets[0]?.weight) || 0;
-                            data.push({
-                                workout: idx + 1,
-                                weight,
-                                date: workout.date
-                            });
-                        }
-                    });
-                    if (data.length > 0) {
-                        progressData[ex.name] = data;
-                    }
-                });
-
-                return (
-                    <div className="min-h-screen p-4 pt-8" style={{background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}}>
-                        <div className="max-w-2xl mx-auto">
-                            <div className="glass-dark rounded-3xl p-6">
-                                <div className="flex items-center justify-between mb-6">
-                                    <div className="flex items-center gap-3">
-                                        <BarChart size={40} />
-                                        <h2 className="text-4xl font-black text-white">Progress</h2>
-                                    </div>
-                                    <button
-                                        onClick={() => setShowProgress(false)}
-                                        className="glass-input p-3 rounded-xl text-blue-200 hover:text-white"
-                                    >
-                                        ✕
-                                    </button>
-                                </div>
-
-                                {Object.keys(progressData).length === 0 ? (
-                                    <div className="text-center text-blue-100 py-12">
-                                        <div className="text-6xl mb-4">📈</div>
-                                        <p className="text-lg font-medium">Complete workouts to see your progress!</p>
-                                    </div>
-                                ) : (
-                                    <div className="space-y-6">
-                                        {Object.entries(progressData).map(([exercise, data]) => {
-                                            const maxWeight = Math.max(...data.map(d => d.weight));
-                                            const minWeight = Math.min(...data.map(d => d.weight));
-                                            const range = maxWeight - minWeight;
-                                            const hasVariation = range > 0;
-                                            const latestWeight = data[data.length - 1]?.weight || 0;
-                                            const firstWeight = data[0]?.weight || 0;
-                                            const totalGain = latestWeight - firstWeight;
-
-                                            return (
-                                                <div key={exercise} className="glass rounded-2xl p-5">
-                                                    <div className="flex items-center justify-between mb-4">
-                                                        <h3 className="text-xl font-black text-white">{exercise}</h3>
-                                                        <div className="text-right">
-                                                            <div className="text-2xl font-black text-white">{latestWeight} lbs</div>
-                                                            <div className={`text-sm font-bold ${totalGain >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                                                                {totalGain >= 0 ? '+' : ''}{totalGain} lbs total
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div className="relative h-32 glass-input rounded-xl p-4">
-                                                        <div className="flex items-end justify-between h-full gap-1">
-                                                            {data.slice(-20).map((point, idx) => {
-                                                                const height = hasVariation
-                                                                    ? ((point.weight - minWeight) / range) * 100
-                                                                    : 50; // All weights same, show middle height
-                                                                return (
-                                                                    <div key={idx} className="flex-1 flex flex-col justify-end items-center group relative">
-                                                                        <div
-                                                                            className="w-full glass-button rounded-t transition-all hover:scale-105"
-                                                                            style={{
-                                                                                height: `${Math.max(height, 10)}%`,
-                                                                                minHeight: '8px'
-                                                                            }}
-                                                                        ></div>
-                                                                        <div className="absolute bottom-full mb-2 hidden group-hover:block glass-dark rounded-lg px-2 py-1 text-xs text-white font-bold whitespace-nowrap z-10">
-                                                                            {point.weight} lbs
-                                                                        </div>
-                                                                    </div>
-                                                                );
-                                                            })}
-                                                        </div>
-
-                                                        <div className="absolute bottom-2 left-4 text-xs text-blue-200 font-bold">
-                                                            {minWeight}
-                                                        </div>
-                                                        <div className="absolute top-2 left-4 text-xs text-blue-200 font-bold">
-                                                            {maxWeight}
-                                                        </div>
-                                                    </div>
-
-                                                    <div className="text-center text-blue-200 text-xs mt-2 font-medium">
-                                                        Last {Math.min(data.length, 20)} workouts
-                                                    </div>
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                );
-            }
-
-            // ========================================
-            // ONBOARDING SCREEN
-            // ========================================
+            // ============================================================
+            // RENDER: ONBOARDING
+            // ============================================================
             if (showOnboarding) {
                 if (onboardingStep === 0) {
                     return (
-                        <div className="min-h-screen p-4 flex items-center justify-center" style={{background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}}>
-                            <div className="max-w-md w-full">
-                                <div className="glass-dark rounded-3xl p-8 animate-float">
-                                    <div className="text-center mb-8">
-                                        <div className="inline-flex items-center justify-center w-24 h-24 rounded-full mb-6 glass-button shadow-2xl">
-                                            <Dumbbell size={56} />
-                                        </div>
-                                        <h1 className="text-5xl font-black mb-3" style={{background: 'linear-gradient(135deg, #fff 0%, #a5b4fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>
-                                            Welcome to 3x5
-                                        </h1>
-                                        <p className="text-blue-100 text-lg font-medium">
-                                            Your strength training companion
-                                        </p>
+                        <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
+                            <div className="max-w-md w-full bg-slate-800 rounded-2xl p-8 border border-slate-700">
+                                <div className="text-center mb-8">
+                                    <div className="inline-flex items-center justify-center w-20 h-20 bg-indigo-600 rounded-2xl mb-6">
+                                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M14.4 14.4L9.6 9.6"/><path d="M18.657 21.485a2 2 0 1 1-2.829-2.828l-1.767 1.768a2 2 0 1 1-2.829-2.829l6.364-6.364a2 2 0 1 1 2.829 2.829l-1.768 1.767a2 2 0 1 1 2.828 2.829z"/></svg>
                                     </div>
-
-                                    <div className="space-y-4 mb-8">
-                                        <div className="flex items-start gap-4 glass p-4 rounded-2xl">
-                                            <div className="flex-shrink-0 w-10 h-10 glass-success rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">
-                                                1
-                                            </div>
-                                            <div>
-                                                <h3 className="text-white font-bold text-lg">Progressive Overload</h3>
-                                                <p className="text-blue-100 text-sm">Add 5 lbs each successful workout</p>
-                                            </div>
-                                        </div>
-                                        <div className="flex items-start gap-4 glass p-4 rounded-2xl">
-                                            <div className="flex-shrink-0 w-10 h-10 glass-success rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">
-                                                2
-                                            </div>
-                                            <div>
-                                                <h3 className="text-white font-bold text-lg">A/B Split Workouts</h3>
-                                                <p className="text-blue-100 text-sm">Alternate between two full-body routines</p>
-                                            </div>
-                                        </div>
-                                        <div className="flex items-start gap-4 glass p-4 rounded-2xl">
-                                            <div className="flex-shrink-0 w-10 h-10 glass-success rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">
-                                                3
-                                            </div>
-                                            <div>
-                                                <h3 className="text-white font-bold text-lg">Track Everything</h3>
-                                                <p className="text-blue-100 text-sm">Log weights, reps, and view progress</p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="glass rounded-2xl p-5 mb-6">
-                                        <label className="block text-white font-bold mb-4 text-lg">
-                                            Choose Your Program
-                                        </label>
-                                        <div className="flex gap-3">
-                                            <button
-                                                onClick={() => setSetCount(3)}
-                                                className={`flex-1 py-4 rounded-xl font-bold transition-all ${
-                                                    setCount === 3
-                                                        ? 'glass-button text-white shadow-2xl scale-105'
-                                                        : 'glass-input text-blue-100 hover:scale-105'
-                                                }`}
-                                            >
-                                                3x5
-                                                <div className="text-xs opacity-80 font-medium">3 sets × 5 reps</div>
-                                            </button>
-                                            <button
-                                                onClick={() => setSetCount(5)}
-                                                className={`flex-1 py-4 rounded-xl font-bold transition-all ${
-                                                    setCount === 5
-                                                        ? 'glass-button text-white shadow-2xl scale-105'
-                                                        : 'glass-input text-blue-100 hover:scale-105'
-                                                }`}
-                                            >
-                                                5x5
-                                                <div className="text-xs opacity-80 font-medium">5 sets × 5 reps</div>
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <button
-                                        onClick={() => setOnboardingStep(1)}
-                                        className="w-full glass-button text-white font-bold py-5 rounded-2xl flex items-center justify-center gap-2 text-lg shadow-2xl"
-                                    >
-                                        Set Starting Weights
-                                        <ChevronRight size={24} />
-                                    </button>
+                                    <h1 className="text-3xl font-black text-white mb-2">3x5 Strength</h1>
+                                    <p className="text-slate-400">Progressive barbell training</p>
                                 </div>
-                            </div>
-                        </div>
-                    );
-                } else {
-                    // Step 1: Set starting weights
-                    return (
-                        <div className="min-h-screen p-4" style={{background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}}>
-                            <div className="max-w-md mx-auto pt-8">
-                                <div className="glass-dark rounded-3xl p-6">
-                                    <h2 className="text-3xl font-black text-white mb-2">
-                                        Set Your Starting Weights
-                                    </h2>
-                                    <p className="text-blue-100 mb-6 font-medium">
-                                        Start conservative. You'll progress 5 lbs per workout.
-                                    </p>
 
-                                    <div className="space-y-3 mb-6">
-                                        {allExercises.map(ex => (
-                                            <div key={ex.name} className="glass rounded-2xl p-4">
-                                                <label className="block text-white font-bold mb-1 text-lg">
-                                                    {ex.name}
-                                                </label>
-                                                <p className="text-blue-100 text-sm mb-3">{ex.description}</p>
-                                                <div className="flex items-center gap-3">
-                                                    <input
-                                                        type="number"
-                                                        inputMode="numeric"
-                                                        value={tempStartingWeights[ex.name] || ''}
-                                                        onChange={(e) => setTempStartingWeights(prev => ({
-                                                            ...prev,
-                                                            [ex.name]: e.target.value
-                                                        }))}
-                                                        className="flex-1 glass-input text-white text-xl font-bold rounded-xl px-4 py-4 focus:outline-none"
-                                                        placeholder="0"
-                                                    />
-                                                    <span className="text-white font-bold text-lg">lbs</span>
-                                                </div>
-                                            </div>
+                                <div className="space-y-3 mb-8">
+                                    {[
+                                        ['Progressive Overload', 'Add weight every successful session'],
+                                        ['A/B Split', 'Alternate two full-body workouts'],
+                                        ['Track Everything', 'Log sets, view charts, hit PRs'],
+                                    ].map(([title, desc], i) => (
+                                        <div key={i} className="flex items-start gap-3 bg-slate-700/50 p-4 rounded-xl border border-slate-600">
+                                            <div className="flex-shrink-0 w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white font-bold text-sm">{i + 1}</div>
+                                            <div><div className="text-white font-semibold">{title}</div><div className="text-slate-400 text-sm">{desc}</div></div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className="bg-slate-700/50 rounded-xl p-4 mb-6 border border-slate-600">
+                                    <label className="block text-white font-semibold mb-3">Unit Preference</label>
+                                    <div className="flex gap-3">
+                                        {['lbs', 'kg'].map(u => (
+                                            <button key={u} onClick={() => setUnit(u)}
+                                                className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all ${unit === u ? 'bg-indigo-600 text-white' : 'bg-slate-600 text-slate-300 hover:bg-slate-500'}`}>
+                                                {u.toUpperCase()}
+                                            </button>
                                         ))}
                                     </div>
-
-                                    <div className="glass rounded-2xl p-4 mb-4" style={{background: 'rgba(59, 130, 246, 0.2)', border: '1px solid rgba(59, 130, 246, 0.3)'}}>
-                                        <p className="text-blue-50 text-sm font-medium">
-                                            💡 <strong>Tip:</strong> If you're new to lifting, start with the bar (45 lbs) for Squat/Bench/Deadlift and 20-25 lbs for Overhead Press and Rows.
-                                        </p>
-                                    </div>
-
-                                    <div className="glass rounded-2xl p-4 mb-6">
-                                        <div className="flex items-center justify-between mb-3">
-                                            <span className="text-white font-bold">Progress</span>
-                                            <span className="text-blue-200 font-black text-lg">
-                                                {Object.keys(tempStartingWeights).filter(k => tempStartingWeights[k] && parseInt(tempStartingWeights[k]) > 0).length}/{allExercises.length}
-                                            </span>
-                                        </div>
-                                        <div className="w-full glass-input rounded-full h-3 overflow-hidden">
-                                            <div
-                                                className="glass-button h-3 rounded-full transition-all duration-500"
-                                                style={{
-                                                    width: `${(Object.keys(tempStartingWeights).filter(k => tempStartingWeights[k] && parseInt(tempStartingWeights[k]) > 0).length / allExercises.length) * 100}%`
-                                                }}
-                                            ></div>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex gap-3">
-                                        <button
-                                            onClick={() => setOnboardingStep(0)}
-                                            className="flex-1 glass-input text-white font-bold py-4 rounded-xl hover:scale-105"
-                                        >
-                                            Back
-                                        </button>
-                                        <button
-                                            onClick={completeOnboarding}
-                                            disabled={!allExercises.every(ex => tempStartingWeights[ex.name] && parseInt(tempStartingWeights[ex.name]) > 0)}
-                                            className="flex-1 glass-button disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-4 rounded-xl shadow-2xl"
-                                        >
-                                            Start Training
-                                        </button>
-                                    </div>
                                 </div>
+
+                                <button onClick={() => {
+                                    // Prefill defaults
+                                    const defaults = {};
+                                    allExerciseNames.forEach(n => { defaults[n] = unit === 'kg' ? 20 : 45; });
+                                    setTempWeights(defaults);
+                                    setOnboardingStep(1);
+                                }} className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 rounded-xl text-lg transition-colors" style={{minHeight:'52px'}}>
+                                    Set Starting Weights &rarr;
+                                </button>
                             </div>
                         </div>
                     );
                 }
-            }
 
-            // WARMUP SCREEN
-            if (showWarmup) {
-                const allWarmupDone = warmupChecklist.every(item => item.done);
-
+                // Step 1: Starting Weights
+                const filled = allExerciseNames.filter(n => tempWeights[n] && parseFloat(tempWeights[n]) > 0).length;
                 return (
-                    <div className="min-h-screen p-4 pt-8" style={{background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}}>
-                        <div className="max-w-2xl mx-auto">
-                            <div className="glass-dark rounded-3xl p-6">
-                                <div className="flex items-center justify-between mb-8">
-                                    <h1 className="text-4xl font-black text-white flex items-center gap-3">
-                                        <Dumbbell size={40} />
-                                        Warmup
-                                    </h1>
-                                    <div className="text-right">
-                                        <div className="text-sm text-blue-200 font-medium">Next Up</div>
-                                        <div className="text-2xl font-black text-white">
-                                            Workout {currentWorkout.type}
-                                        </div>
-                                    </div>
-                                </div>
+                    <div className="min-h-screen bg-slate-900 p-4">
+                        <div className="max-w-md mx-auto pt-8">
+                            <div className="bg-slate-800 rounded-2xl p-6 border border-slate-700">
+                                <h2 className="text-2xl font-black text-white mb-1">Starting Weights</h2>
+                                <p className="text-slate-400 text-sm mb-6">Start light. You'll add {unit === 'kg' ? '1.25-2.5' : '2.5-5'} {wu} each session.</p>
 
                                 <div className="space-y-3 mb-6">
-                                    {warmupChecklist.map(item => (
-                                        <div
-                                            key={item.id}
-                                            onClick={() => toggleWarmupItem(item.id)}
-                                            className={`p-5 rounded-2xl cursor-pointer transition-all ${
-                                                item.done
-                                                    ? 'glass-success scale-98'
-                                                    : 'glass hover:scale-102'
-                                            }`}
-                                            style={{transform: item.done ? 'scale(0.98)' : 'scale(1)'}}
-                                        >
-                                            <div className="flex items-center gap-4">
-                                                <CheckCircle
-                                                    className={item.done ? 'text-white' : 'text-blue-200'}
-                                                    size={28}
-                                                />
-                                                <span className={`text-lg font-semibold ${item.done ? 'text-white line-through' : 'text-white'}`}>
-                                                    {item.text}
-                                                </span>
+                                    {allExerciseNames.map(name => (
+                                        <div key={name} className="bg-slate-700/50 rounded-xl p-4 border border-slate-600">
+                                            <label className="block text-white font-semibold mb-2">{name}</label>
+                                            <div className="flex items-center gap-3">
+                                                <input type="number" inputMode="decimal" value={tempWeights[name] || ''}
+                                                    onChange={e => setTempWeights(p => ({ ...p, [name]: e.target.value }))}
+                                                    className="flex-1 bg-slate-600 text-white text-xl font-bold rounded-lg px-4 py-3 border border-slate-500 focus:border-indigo-500 focus:outline-none" placeholder={unit === 'kg' ? '20' : '45'} />
+                                                <span className="text-slate-400 font-semibold">{wu}</span>
                                             </div>
                                         </div>
                                     ))}
                                 </div>
 
-                                <button
-                                    onClick={finishWarmup}
-                                    disabled={!allWarmupDone}
-                                    className="w-full glass-button disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-5 rounded-2xl text-lg shadow-2xl"
-                                >
-                                    {allWarmupDone ? 'Start Workout 💪' : 'Complete warmup first'}
-                                </button>
+                                <div className="bg-blue-900/30 border border-blue-700/50 rounded-xl p-3 mb-4">
+                                    <p className="text-blue-200 text-sm">Tip: Start with the empty bar ({unit === 'kg' ? '20 kg' : '45 lbs'}) for most lifts if you're new.</p>
+                                </div>
+
+                                <div className="w-full bg-slate-700 rounded-full h-2 mb-4">
+                                    <div className="bg-indigo-600 h-2 rounded-full transition-all" style={{ width: `${(filled / allExerciseNames.length) * 100}%` }} />
+                                </div>
+
+                                <div className="flex gap-3">
+                                    <button onClick={() => setOnboardingStep(0)} className="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-bold py-4 rounded-xl transition-colors" style={{minHeight:'52px'}}>Back</button>
+                                    <button onClick={completeOnboarding}
+                                        disabled={filled < allExerciseNames.length}
+                                        className="flex-1 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold py-4 rounded-xl transition-colors" style={{minHeight:'52px'}}>
+                                        Start Training
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 );
             }
 
-            // COMPLETION SCREEN
-            if (hasCompletedWorkoutToday() && !showHistory && !showSettings && !currentSession) {
-                const lastWorkout = workouts[workouts.length - 1];
-                const workoutVolume = calculateVolume(lastWorkout.exercises);
-
-                // Check for PRs in this workout
-                const newPRs = [];
-                lastWorkout.exercises?.forEach(ex => {
-                    const pr = personalRecords[ex.name];
-                    if (pr) {
-                        ex.sets?.forEach(set => {
-                            const weight = parseInt(set.weight) || 0;
-                            const est1RM = estimate1RM(weight, parseInt(set.reps) || 0);
-                            if (weight === pr.maxWeight || est1RM === pr.estimated1RM) {
-                                newPRs.push({ exercise: ex.name, type: weight === pr.maxWeight ? 'weight' : '1RM', value: weight });
-                            }
-                        });
-                    }
-                });
+            // ============================================================
+            // RENDER: ACTIVE WORKOUT
+            // ============================================================
+            if (currentSession) {
+                const ex = currentExercise;
+                const suggestedWeight = getSuggestedWeight(ex.name);
+                const allSetsResolved = setResults.every(s => s.status !== 'pending');
+                const failCount = failureTracker[ex.name] || 0;
+                const isDeload = failCount >= 3;
 
                 return (
-                    <div className="min-h-screen p-4 flex items-center justify-center" style={{background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}}>
-                        <div className="max-w-2xl w-full">
-                            <div className="glass-dark rounded-3xl p-8 text-center">
-                                <div className="mb-8">
-                                    <div className="inline-flex items-center justify-center w-28 h-28 glass-success rounded-full mb-6 shadow-2xl animate-float">
-                                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3">
-                                            <polyline points="20 6 9 17 4 12"></polyline>
-                                        </svg>
+                    <div className="min-h-screen bg-slate-900 flex flex-col">
+                        {/* Deadlift Transition Prompt */}
+                        {showDlPrompt && (
+                            <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4" onClick={() => {}}>
+                                <div className="bg-slate-800 rounded-2xl p-6 max-w-sm w-full border border-yellow-600">
+                                    <h3 className="text-xl font-black text-yellow-400 mb-3">Barbell Territory!</h3>
+                                    <p className="text-slate-300 mb-4">You're approaching <strong>{deadliftThreshold} {wu}</strong> on deadlift. Want to switch to conventional deadlift at <strong>1x5</strong> with +{unit === 'kg' ? '2.5' : '5'} {wu} progression?</p>
+                                    <div className="flex gap-3">
+                                        <button onClick={dismissDlPrompt} className="flex-1 bg-slate-700 text-white font-bold py-3 rounded-xl" style={{minHeight:'48px'}}>Not Yet</button>
+                                        <button onClick={confirmDlTransition} className="flex-1 bg-yellow-600 text-white font-bold py-3 rounded-xl" style={{minHeight:'48px'}}>Switch to 1x5</button>
                                     </div>
-                                    <h1 className="text-5xl font-black mb-3" style={{background: 'linear-gradient(135deg, #fff 0%, #a5b4fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>
-                                        Workout Complete!
-                                    </h1>
-                                    <p className="text-blue-100 text-xl font-medium">
-                                        You finished Workout {lastWorkout.type} today
-                                    </p>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Plate Calculator Modal */}
+                        {showPlateCalc && (
+                            <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4" onClick={() => setShowPlateCalc(false)}>
+                                <div className="bg-slate-800 rounded-2xl p-6 max-w-sm w-full border border-slate-600" onClick={e => e.stopPropagation()}>
+                                    <div className="flex items-center justify-between mb-4">
+                                        <h3 className="text-xl font-black text-white">Plate Calculator</h3>
+                                        <button onClick={() => setShowPlateCalc(false)} className="text-slate-400 hover:text-white text-2xl">&times;</button>
+                                    </div>
+                                    <div className="mb-4">
+                                        <label className="block text-slate-400 text-sm mb-1">Target Weight ({wu})</label>
+                                        <input type="number" inputMode="decimal" value={plateCalcWeight}
+                                            onChange={e => setPlateCalcWeight(e.target.value)}
+                                            className="w-full bg-slate-700 text-white text-2xl font-bold rounded-lg px-4 py-3 border border-slate-600 focus:border-indigo-500 focus:outline-none text-center" />
+                                    </div>
+                                    {(() => {
+                                        const w = parseFloat(plateCalcWeight);
+                                        const bw = getBarWeight(unit);
+                                        if (!w || w < bw) return <p className="text-slate-400 text-center">Enter a weight &ge; {bw} {wu}</p>;
+                                        const res = calculatePlates(w, unit);
+                                        return (
+                                            <div className="space-y-3">
+                                                <div className="bg-slate-700/50 rounded-xl p-4 text-center border border-slate-600">
+                                                    <div className="text-slate-400 text-sm mb-1">Each Side</div>
+                                                    <div className="text-3xl font-black text-white">{res.perSide} {wu}</div>
+                                                </div>
+                                                {res.plates.length > 0 ? (
+                                                    <div className="flex flex-wrap gap-2 justify-center">
+                                                        {res.plates.map((p, i) => (
+                                                            <div key={i} className="bg-indigo-600 rounded-lg px-3 py-2 text-white font-bold">{p}</div>
+                                                        ))}
+                                                    </div>
+                                                ) : <p className="text-slate-400 text-center text-sm">Bar only</p>}
+                                                {res.remaining > 0 && (
+                                                    <div className="bg-yellow-900/30 border border-yellow-700/50 rounded-lg p-2 text-center">
+                                                        <span className="text-yellow-400 text-sm">Remaining: {res.remaining} {wu}/side (no matching plate)</span>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        );
+                                    })()}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Header */}
+                        <div className="bg-slate-800 border-b border-slate-700 px-4 py-3">
+                            <div className="max-w-lg mx-auto flex items-center justify-between">
+                                <div>
+                                    <div className="text-slate-400 text-xs font-medium">Workout {currentWorkout.type}</div>
+                                    <div className="text-white text-lg font-black">{ex.name}</div>
+                                </div>
+                                <div className="text-right">
+                                    <div className="text-slate-400 text-xs">Exercise</div>
+                                    <div className="text-white font-bold">{currentExerciseIndex + 1}/{currentWorkout.exercises.length}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex-1 overflow-y-auto px-4 py-4">
+                            <div className="max-w-lg mx-auto space-y-4">
+                                {/* Weight Display */}
+                                <div className="bg-slate-800 rounded-xl p-5 border border-slate-700">
+                                    <div className="text-slate-400 text-sm mb-1">Target Weight</div>
+                                    <div className="text-4xl font-black text-white mb-1">{suggestedWeight} {wu}</div>
+                                    <div className="text-slate-500 text-sm">{ex.sets} &times; {ex.targetReps} reps</div>
+                                    {isDeload && (
+                                        <div className="mt-2 bg-yellow-900/30 border border-yellow-700/50 rounded-lg px-3 py-2">
+                                            <span className="text-yellow-400 text-sm font-semibold">Deload: 3 consecutive failures. Weight reduced 10%.</span>
+                                        </div>
+                                    )}
+                                    <div className="flex gap-2 mt-3">
+                                        <button onClick={() => { setPlateCalcWeight(String(suggestedWeight)); setShowPlateCalc(true); }}
+                                            className="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-2 rounded-lg text-sm transition-colors" style={{minHeight:'40px'}}>
+                                            Plates
+                                        </button>
+                                    </div>
                                 </div>
 
-                                {/* PR Notifications */}
-                                {newPRs.length > 0 && (
-                                    <div className="glass-success rounded-2xl p-6 mb-6">
-                                        <div className="flex items-center gap-3 mb-4">
-                                            <Award size={32} />
-                                            <h3 className="text-2xl font-black text-white">New Personal Records!</h3>
+                                {/* Rest Timer */}
+                                {timerActive && (
+                                    <div className={`rounded-xl p-4 border text-center ${timeLeft <= 0 ? 'bg-green-900/30 border-green-600' : 'bg-slate-800 border-slate-700'}`}>
+                                        <div className="text-slate-400 text-sm mb-1">{timeLeft <= 0 ? 'Rest Complete!' : 'Rest Timer'}</div>
+                                        <div className={`text-4xl font-black ${timeLeft <= 10 && timeLeft > 0 ? 'text-red-400' : timeLeft <= 0 ? 'text-green-400' : 'text-white'}`}>
+                                            {formatTime(Math.max(0, timeLeft))}
                                         </div>
-                                        <div className="space-y-2">
-                                            {newPRs.map((pr, idx) => (
-                                                <div key={`pr-${pr.exercise}-${pr.type}-${idx}`} className="glass-dark rounded-xl p-3 flex items-center justify-between">
-                                                    <span className="text-white font-bold">{pr.exercise}</span>
-                                                    <span className="text-green-300 font-black">{pr.value} lbs 🏆</span>
-                                                </div>
-                                            ))}
-                                        </div>
+                                        <button onClick={stopTimer} className="mt-2 text-slate-400 hover:text-white text-sm underline">Skip</button>
                                     </div>
                                 )}
 
-                                {/* Volume & Streak Stats */}
-                                <div className="grid grid-cols-2 gap-4 mb-6">
-                                    <div className="glass rounded-2xl p-5 text-center">
-                                        <div className="text-blue-200 text-sm font-bold mb-2">VOLUME</div>
-                                        <div className="text-4xl font-black text-white">{(workoutVolume / 1000).toFixed(1)}K</div>
-                                        <div className="text-blue-200 text-xs">lbs lifted</div>
-                                    </div>
-                                    <div className="glass rounded-2xl p-5 text-center">
-                                        <div className="text-blue-200 text-sm font-bold mb-2">STREAK</div>
-                                        <div className="text-4xl font-black text-white flex items-center justify-center gap-2">
-                                            {workoutStreak.current}
-                                            {workoutStreak.current > 0 && <Flame size={24} className="text-orange-400" />}
-                                        </div>
-                                        <div className="text-blue-200 text-xs">workouts</div>
-                                    </div>
-                                </div>
-
-                                <div className="glass rounded-2xl p-6 mb-6">
-                                    <h3 className="text-white font-bold mb-4 text-lg">Today's Summary</h3>
-                                    <div className="space-y-3">
-                                        {lastWorkout.exercises?.map((ex) => (
-                                            <div key={`completed-${ex.name}`} className="flex justify-between glass-input p-3 rounded-xl">
-                                                <span className="text-white font-semibold">{ex.name}</span>
-                                                <span className="text-blue-200 font-bold">
-                                                    {ex.sets?.[0]?.weight || '?'} lbs × {ex.sets?.length || 0} sets
-                                                </span>
+                                {/* Sets */}
+                                <div className="space-y-3">
+                                    {setResults.map((set, idx) => (
+                                        <div key={idx} className={`rounded-xl p-4 border transition-all ${
+                                            set.status === 'complete' ? 'bg-green-900/20 border-green-700' :
+                                            set.status === 'failed' ? 'bg-red-900/20 border-red-700' :
+                                            'bg-slate-800 border-slate-700'
+                                        }`}>
+                                            <div className="flex items-center justify-between mb-3">
+                                                <div>
+                                                    <span className="text-white font-bold">Set {idx + 1}</span>
+                                                    <span className="text-slate-400 text-sm ml-2">{set.weight} {wu} &times; {ex.targetReps}</span>
+                                                </div>
+                                                {set.status === 'complete' && <span className="text-green-400 font-bold text-lg">&#10003;</span>}
+                                                {set.status === 'failed' && <span className="text-red-400 font-bold text-lg">&#10007;</span>}
                                             </div>
-                                        )) || <p className="text-blue-100">No exercises recorded</p>}
-                                    </div>
+                                            {set.status === 'pending' && (
+                                                <div className="flex gap-3">
+                                                    <button onClick={() => logSet(idx, 'complete')}
+                                                        className="flex-1 bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-lg transition-colors" style={{minHeight:'48px'}}>
+                                                        &#10003; Complete
+                                                    </button>
+                                                    <button onClick={() => logSet(idx, 'failed')}
+                                                        className="flex-1 bg-red-600 hover:bg-red-500 text-white font-bold py-3 rounded-lg transition-colors" style={{minHeight:'48px'}}>
+                                                        &#10007; Failed
+                                                    </button>
+                                                </div>
+                                            )}
+                                            {set.status !== 'pending' && (
+                                                <button onClick={() => setSetResults(prev => {
+                                                    const n = [...prev]; n[idx] = { ...n[idx], status: 'pending' }; return n;
+                                                })} className="text-slate-500 hover:text-slate-300 text-xs underline">Undo</button>
+                                            )}
+                                        </div>
+                                    ))}
                                 </div>
 
-                                <div className="flex flex-col sm:flex-row gap-3">
-                                    <button
-                                        onClick={() => setShowHistory(true)}
-                                        className="flex-1 glass-input hover:scale-105 text-white font-bold py-4 rounded-xl"
-                                    >
-                                        View History
-                                    </button>
-                                    <button
-                                        onClick={exportToCSV}
-                                        className="flex-1 glass-success hover:scale-105 text-white font-bold py-4 rounded-xl shadow-lg"
-                                    >
-                                        Export Data
-                                    </button>
-                                </div>
-
-                                <button
-                                    onClick={() => {
-                                        if (confirm('Are you sure you want to do another workout today?')) {
-                                            setShowWarmup(true);
-                                        }
-                                    }}
-                                    className="w-full mt-4 text-blue-200 hover:text-white text-sm underline font-medium"
-                                >
-                                    Do another workout anyway
+                                {/* Next / Complete Button */}
+                                <button onClick={completeExercise} disabled={!allSetsResolved}
+                                    className="w-full bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed text-white font-black py-4 rounded-xl text-lg transition-colors" style={{minHeight:'56px'}}>
+                                    {currentExerciseIndex < currentWorkout.exercises.length - 1 ? 'Next Exercise \u2192' : 'Complete Workout \u2713'}
                                 </button>
                             </div>
                         </div>
@@ -1623,446 +736,469 @@
                 );
             }
 
-            // MAIN WORKOUT SCREEN
-            if (currentSession) {
+            // ============================================================
+            // RENDER: WORKOUT COMPLETE (just finished)
+            // ============================================================
+            const justFinished = workouts.length > 0 && (() => {
+                const last = workouts[workouts.length - 1];
+                if (last.type === 'NOTE') return false;
+                const ld = new Date(last.date);
+                const now = new Date();
+                return ld.getDate() === now.getDate() && ld.getMonth() === now.getMonth() && ld.getFullYear() === now.getFullYear();
+            })();
+
+            // ============================================================
+            // TAB: WORKOUT
+            // ============================================================
+            const renderWorkoutTab = () => {
+                if (justFinished && !currentSession) {
+                    const last = workouts.filter(w => w.type !== 'NOTE').pop();
+                    if (!last) return renderNextWorkout();
+                    const vol = calculateVolume(last.exercises);
+                    const msg = MOTIVATIONAL_MESSAGES[Math.floor(Math.random() * MOTIVATIONAL_MESSAGES.length)];
+                    // Check PRs
+                    const newPRs = [];
+                    last.exercises?.forEach(ex => {
+                        const pr = personalRecords[ex.name];
+                        if (pr) {
+                            const maxW = Math.max(...(ex.sets?.map(s => parseFloat(s.weight) || 0) || [0]));
+                            if (maxW > 0 && maxW >= pr.maxWeight) newPRs.push(ex.name);
+                        }
+                    });
+                    return (
+                        <div className="space-y-4">
+                            <div className="bg-slate-800 rounded-xl p-6 border border-slate-700 text-center">
+                                <div className="text-5xl mb-4">&#127942;</div>
+                                <h2 className="text-2xl font-black text-white mb-2">Workout Complete!</h2>
+                                <p className="text-slate-400 italic mb-4">"{msg}"</p>
+
+                                {newPRs.length > 0 && (
+                                    <div className="bg-yellow-900/30 border border-yellow-600 rounded-xl p-3 mb-4">
+                                        <div className="text-yellow-400 font-bold mb-1">New PR{newPRs.length > 1 ? 's' : ''}!</div>
+                                        {newPRs.map(n => <div key={n} className="text-yellow-200 text-sm">{n}</div>)}
+                                    </div>
+                                )}
+
+                                <div className="grid grid-cols-2 gap-3 mb-4">
+                                    <div className="bg-slate-700/50 rounded-xl p-3 border border-slate-600">
+                                        <div className="text-slate-400 text-xs">Volume</div>
+                                        <div className="text-xl font-black text-white">{(vol / 1000).toFixed(1)}K {wu}</div>
+                                    </div>
+                                    <div className="bg-slate-700/50 rounded-xl p-3 border border-slate-600">
+                                        <div className="text-slate-400 text-xs">Streak</div>
+                                        <div className="text-xl font-black text-white">{streak.current}</div>
+                                    </div>
+                                </div>
+
+                                <div className="bg-slate-700/50 rounded-xl p-3 mb-4 border border-slate-600">
+                                    <div className="text-slate-400 text-xs mb-2">Session Summary</div>
+                                    {last.exercises?.map(ex => (
+                                        <div key={ex.name} className="flex justify-between py-1">
+                                            <span className="text-white text-sm font-semibold">{ex.name}</span>
+                                            <span className="text-slate-400 text-sm">{ex.sets?.[0]?.weight} {wu} &times; {ex.sets?.length} sets</span>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <button onClick={() => { if (confirm('Start another workout today?')) startWorkout(); }}
+                                    className="text-slate-500 hover:text-slate-300 text-sm underline">
+                                    Do another workout
+                                </button>
+                            </div>
+                        </div>
+                    );
+                }
+                return renderNextWorkout();
+            };
+
+            const renderNextWorkout = () => {
+                const next = getNextWorkout();
                 return (
-                    <>
-                        <PlateCalculatorModal />
-                        <WarmupSetsModal />
-                        <div className="min-h-screen p-4 pt-8" style={{background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}}>
-                            <div className="max-w-2xl mx-auto">
-                            {/* Header */}
-                            <div className="glass-dark rounded-2xl p-5 mb-4">
-                                <div className="flex items-center justify-between">
+                    <div className="space-y-4">
+                        <div className="bg-slate-800 rounded-xl p-5 border border-slate-700">
+                            <div className="text-slate-400 text-sm mb-1">Next Workout</div>
+                            <h2 className="text-3xl font-black text-white mb-4">Workout {next.type}</h2>
+                            <div className="space-y-2 mb-5">
+                                {next.exercises.map((ex, i) => {
+                                    const w = getSuggestedWeight(ex.name);
+                                    const fails = failureTracker[ex.name] || 0;
+                                    return (
+                                        <div key={i} className="bg-slate-700/50 rounded-lg p-3 flex justify-between items-center border border-slate-600">
+                                            <div>
+                                                <div className="text-white font-semibold">{ex.name}</div>
+                                                <div className="text-slate-400 text-xs">{ex.sets} &times; {ex.targetReps}</div>
+                                            </div>
+                                            <div className="text-right">
+                                                <div className="text-white font-bold">{w} {wu}</div>
+                                                {fails >= 3 && <div className="text-yellow-400 text-xs">DELOAD</div>}
+                                                {fails > 0 && fails < 3 && <div className="text-red-400 text-xs">{fails}/3 fails</div>}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                            <button onClick={startWorkout}
+                                className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-black py-4 rounded-xl text-lg transition-colors" style={{minHeight:'56px'}}>
+                                Start Workout
+                            </button>
+                        </div>
+
+                        {/* Stats */}
+                        {workouts.filter(w => w.type !== 'NOTE').length > 0 && (
+                            <div className="bg-slate-800 rounded-xl p-5 border border-slate-700">
+                                <div className="grid grid-cols-3 gap-3">
+                                    <div className="text-center">
+                                        <div className="text-2xl font-black text-white">{workouts.filter(w => w.type !== 'NOTE').length}</div>
+                                        <div className="text-slate-400 text-xs">Workouts</div>
+                                    </div>
+                                    <div className="text-center">
+                                        <div className="text-2xl font-black text-white">{streak.current}</div>
+                                        <div className="text-slate-400 text-xs">Streak</div>
+                                    </div>
+                                    <div className="text-center">
+                                        <div className="text-2xl font-black text-white">{streak.longest}</div>
+                                        <div className="text-slate-400 text-xs">Best</div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                );
+            };
+
+            // ============================================================
+            // TAB: HISTORY
+            // ============================================================
+            const renderHistoryTab = () => {
+                const realWorkouts = workouts.filter(w => w.type !== 'NOTE');
+                if (!realWorkouts.length) {
+                    return (
+                        <div className="bg-slate-800 rounded-xl p-8 border border-slate-700 text-center">
+                            <div className="text-4xl mb-3">&#128203;</div>
+                            <p className="text-slate-400">No workouts yet. Complete your first session!</p>
+                        </div>
+                    );
+                }
+                return (
+                    <div className="space-y-3">
+                        {realWorkouts.slice().reverse().map((w, i) => (
+                            <div key={i} className="bg-slate-800 rounded-xl p-4 border border-slate-700">
+                                <div className="flex justify-between items-start mb-3">
                                     <div>
-                                        <div className="text-blue-200 text-sm font-medium">Workout {currentWorkout.type}</div>
-                                        <div className="text-white text-2xl font-black">
-                                            {currentExercise.name}
-                                        </div>
+                                        <div className="text-white font-bold">Workout {w.type}</div>
+                                        <div className="text-slate-400 text-sm">{formatDate(w.date)}</div>
                                     </div>
-                                    <div className="text-right">
-                                        <div className="text-blue-200 text-sm font-medium">Exercise</div>
-                                        <div className="text-white text-2xl font-black">
-                                            {currentExerciseIndex + 1}/{currentWorkout.exercises.length}
+                                    <div className="text-slate-500 text-xs">{new Date(w.date).toLocaleDateString()}</div>
+                                </div>
+                                <div className="space-y-2">
+                                    {w.exercises?.map((ex, j) => (
+                                        <div key={j} className="bg-slate-700/50 rounded-lg p-3 border border-slate-600">
+                                            <div className="text-white font-semibold text-sm mb-1">{ex.name}</div>
+                                            <div className="flex flex-wrap gap-2">
+                                                {ex.sets?.map((s, k) => {
+                                                    const reps = parseInt(s.reps) || 0;
+                                                    const isSuccess = reps >= (ex.targetReps || 5);
+                                                    return (
+                                                        <div key={k} className={`rounded px-2 py-1 text-xs font-bold ${isSuccess ? 'bg-green-900/40 text-green-400 border border-green-800' : 'bg-red-900/40 text-red-400 border border-red-800'}`}>
+                                                            {s.weight} {wu} &times; {s.reps}
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
                                         </div>
-                                    </div>
+                                    ))}
                                 </div>
                             </div>
+                        ))}
+                    </div>
+                );
+            };
 
-                            {/* Suggested Weight & Tools */}
-                            <div className="glass-dark rounded-2xl p-5 mb-4">
-                                <div className="flex items-center gap-2 mb-2">
-                                    <TrendingUp size={24} />
-                                    <span className="text-white font-bold text-lg">Suggested Weight</span>
-                                </div>
-                                <div className="text-3xl font-black text-white mb-4">
-                                    {getSuggestedWeight(currentExercise.name)}
-                                </div>
+            // ============================================================
+            // TAB: PROGRESS
+            // ============================================================
+            const renderProgressTab = () => {
+                const realWorkouts = workouts.filter(w => w.type !== 'NOTE');
+                if (!realWorkouts.length) {
+                    return (
+                        <div className="bg-slate-800 rounded-xl p-8 border border-slate-700 text-center">
+                            <div className="text-4xl mb-3">&#128200;</div>
+                            <p className="text-slate-400">Complete workouts to see progress charts.</p>
+                        </div>
+                    );
+                }
 
-                                <div className="grid grid-cols-2 gap-3">
-                                    <button
-                                        onClick={() => {
-                                            const suggestion = getSuggestedWeight(currentExercise.name);
-                                            const weightMatch = suggestion.match(/^\d+/);
-                                            if (weightMatch) {
-                                                setPlateCalcWeight(weightMatch[0]);
-                                                setShowPlateCalculator(true);
-                                            }
-                                        }}
-                                        className="glass-button text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg"
-                                    >
-                                        <Calculator size={20} />
-                                        Plates
-                                    </button>
-                                    <button
-                                        onClick={() => setShowWarmupSets(true)}
-                                        className="glass-button text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg"
-                                    >
-                                        <Dumbbell size={20} />
-                                        Warmup
-                                    </button>
-                                </div>
-                            </div>
-
-                            {/* Deload Warning */}
-                            {failureTracker[currentExercise.name] >= 3 && (
-                                <div className="glass rounded-2xl p-5 mb-4" style={{background: 'rgba(251, 146, 60, 0.3)', border: '1px solid rgba(251, 146, 60, 0.5)'}}>
-                                    <div className="flex items-center gap-2 mb-1">
-                                        <span className="text-white font-black text-lg">⚠️ Deload Time!</span>
-                                    </div>
-                                    <p className="text-orange-50 text-sm font-medium">
-                                        Failed 3 times. Reduce weight by 10% and rebuild.
-                                    </p>
+                return (
+                    <div className="space-y-6">
+                        {/* PRs Section */}
+                        <div className="bg-slate-800 rounded-xl p-5 border border-slate-700">
+                            <h3 className="text-lg font-bold text-white mb-3">Personal Records</h3>
+                            {Object.keys(personalRecords).length === 0 ? (
+                                <p className="text-slate-400 text-sm">No PRs yet.</p>
+                            ) : (
+                                <div className="grid grid-cols-1 gap-2">
+                                    {Object.entries(personalRecords).map(([name, pr]) => (
+                                        <div key={name} className="bg-slate-700/50 rounded-lg p-3 flex justify-between items-center border border-slate-600">
+                                            <span className="text-white font-semibold text-sm">{name}</span>
+                                            <div className="text-right">
+                                                <div className="text-white font-bold">{pr.maxWeight} {wu}</div>
+                                                <div className="text-slate-400 text-xs">Est. 1RM: {pr.estimated1RM} {wu}</div>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
                             )}
+                        </div>
 
-                            {/* Exercise Instructions */}
-                            <div className="glass-dark rounded-2xl p-5 mb-4">
-                                <div className="flex items-center gap-2 mb-3">
-                                    <span className="text-white font-bold text-lg">📋 How To Perform</span>
+                        {/* Charts */}
+                        {allExerciseNames.map(name => {
+                            const data = [];
+                            let prWeight = 0;
+                            let prIdx = -1;
+                            realWorkouts.forEach((w, wi) => {
+                                const ex = w.exercises?.find(e => e.name === name);
+                                if (ex?.sets?.length) {
+                                    const wt = parseFloat(ex.sets[0].weight) || 0;
+                                    data.push({ session: data.length + 1, weight: wt, date: formatDate(w.date) });
+                                    if (wt > prWeight) { prWeight = wt; prIdx = data.length - 1; }
+                                }
+                            });
+                            if (!data.length) return null;
+
+                            const latest = data[data.length - 1].weight;
+                            const first = data[0].weight;
+                            const gain = latest - first;
+
+                            return (
+                                <div key={name} className="bg-slate-800 rounded-xl p-5 border border-slate-700">
+                                    <div className="flex justify-between items-start mb-3">
+                                        <h3 className="text-lg font-bold text-white">{name}</h3>
+                                        <div className="text-right">
+                                            <div className="text-white font-bold">{latest} {wu}</div>
+                                            <div className={`text-xs font-semibold ${gain >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                                                {gain >= 0 ? '+' : ''}{gain} {wu}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style={{ width: '100%', height: 160 }}>
+                                        <ResponsiveContainer>
+                                            <LineChart data={data.slice(-20)} margin={{ top: 10, right: 10, bottom: 0, left: -20 }}>
+                                                <XAxis dataKey="session" tick={{ fill: '#64748b', fontSize: 11 }} axisLine={{ stroke: '#334155' }} tickLine={false} />
+                                                <YAxis tick={{ fill: '#64748b', fontSize: 11 }} axisLine={{ stroke: '#334155' }} tickLine={false} domain={['dataMin - 5', 'dataMax + 5']} />
+                                                <Tooltip contentStyle={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 8, color: '#fff', fontSize: 12 }}
+                                                    formatter={(val) => [`${val} ${wu}`, 'Weight']} />
+                                                <Line type="monotone" dataKey="weight" stroke="#6366f1" strokeWidth={2} dot={{ fill: '#6366f1', r: 3 }} activeDot={{ r: 5 }} />
+                                                {prIdx >= 0 && prIdx >= data.length - 20 && (
+                                                    <ReferenceDot x={data[prIdx].session} y={data[prIdx].weight}
+                                                        r={6} fill="#eab308" stroke="#eab308" />
+                                                )}
+                                            </LineChart>
+                                        </ResponsiveContainer>
+                                    </div>
+                                    {prWeight > 0 && <div className="text-yellow-400 text-xs mt-1">&#9733; PR: {prWeight} {wu}</div>}
                                 </div>
-                                <p className="text-blue-100 text-sm leading-relaxed font-medium">
-                                    {currentExercise.howTo}
-                                </p>
-                            </div>
+                            );
+                        })}
+                    </div>
+                );
+            };
 
-                            {/* Sets */}
-                            <div className="space-y-3 mb-4">
-                                {sets.map((set, index) => (
-                                    <div key={index} className="glass-dark rounded-2xl p-5">
-                                        <div className="text-white font-black mb-4 text-lg">
-                                            Set {index + 1}
-                                        </div>
-                                        <div className="grid grid-cols-2 gap-4">
-                                            <div>
-                                                <label className="block text-blue-200 text-sm mb-2 font-bold">
-                                                    Weight (lbs)
-                                                </label>
-                                                <input
-                                                    type="number"
-                                                    inputMode="numeric"
-                                                    value={set.weight}
-                                                    onChange={(e) => handleSetChange(index, 'weight', e.target.value)}
-                                                    className="w-full glass-input text-white text-2xl font-bold rounded-xl px-4 py-4 focus:outline-none"
-                                                    placeholder="0"
-                                                />
-                                            </div>
-                                            <div>
-                                                <label className="block text-blue-200 text-sm mb-2 font-bold">
-                                                    Reps
-                                                </label>
-                                                <input
-                                                    type="number"
-                                                    inputMode="numeric"
-                                                    value={set.reps}
-                                                    onChange={(e) => handleSetChange(index, 'reps', e.target.value)}
-                                                    className="w-full glass-input text-white text-2xl font-bold rounded-xl px-4 py-4 focus:outline-none"
-                                                    placeholder="5"
-                                                />
-                                            </div>
-                                        </div>
+            // ============================================================
+            // TAB: SETTINGS
+            // ============================================================
+            const [editingWeights, setEditingWeights] = useState(false);
+            const [tempEditWeights, setTempEditWeights] = useState({});
+
+            const renderSettingsTab = () => {
+                return (
+                    <div className="space-y-4">
+                        {/* Unit Toggle */}
+                        <div className="bg-slate-800 rounded-xl p-5 border border-slate-700">
+                            <label className="block text-white font-semibold mb-3">Unit</label>
+                            <div className="flex gap-3">
+                                {['lbs', 'kg'].map(u => (
+                                    <button key={u} onClick={() => setUnit(u)}
+                                        className={`flex-1 py-3 rounded-xl font-bold transition-colors ${unit === u ? 'bg-indigo-600 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`} style={{minHeight:'48px'}}>
+                                        {u.toUpperCase()}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Rest Timer */}
+                        <div className="bg-slate-800 rounded-xl p-5 border border-slate-700">
+                            <label className="block text-white font-semibold mb-3">Rest Timer</label>
+                            <div className="grid grid-cols-4 gap-2">
+                                {REST_OPTIONS.map(opt => (
+                                    <button key={opt.value} onClick={() => setRestDuration(opt.value)}
+                                        className={`py-3 rounded-xl font-bold text-sm transition-colors ${restDuration === opt.value ? 'bg-indigo-600 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`} style={{minHeight:'48px'}}>
+                                        {opt.label}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Current Weights */}
+                        <div className="bg-slate-800 rounded-xl p-5 border border-slate-700">
+                            <div className="flex items-center justify-between mb-3">
+                                <label className="text-white font-semibold">Current Weights</label>
+                                {!editingWeights ? (
+                                    <button onClick={() => {
+                                        const w = {};
+                                        allExerciseNames.forEach(n => { w[n] = getSuggestedWeight(n); });
+                                        setTempEditWeights(w);
+                                        setEditingWeights(true);
+                                    }} className="text-indigo-400 hover:text-indigo-300 text-sm font-semibold">Edit</button>
+                                ) : (
+                                    <div className="flex gap-2">
+                                        <button onClick={() => setEditingWeights(false)} className="text-slate-400 hover:text-slate-300 text-sm">Cancel</button>
+                                        <button onClick={() => {
+                                            setStartingWeights(tempEditWeights);
+                                            // Reset failure tracker since weights are manually set
+                                            setFailureTracker({});
+                                            setEditingWeights(false);
+                                        }} className="text-green-400 hover:text-green-300 text-sm font-semibold">Save</button>
+                                    </div>
+                                )}
+                            </div>
+                            <div className="space-y-2">
+                                {allExerciseNames.map(name => (
+                                    <div key={name} className="bg-slate-700/50 rounded-lg p-3 flex justify-between items-center border border-slate-600">
+                                        <span className="text-white text-sm font-semibold">{name}</span>
+                                        {editingWeights ? (
+                                            <input type="number" inputMode="decimal" value={tempEditWeights[name] || ''}
+                                                onChange={e => setTempEditWeights(p => ({ ...p, [name]: e.target.value }))}
+                                                className="w-24 bg-slate-600 text-white text-right font-bold rounded px-2 py-1 border border-slate-500 focus:border-indigo-500 focus:outline-none" />
+                                        ) : (
+                                            <span className="text-slate-300 font-bold">{getSuggestedWeight(name)} {wu}</span>
+                                        )}
                                     </div>
                                 ))}
                             </div>
+                        </div>
 
-                            <button
-                                onClick={completeExercise}
-                                disabled={!sets.some(s => s.weight && s.reps)}
-                                className="w-full glass-button disabled:opacity-50 text-white font-black py-5 rounded-2xl text-xl shadow-2xl"
-                            >
-                                {currentExerciseIndex < currentWorkout.exercises.length - 1
-                                    ? 'Next Exercise →'
-                                    : 'Complete Workout ✓'}
+                        {/* Deadlift Transition Threshold */}
+                        <div className="bg-slate-800 rounded-xl p-5 border border-slate-700">
+                            <label className="block text-white font-semibold mb-2">Deadlift Transition Threshold</label>
+                            <p className="text-slate-400 text-sm mb-3">When deadlift reaches this weight, you'll be prompted to switch from 3x5 to 1x5 conventional.</p>
+                            <div className="flex items-center gap-3">
+                                <input type="number" inputMode="decimal" value={deadliftThreshold}
+                                    onChange={e => setDeadliftThreshold(parseFloat(e.target.value) || 0)}
+                                    className="flex-1 bg-slate-700 text-white text-lg font-bold rounded-lg px-4 py-3 border border-slate-600 focus:border-indigo-500 focus:outline-none" />
+                                <span className="text-slate-400 font-semibold">{wu}</span>
+                            </div>
+                            {deadliftTransitioned && (
+                                <div className="mt-3 bg-green-900/30 border border-green-700/50 rounded-lg p-2">
+                                    <span className="text-green-400 text-sm">&#10003; Transitioned to 1x5 conventional deadlift (+{unit === 'kg' ? '2.5' : '5'} {wu}/session)</span>
+                                </div>
+                            )}
+                            {deadliftTransitioned && (
+                                <button onClick={() => { if (confirm('Revert deadlift back to 3x5?')) { setDeadliftTransitioned(false); localStorage.setItem('w3x5_dlTransitioned', 'false'); } }}
+                                    className="mt-2 text-slate-500 hover:text-slate-300 text-xs underline">Revert to 3x5</button>
+                            )}
+                        </div>
+
+                        {/* Plate Calculator */}
+                        <div className="bg-slate-800 rounded-xl p-5 border border-slate-700">
+                            <label className="block text-white font-semibold mb-3">Plate Calculator</label>
+                            <div className="flex items-center gap-3 mb-3">
+                                <input type="number" inputMode="decimal" value={plateCalcWeight}
+                                    onChange={e => setPlateCalcWeight(e.target.value)}
+                                    className="flex-1 bg-slate-700 text-white text-lg font-bold rounded-lg px-4 py-3 border border-slate-600 focus:border-indigo-500 focus:outline-none" placeholder={`Weight in ${wu}`} />
+                                <span className="text-slate-400 font-semibold">{wu}</span>
+                            </div>
+                            {(() => {
+                                const w = parseFloat(plateCalcWeight);
+                                const bw = getBarWeight(unit);
+                                if (!w || w < bw) return null;
+                                const res = calculatePlates(w, unit);
+                                return (
+                                    <div className="bg-slate-700/50 rounded-lg p-3 border border-slate-600">
+                                        <div className="text-slate-400 text-sm mb-1">Each side: <strong className="text-white">{res.perSide} {wu}</strong></div>
+                                        <div className="flex flex-wrap gap-2">
+                                            {res.plates.length ? res.plates.map((p, i) => (
+                                                <span key={i} className="bg-indigo-600 rounded px-2 py-1 text-white text-sm font-bold">{p}</span>
+                                            )) : <span className="text-slate-400 text-sm">Bar only</span>}
+                                        </div>
+                                        {res.remaining > 0 && <div className="text-yellow-400 text-xs mt-1">+{res.remaining} {wu}/side unmatched</div>}
+                                    </div>
+                                );
+                            })()}
+                        </div>
+
+                        {/* Data */}
+                        <div className="bg-slate-800 rounded-xl p-5 border border-slate-700 space-y-3">
+                            <label className="block text-white font-semibold">Data Management</label>
+                            <button onClick={() => {
+                                if (!workouts.length) { alert('No data to export.'); return; }
+                                const rows = [['Date','Type','Exercise','Set','Weight','Reps']];
+                                workouts.filter(w => w.type !== 'NOTE').forEach(w => {
+                                    w.exercises?.forEach(ex => {
+                                        ex.sets?.forEach((s, si) => {
+                                            rows.push([new Date(w.date).toLocaleDateString(), w.type, ex.name, si+1, s.weight, s.reps]);
+                                        });
+                                    });
+                                });
+                                const blob = new Blob([rows.map(r => r.join(',')).join('\n')], { type: 'text/csv' });
+                                const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+                                a.download = `3x5-export-${new Date().toISOString().split('T')[0]}.csv`; a.click();
+                            }} className="w-full bg-green-700 hover:bg-green-600 text-white font-bold py-3 rounded-xl transition-colors" style={{minHeight:'48px'}}>
+                                Export CSV
+                            </button>
+                            <button onClick={resetAll}
+                                className="w-full bg-red-900/50 hover:bg-red-900/80 border border-red-700 text-red-400 font-bold py-3 rounded-xl transition-colors" style={{minHeight:'48px'}}>
+                                Reset All Data
                             </button>
                         </div>
                     </div>
-                    </>
                 );
-            }
+            };
 
-            // HOME/DASHBOARD SCREEN
+            // ============================================================
+            // MAIN LAYOUT WITH BOTTOM TABS
+            // ============================================================
+            const tabs = [
+                { id: 'workout', label: 'Workout', icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14.4 14.4L9.6 9.6"/><path d="M18.657 21.485a2 2 0 1 1-2.829-2.828l-1.767 1.768a2 2 0 1 1-2.829-2.829l6.364-6.364a2 2 0 1 1 2.829 2.829l-1.768 1.767a2 2 0 1 1 2.828 2.829z"/></svg> },
+                { id: 'history', label: 'History', icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> },
+                { id: 'progress', label: 'Progress', icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg> },
+                { id: 'settings', label: 'Settings', icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/></svg> },
+            ];
+
             return (
-                <div className="min-h-screen p-4 pt-8" style={{background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}}>
-                    <div className="max-w-2xl mx-auto">
-                        {/* Header */}
-                        <div className="glass-dark rounded-3xl p-6 mb-6">
-                            <div className="flex items-center justify-between mb-4">
-                                <h1 className="text-4xl font-black text-white flex items-center gap-3">
-                                    <Dumbbell size={40} />
-                                    3x5 Tracker
-                                </h1>
-                                <button
-                                    onClick={() => setShowSettings(!showSettings)}
-                                    className="glass-input p-3 rounded-xl text-blue-200 hover:text-white hover:scale-110"
-                                >
-                                    <Settings size={28} />
-                                </button>
-                            </div>
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2 text-blue-100 font-medium">
-                                    <Calendar size={18} />
-                                    <span className="text-sm">{new Date().toLocaleDateString('en-US', {
-                                        weekday: 'long',
-                                        month: 'long',
-                                        day: 'numeric'
-                                    })}</span>
-                                </div>
-                                <button
-                                    onClick={() => setShowHistory(!showHistory)}
-                                    className="text-white hover:text-blue-100 font-bold text-sm underline"
-                                >
-                                    View History
-                                </button>
-                            </div>
+                <div className="min-h-screen bg-slate-900 flex flex-col">
+                    {/* Content Area */}
+                    <div className="flex-1 overflow-y-auto px-4 py-4 pb-24">
+                        <div className="max-w-lg mx-auto">
+                            {activeTab === 'workout' && renderWorkoutTab()}
+                            {activeTab === 'history' && renderHistoryTab()}
+                            {activeTab === 'progress' && renderProgressTab()}
+                            {activeTab === 'settings' && renderSettingsTab()}
                         </div>
+                    </div>
 
-                        {showSettings ? (
-                            <div className="glass-dark rounded-3xl p-6">
-                                <h2 className="text-3xl font-black text-white mb-6">Settings</h2>
-
-                                <div className="space-y-6">
-                                    <div>
-                                        <label className="block text-white font-bold mb-3 text-lg">
-                                            Program Type
-                                        </label>
-                                        <div className="flex gap-4">
-                                            <button
-                                                onClick={() => setSetCount(3)}
-                                                className={`flex-1 py-4 rounded-xl font-bold transition-all ${
-                                                    setCount === 3
-                                                        ? 'glass-button text-white shadow-2xl scale-105'
-                                                        : 'glass-input text-blue-100 hover:scale-105'
-                                                }`}
-                                            >
-                                                3 Sets (3x5)
-                                            </button>
-                                            <button
-                                                onClick={() => setSetCount(5)}
-                                                className={`flex-1 py-4 rounded-xl font-bold transition-all ${
-                                                    setCount === 5
-                                                        ? 'glass-button text-white shadow-2xl scale-105'
-                                                        : 'glass-input text-blue-100 hover:scale-105'
-                                                }`}
-                                            >
-                                                5 Sets (5x5)
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-white font-bold mb-3 text-lg">
-                                            Auto-Fill Weights
-                                        </label>
-                                        <button
-                                            onClick={() => setAutoFillWeights(!autoFillWeights)}
-                                            className={`w-full py-4 rounded-xl font-bold transition-all ${
-                                                autoFillWeights
-                                                    ? 'glass-success text-white shadow-lg'
-                                                    : 'glass-input text-blue-100 hover:scale-105'
-                                            }`}
-                                        >
-                                            {autoFillWeights ? '✓ Enabled' : 'Disabled'}
-                                        </button>
-                                    </div>
-
-                                    <div className="glass-input rounded-xl h-px my-6"></div>
-
-                                    <div className="space-y-3">
-                                        <button
-                                            onClick={exportToCSV}
-                                            disabled={workouts.length === 0}
-                                            className="w-full glass-success disabled:opacity-50 text-white font-bold py-4 rounded-xl shadow-lg"
-                                        >
-                                            📤 Export Data (CSV)
-                                        </button>
-                                        <button
-                                            onClick={importFromCSV}
-                                            className="w-full glass-button text-white font-bold py-4 rounded-xl shadow-lg"
-                                        >
-                                            📥 Import Data (CSV)
-                                        </button>
-                                        <button
-                                            onClick={() => {
-                                                if (confirm('Reset all data and start fresh?')) {
-                                                    localStorage.clear();
-                                                    window.location.reload();
-                                                }
-                                            }}
-                                            className="w-full glass-input hover:scale-105 text-white font-bold py-4 rounded-xl"
-                                            style={{background: 'rgba(239, 68, 68, 0.3)', border: '1px solid rgba(239, 68, 68, 0.5)'}}
-                                        >
-                                            Reset All Data
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        ) : showHistory ? (
-                            <div className="glass-dark rounded-3xl p-6">
-                                <h2 className="text-3xl font-black text-white mb-6">Workout History</h2>
-
-                                {workouts.length === 0 ? (
-                                    <div className="text-center text-blue-100 py-12 font-medium text-lg">
-                                        No workouts yet! Start your first workout.
-                                    </div>
-                                ) : (
-                                    <div className="space-y-4">
-                                        {workouts.slice().reverse().map((workout) => (
-                                            <div key={`history-${workout.date}`} className="glass rounded-2xl p-5">
-                                                <div className="flex justify-between mb-4 pb-4" style={{borderBottom: '1px solid rgba(255, 255, 255, 0.1)'}}>
-                                                    <div>
-                                                        <div className="text-xl font-black text-white">
-                                                            Workout {workout.type}
-                                                        </div>
-                                                        <div className="text-sm text-blue-100 font-medium">
-                                                            {new Date(workout.date).toLocaleDateString('en-US', {
-                                                                weekday: 'long',
-                                                                month: 'long',
-                                                                day: 'numeric'
-                                                            })}
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className="space-y-3">
-                                                    {workout.exercises.map((ex, i) => (
-                                                        <div key={i} className="glass-input rounded-xl p-4">
-                                                            <div className="font-bold text-white mb-3 text-lg">
-                                                                {ex.name}
-                                                            </div>
-                                                            <div className="flex gap-2 flex-wrap">
-                                                                {ex.sets.map((set, setIdx) => (
-                                                                    <div key={`set-${setIdx}-${set.weight}-${set.reps}`} className="glass-dark rounded-lg px-4 py-2 text-sm">
-                                                                        <span className="text-white font-black">{set.weight}</span>
-                                                                        <span className="text-blue-200"> lbs × </span>
-                                                                        <span className="text-blue-200 font-bold">{set.reps}</span>
-                                                                    </div>
-                                                                ))}
-                                                            </div>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                        ) : (
-                            <div>
-                                {/* Next Workout Card */}
-                                <div className="glass-dark rounded-3xl p-6 mb-6">
-                                    <h2 className="text-lg text-blue-200 mb-2 font-medium">Next Workout</h2>
-                                    <h3 className="text-4xl font-black text-white mb-6">
-                                        Workout {currentWorkout.type}
-                                    </h3>
-
-                                    <div className="space-y-3 mb-6">
-                                        {currentWorkout.exercises.map((ex, i) => {
-                                            const suggestion = getSuggestedWeight(ex.name);
-                                            const weightMatch = suggestion.match(/^\d+/);
-                                            const weight = weightMatch ? weightMatch[0] : '?';
-                                            const status = suggestion.includes('up 5') ? '📈' : suggestion.includes('DELOAD') ? '⚠️' : '➡️';
-
-                                            return (
-                                                <div key={i} className="glass rounded-xl p-4">
-                                                    <div className="flex justify-between items-center mb-2">
-                                                        <span className="text-white font-bold text-lg">{ex.name}</span>
-                                                        <span className="text-blue-200 font-bold">{setCount} × {ex.target}</span>
-                                                    </div>
-                                                    <div className="flex items-center gap-2">
-                                                        <span className="text-2xl">{status}</span>
-                                                        <span className="text-blue-100 text-sm font-medium">{suggestion}</span>
-                                                    </div>
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-
-                                    <button
-                                        onClick={() => setShowWarmup(true)}
-                                        className="w-full glass-button text-white font-black py-5 rounded-2xl text-xl shadow-2xl"
-                                    >
-                                        Start Workout 💪
-                                    </button>
-                                </div>
-
-                                {/* Next Next Workout Preview */}
-                                <div className="glass-dark rounded-3xl p-6 mb-6">
-                                    <h2 className="text-lg text-blue-200 mb-2 font-medium">Coming Up After</h2>
-                                    <h3 className="text-2xl font-black text-white mb-4">
-                                        Workout {currentWorkout.type === 'A' ? 'B' : 'A'}
-                                    </h3>
-
-                                    <div className="space-y-2">
-                                        {(currentWorkout.type === 'A' ? workoutB : workoutA).map((ex, i) => (
-                                            <div key={i} className="flex justify-between items-center glass rounded-xl p-3">
-                                                <span className="text-white font-semibold">{ex.name}</span>
-                                                <span className="text-blue-200 text-sm font-bold">{setCount} × {ex.target}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {/* Stats Dashboard */}
-                                {workouts.length > 0 && (
-                                    <div className="space-y-6">
-                                        {/* Streak Card */}
-                                        <div className="glass-dark rounded-3xl p-6">
-                                            <div className="flex items-center gap-3 mb-6">
-                                                <Flame size={32} />
-                                                <h3 className="text-2xl font-black text-white">Workout Streak</h3>
-                                            </div>
-                                            <div className="grid grid-cols-2 gap-4">
-                                                <div className="glass rounded-2xl p-5 text-center">
-                                                    <div className="text-5xl font-black text-white mb-2">
-                                                        {workoutStreak.current}
-                                                    </div>
-                                                    <div className="text-blue-200 text-sm font-medium">Current Streak</div>
-                                                    {workoutStreak.current > 0 && (
-                                                        <div className="text-orange-300 text-xs mt-2">🔥 Keep it up!</div>
-                                                    )}
-                                                </div>
-                                                <div className="glass rounded-2xl p-5 text-center">
-                                                    <div className="text-5xl font-black text-white mb-2">
-                                                        {workoutStreak.longest}
-                                                    </div>
-                                                    <div className="text-blue-200 text-sm font-medium">Best Streak</div>
-                                                    {workoutStreak.current === workoutStreak.longest && workoutStreak.current > 0 && (
-                                                        <div className="text-green-300 text-xs mt-2">🏆 New record!</div>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* Quick Stats */}
-                                        <div className="glass-dark rounded-3xl p-6">
-                                            <h3 className="text-2xl font-black text-white mb-6">Statistics</h3>
-                                            <div className="grid grid-cols-2 gap-4 mb-4">
-                                                <div className="glass rounded-2xl p-5 text-center">
-                                                    <div className="text-4xl font-black text-white mb-2">{workouts.length}</div>
-                                                    <div className="text-blue-200 text-sm font-medium">Total Workouts</div>
-                                                </div>
-                                                <div className="glass rounded-2xl p-5 text-center">
-                                                    <div className="text-4xl font-black text-white mb-2">
-                                                        {(totalVolume / 1000).toFixed(1)}K
-                                                    </div>
-                                                    <div className="text-blue-200 text-sm font-medium">Total Volume (lbs)</div>
-                                                </div>
-                                            </div>
-
-                                            <div className="grid grid-cols-2 gap-3">
-                                                <button
-                                                    onClick={() => setShowPRs(true)}
-                                                    className="glass-button text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 shadow-lg"
-                                                >
-                                                    <Award size={20} />
-                                                    PRs
-                                                </button>
-                                                <button
-                                                    onClick={() => setShowProgress(true)}
-                                                    className="glass-button text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 shadow-lg"
-                                                >
-                                                    <BarChart size={20} />
-                                                    Charts
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        )}
+                    {/* Bottom Tab Bar */}
+                    <div className="fixed bottom-0 left-0 right-0 bg-slate-800 border-t border-slate-700 safe-area-bottom">
+                        <div className="max-w-lg mx-auto flex">
+                            {tabs.map(tab => (
+                                <button key={tab.id} onClick={() => setActiveTab(tab.id)}
+                                    className={`flex-1 flex flex-col items-center py-3 transition-colors ${activeTab === tab.id ? 'text-indigo-400' : 'text-slate-500 hover:text-slate-300'}`}
+                                    style={{minHeight:'56px'}}>
+                                    {tab.icon}
+                                    <span className="text-xs font-semibold mt-1">{tab.label}</span>
+                                </button>
+                            ))}
+                        </div>
                     </div>
                 </div>
             );
         }
 
-        ReactDOM.render(<WorkoutTracker />, document.getElementById('root'));
+        ReactDOM.render(<WorkoutApp />, document.getElementById('root'));
 
-        // Register service worker for PWA
+        // Register service worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('Service Worker registered:', reg.scope))
-                    .catch(err => console.error('Service Worker registration failed:', err));
+                navigator.serviceWorker.register('./sw.js').catch(() => {});
             });
         }
     </script>
