@@ -24,7 +24,23 @@
     </style>
 </head>
 <body>
-    <div id="root"></div>
+    <div id="root">
+        <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;color:#94a3b8;font-family:system-ui;text-align:center;padding:20px">
+            <div>
+                <div style="font-size:24px;font-weight:800;color:white;margin-bottom:8px">3x5 Strength</div>
+                <div>Loading...</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Show error if app fails to load within 15 seconds
+        window.__loadTimer = setTimeout(function() {
+            var el = document.getElementById('root');
+            if (el && (!window.React || !el.querySelector('[data-reactroot]'))) {
+                el.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;color:#94a3b8;font-family:system-ui;text-align:center;padding:20px"><div><div style="font-size:24px;font-weight:800;color:white;margin-bottom:8px">3x5 Strength</div><div style="margin-bottom:12px">Failed to load. Please check your internet connection.</div><button onclick="location.reload()" style="background:#6366f1;color:white;border:none;padding:12px 24px;border-radius:8px;font-weight:bold;cursor:pointer">Retry</button></div></div>';
+            }
+        }, 15000);
+    </script>
     <script type="text/babel">
         const { useState, useEffect, useRef, useCallback, useMemo } = React;
 
@@ -253,14 +269,14 @@
         // ============================================================
         const loadJSON = (key, fallback) => {
             try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }
-            catch { return fallback; }
+            catch (e) { return fallback; }
         };
         const saveJSON = (key, value) => {
             try { localStorage.setItem(key, JSON.stringify(value)); }
             catch (e) { console.warn('Storage write failed:', e); }
         };
         const loadStr = (key, fallback) => {
-            try { return localStorage.getItem(key) || fallback; } catch { return fallback; }
+            try { return localStorage.getItem(key) || fallback; } catch (e) { return fallback; }
         };
 
         // ============================================================
@@ -325,8 +341,9 @@
             const allExerciseNames = ['Squat', 'Bench Press', 'Barbell Row', 'Overhead Press', 'Deadlift'];
 
             const getNextWorkout = useCallback(() => {
-                if (!workouts.length) return { type: 'A', exercises: workoutA };
-                return workouts[workouts.length - 1].type === 'A'
+                const realWorkouts = workouts.filter(w => w.type === 'A' || w.type === 'B');
+                if (!realWorkouts.length) return { type: 'A', exercises: workoutA };
+                return realWorkouts[realWorkouts.length - 1].type === 'A'
                     ? { type: 'B', exercises: workoutB }
                     : { type: 'A', exercises: workoutA };
             }, [workouts, workoutA, workoutB]);
@@ -793,8 +810,9 @@
             // RENDER: WORKOUT COMPLETE (just finished)
             // ============================================================
             const justFinished = workouts.length > 0 && (() => {
-                const last = workouts[workouts.length - 1];
-                if (last.type === 'NOTE') return false;
+                const realWorkouts = workouts.filter(w => w.type === 'A' || w.type === 'B');
+                if (!realWorkouts.length) return false;
+                const last = realWorkouts[realWorkouts.length - 1];
                 const ld = new Date(last.date);
                 const now = new Date();
                 return ld.getDate() === now.getDate() && ld.getMonth() === now.getMonth() && ld.getFullYear() === now.getFullYear();
@@ -1238,6 +1256,7 @@
             );
         }
 
+        clearTimeout(window.__loadTimer);
         ReactDOM.render(<WorkoutApp />, document.getElementById('root'));
 
         // Register service worker
