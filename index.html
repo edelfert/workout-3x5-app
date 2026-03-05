@@ -10,11 +10,11 @@
     <link rel="manifest" href="./manifest.json">
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/recharts@2.10.3/umd/Recharts.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" media="print" onload="this.media='all'">
+    <style>*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }*,:after,:before{box-sizing:border-box;border:0 solid #e5e7eb}:after,:before{--tw-content:""}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;-o-tab-size:4;tab-size:4;font-family:ui-sans-serif,system-ui,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0}fieldset,legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::-moz-placeholder,textarea::-moz-placeholder{opacity:1;color:#9ca3af}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.fixed{position:fixed}.inset-0{inset:0}.bottom-0{bottom:0}.left-0{left:0}.right-0{right:0}.z-50{z-index:50}.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.mb-3{margin-bottom:.75rem}.mb-4{margin-bottom:1rem}.mb-5{margin-bottom:1.25rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.ml-2{margin-left:.5rem}.mt-1{margin-top:.25rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.grid{display:grid}.h-2{height:.5rem}.h-20{height:5rem}.h-8{height:2rem}.min-h-screen{min-height:100vh}.w-20{width:5rem}.w-24{width:6rem}.w-8{width:2rem}.w-full{width:100%}.max-w-lg{max-width:32rem}.max-w-md{max-width:28rem}.max-w-sm{max-width:24rem}.flex-1{flex:1 1 0%}.flex-shrink-0{flex-shrink:0}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-2{gap:.5rem}.gap-3{gap:.75rem}.space-y-2>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.5rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.5rem*var(--tw-space-y-reverse))}.space-y-3>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.75rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.75rem*var(--tw-space-y-reverse))}.space-y-4>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem*var(--tw-space-y-reverse))}.space-y-6>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1.5rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1.5rem*var(--tw-space-y-reverse))}.overflow-y-auto{overflow-y:auto}.rounded{border-radius:.25rem}.rounded-2xl{border-radius:1rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-xl{border-radius:.75rem}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-blue-700\/50{border-color:rgba(29,78,216,.5)}.border-green-600{--tw-border-opacity:1;border-color:rgb(22 163 74/var(--tw-border-opacity,1))}.border-green-700{--tw-border-opacity:1;border-color:rgb(21 128 61/var(--tw-border-opacity,1))}.border-green-700\/50{border-color:rgba(21,128,61,.5)}.border-green-800{--tw-border-opacity:1;border-color:rgb(22 101 52/var(--tw-border-opacity,1))}.border-red-700{--tw-border-opacity:1;border-color:rgb(185 28 28/var(--tw-border-opacity,1))}.border-red-800{--tw-border-opacity:1;border-color:rgb(153 27 27/var(--tw-border-opacity,1))}.border-slate-500{--tw-border-opacity:1;border-color:rgb(100 116 139/var(--tw-border-opacity,1))}.border-slate-600{--tw-border-opacity:1;border-color:rgb(71 85 105/var(--tw-border-opacity,1))}.border-slate-700{--tw-border-opacity:1;border-color:rgb(51 65 85/var(--tw-border-opacity,1))}.border-yellow-600{--tw-border-opacity:1;border-color:rgb(202 138 4/var(--tw-border-opacity,1))}.border-yellow-700\/50{border-color:rgba(161,98,7,.5)}.bg-black\/70{background-color:rgba(0,0,0,.7)}.bg-blue-900\/30{background-color:rgba(30,58,138,.3)}.bg-green-600{--tw-bg-opacity:1;background-color:rgb(22 163 74/var(--tw-bg-opacity,1))}.bg-green-700{--tw-bg-opacity:1;background-color:rgb(21 128 61/var(--tw-bg-opacity,1))}.bg-green-900\/20{background-color:rgba(20,83,45,.2)}.bg-green-900\/30{background-color:rgba(20,83,45,.3)}.bg-green-900\/40{background-color:rgba(20,83,45,.4)}.bg-indigo-600{--tw-bg-opacity:1;background-color:rgb(79 70 229/var(--tw-bg-opacity,1))}.bg-red-600{--tw-bg-opacity:1;background-color:rgb(220 38 38/var(--tw-bg-opacity,1))}.bg-red-900\/20{background-color:rgba(127,29,29,.2)}.bg-red-900\/40{background-color:rgba(127,29,29,.4)}.bg-red-900\/50{background-color:rgba(127,29,29,.5)}.bg-slate-600{--tw-bg-opacity:1;background-color:rgb(71 85 105/var(--tw-bg-opacity,1))}.bg-slate-700{--tw-bg-opacity:1;background-color:rgb(51 65 85/var(--tw-bg-opacity,1))}.bg-slate-700\/50{background-color:rgba(51,65,85,.5)}.bg-slate-800{--tw-bg-opacity:1;background-color:rgb(30 41 59/var(--tw-bg-opacity,1))}.bg-slate-900{--tw-bg-opacity:1;background-color:rgb(15 23 42/var(--tw-bg-opacity,1))}.bg-yellow-600{--tw-bg-opacity:1;background-color:rgb(202 138 4/var(--tw-bg-opacity,1))}.bg-yellow-900\/30{background-color:rgba(113,63,18,.3)}.p-2{padding:.5rem}.p-3{padding:.75rem}.p-4{padding:1rem}.p-5{padding:1.25rem}.p-6{padding:1.5rem}.p-8{padding:2rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-4{padding-top:1rem;padding-bottom:1rem}.pb-24{padding-bottom:6rem}.pt-8{padding-top:2rem}.text-center{text-align:center}.text-right{text-align:right}.text-2xl{font-size:1.5rem;line-height:2rem}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-5xl{font-size:3rem;line-height:1}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:.75rem;line-height:1rem}.font-black{font-weight:900}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-semibold{font-weight:600}.italic{font-style:italic}.text-blue-200{--tw-text-opacity:1;color:rgb(191 219 254/var(--tw-text-opacity,1))}.text-green-400{--tw-text-opacity:1;color:rgb(74 222 128/var(--tw-text-opacity,1))}.text-indigo-400{--tw-text-opacity:1;color:rgb(129 140 248/var(--tw-text-opacity,1))}.text-red-400{--tw-text-opacity:1;color:rgb(248 113 113/var(--tw-text-opacity,1))}.text-slate-300{--tw-text-opacity:1;color:rgb(203 213 225/var(--tw-text-opacity,1))}.text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184/var(--tw-text-opacity,1))}.text-slate-500{--tw-text-opacity:1;color:rgb(100 116 139/var(--tw-text-opacity,1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity,1))}.text-yellow-200{--tw-text-opacity:1;color:rgb(254 240 138/var(--tw-text-opacity,1))}.text-yellow-400{--tw-text-opacity:1;color:rgb(250 204 21/var(--tw-text-opacity,1))}.underline{text-decoration-line:underline}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.hover\:bg-green-500:hover{--tw-bg-opacity:1;background-color:rgb(34 197 94/var(--tw-bg-opacity,1))}.hover\:bg-green-600:hover{--tw-bg-opacity:1;background-color:rgb(22 163 74/var(--tw-bg-opacity,1))}.hover\:bg-indigo-500:hover{--tw-bg-opacity:1;background-color:rgb(99 102 241/var(--tw-bg-opacity,1))}.hover\:bg-red-500:hover{--tw-bg-opacity:1;background-color:rgb(239 68 68/var(--tw-bg-opacity,1))}.hover\:bg-red-900\/80:hover{background-color:rgba(127,29,29,.8)}.hover\:bg-slate-500:hover{--tw-bg-opacity:1;background-color:rgb(100 116 139/var(--tw-bg-opacity,1))}.hover\:bg-slate-600:hover{--tw-bg-opacity:1;background-color:rgb(71 85 105/var(--tw-bg-opacity,1))}.hover\:text-green-300:hover{--tw-text-opacity:1;color:rgb(134 239 172/var(--tw-text-opacity,1))}.hover\:text-indigo-300:hover{--tw-text-opacity:1;color:rgb(165 180 252/var(--tw-text-opacity,1))}.hover\:text-slate-300:hover{--tw-text-opacity:1;color:rgb(203 213 225/var(--tw-text-opacity,1))}.hover\:text-white:hover{--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity,1))}.focus\:border-indigo-500:focus{--tw-border-opacity:1;border-color:rgb(99 102 241/var(--tw-border-opacity,1))}.focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px}.disabled\:cursor-not-allowed:disabled{cursor:not-allowed}.disabled\:opacity-40:disabled{opacity:.4}</style>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         * { -webkit-tap-highlight-color: transparent; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
         body { overscroll-behavior: none; background: #0f172a; min-height: 100vh; margin: 0; }
         input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
@@ -25,1182 +25,1565 @@
     </style>
 </head>
 <body>
-    <div id="root"></div>
-    <script type="text/babel">
-        const { useState, useEffect, useRef, useCallback, useMemo } = React;
-        const { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceDot } = Recharts;
-
-        // ============================================================
-        // CONSTANTS
-        // ============================================================
-        const BAR_WEIGHT_LBS = 45;
-        const BAR_WEIGHT_KG = 20;
-        const PLATES_LBS = [45, 35, 25, 10, 5, 2.5];
-        const PLATES_KG = [20, 15, 10, 5, 2.5, 1.25];
-        const DEFAULT_REST_SECONDS = 90;
-        const REST_OPTIONS = [
-            { label: '60s', value: 60 },
-            { label: '90s', value: 90 },
-            { label: '3 min', value: 180 },
-            { label: '5 min', value: 300 },
-        ];
-        const DEFAULT_STARTING_WEIGHTS_LBS = { 'Squat': 45, 'Bench Press': 45, 'Barbell Row': 45, 'Overhead Press': 45, 'Deadlift': 45 };
-        const DEFAULT_DEADLIFT_THRESHOLD_LBS = 135;
-        const DEFAULT_DEADLIFT_THRESHOLD_KG = 60;
-        const MOTIVATIONAL_MESSAGES = [
-            "Beast mode activated!",
-            "Consistency is the key to greatness.",
-            "You showed up. That's what champions do.",
-            "Stronger than yesterday.",
-            "Iron sharpens iron.",
-            "Another step toward your best self.",
-            "The bar doesn't lie. You earned this.",
-            "Discipline beats motivation every time.",
-        ];
-
-        // ============================================================
-        // UTILITY FUNCTIONS
-        // ============================================================
-        const roundToIncrement = (val, increment) => Math.round(val / increment) * increment;
-
-        const getIncrement = (exerciseName, unit, deadliftTransitioned) => {
-            if (exerciseName === 'Deadlift' && deadliftTransitioned) {
-                return unit === 'kg' ? 2.5 : 5;
+    <div id="root">
+        <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;color:#94a3b8;font-family:system-ui;text-align:center;padding:20px">
+            <div>
+                <div style="font-size:24px;font-weight:800;color:white;margin-bottom:8px">3x5 Strength</div>
+                <div>Loading...</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Show error if app fails to load within 15 seconds
+        window.__loadTimer = setTimeout(function() {
+            var el = document.getElementById('root');
+            if (el && (!window.React || !el.querySelector('[data-reactroot]'))) {
+                el.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;color:#94a3b8;font-family:system-ui;text-align:center;padding:20px"><div><div style="font-size:24px;font-weight:800;color:white;margin-bottom:8px">3x5 Strength</div><div style="margin-bottom:12px">Failed to load. Please check your internet connection.</div><button onclick="location.reload()" style="background:#6366f1;color:white;border:none;padding:12px 24px;border-radius:8px;font-weight:bold;cursor:pointer">Retry</button></div></div>';
             }
-            return unit === 'kg' ? 1.25 : 2.5;
-        };
-
-        const getBarWeight = (unit) => unit === 'kg' ? BAR_WEIGHT_KG : BAR_WEIGHT_LBS;
-
-        const convertWeight = (lbs, toUnit) => {
-            if (toUnit === 'kg') return roundToIncrement(lbs * 0.453592, 1.25);
-            return lbs;
-        };
-
-        const calculatePlates = (targetWeight, unit) => {
-            const barWeight = getBarWeight(unit);
-            const plates = unit === 'kg' ? PLATES_KG : PLATES_LBS;
-            let perSide = (targetWeight - barWeight) / 2;
-            if (perSide < 0) return { plates: [], remaining: 0, perSide: 0 };
-            const result = [];
-            let rem = Math.round(perSide * 100);
-            for (const plate of plates) {
-                const p = Math.round(plate * 100);
-                while (rem >= p) { result.push(plate); rem -= p; }
-            }
-            return { plates: result, remaining: Math.round(rem) / 100, perSide: Math.round(perSide * 100) / 100 };
-        };
-
-        const calculateWarmupSets = (workingWeight, unit) => {
-            const barWeight = getBarWeight(unit);
-            if (workingWeight <= barWeight) return [{ weight: barWeight, reps: 5, label: 'Bar only' }];
-            const sets = [{ weight: barWeight, reps: 5, label: 'Bar warm-up' }];
-            const pcts = [0.4, 0.6, 0.8];
-            const reps = [5, 5, 3];
-            const inc = unit === 'kg' ? 2.5 : 5;
-            pcts.forEach((p, i) => {
-                const w = roundToIncrement(workingWeight * p, inc);
-                if (w > barWeight) sets.push({ weight: w, reps: reps[i], label: `${Math.round(p * 100)}% warm-up` });
-            });
-            return sets;
-        };
-
-        const estimate1RM = (weight, reps) => {
-            if (weight <= 0 || reps <= 0) return 0;
-            if (reps === 1) return weight;
-            return Math.round(weight * (1 + Math.min(reps, 12) / 30));
-        };
-
-        const calculateVolume = (exercises) => {
-            let total = 0;
-            exercises?.forEach(ex => ex.sets?.forEach(s => {
-                total += (parseFloat(s.weight) || 0) * (parseInt(s.reps) || 0);
-            }));
-            return total;
-        };
-
-        const calculateStreak = (workouts) => {
-            if (!workouts.length) return { current: 0, longest: 0 };
-            const dates = [...new Set(workouts.map(w => {
-                const d = new Date(w.date); return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
-            }))].sort((a, b) => b - a);
-            const today = new Date(); today.setHours(0,0,0,0);
-            let current = 0;
-            if (Math.floor((today - dates[0]) / 86400000) <= 2) {
-                current = 1;
-                for (let i = 1; i < dates.length; i++) {
-                    if (Math.floor((dates[i-1] - dates[i]) / 86400000) <= 3) current++; else break;
-                }
-            }
-            let longest = 1, temp = 1;
-            for (let i = 1; i < dates.length; i++) {
-                if (Math.floor((dates[i-1] - dates[i]) / 86400000) <= 3) { temp++; longest = Math.max(longest, temp); }
-                else temp = 1;
-            }
-            return { current, longest: Math.max(longest, current) };
-        };
-
-        const calculatePRs = (workouts) => {
-            const prs = {};
-            workouts.forEach(w => w.exercises?.forEach(ex => {
-                if (!prs[ex.name]) prs[ex.name] = { maxWeight: 0, maxWeightDate: null, estimated1RM: 0 };
-                const pr = prs[ex.name];
-                ex.sets?.forEach(s => {
-                    const wt = parseFloat(s.weight) || 0;
-                    const rp = parseInt(s.reps) || 0;
-                    if (wt > pr.maxWeight) { pr.maxWeight = wt; pr.maxWeightDate = w.date; }
-                    const e = estimate1RM(wt, rp);
-                    if (e > pr.estimated1RM) pr.estimated1RM = e;
-                });
-            }));
-            return prs;
-        };
-
-        const formatDate = (date) => {
-            const d = new Date(date);
-            const now = new Date();
-            const diff = Math.floor((now - d) / 86400000);
-            if (diff === 0) return 'Today';
-            if (diff === 1) return 'Yesterday';
-            if (diff < 7) return `${diff} days ago`;
-            return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-        };
-
-        const playBeep = () => {
-            try {
-                const ctx = new (window.AudioContext || window.webkitAudioContext)();
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.connect(gain); gain.connect(ctx.destination);
-                osc.frequency.value = 880;
-                osc.type = 'sine';
-                gain.gain.setValueAtTime(0.5, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
-                osc.start(ctx.currentTime);
-                osc.stop(ctx.currentTime + 0.5);
-                // Second beep
-                setTimeout(() => {
-                    try {
-                        const osc2 = ctx.createOscillator();
-                        const gain2 = ctx.createGain();
-                        osc2.connect(gain2); gain2.connect(ctx.destination);
-                        osc2.frequency.value = 1100;
-                        osc2.type = 'sine';
-                        gain2.gain.setValueAtTime(0.5, ctx.currentTime);
-                        gain2.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
-                        osc2.start(ctx.currentTime);
-                        osc2.stop(ctx.currentTime + 0.5);
-                    } catch(e) {}
-                }, 300);
-            } catch (e) { /* Web Audio not available */ }
-        };
-
-        // ============================================================
-        // STORAGE HELPERS
-        // ============================================================
-        const loadJSON = (key, fallback) => {
-            try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }
-            catch { return fallback; }
-        };
-        const saveJSON = (key, value) => {
-            try { localStorage.setItem(key, JSON.stringify(value)); }
-            catch (e) { console.warn('Storage write failed:', e); }
-        };
-        const loadStr = (key, fallback) => {
-            try { return localStorage.getItem(key) || fallback; } catch { return fallback; }
-        };
-
-        // ============================================================
-        // MAIN APP COMPONENT
-        // ============================================================
-        function WorkoutApp() {
-            // --- Persisted State ---
-            const [workouts, setWorkouts] = useState(() => loadJSON('w3x5_history', []));
-            const [startingWeights, setStartingWeights] = useState(() => loadJSON('w3x5_startWeights', {}));
-            const [failureTracker, setFailureTracker] = useState(() => loadJSON('w3x5_failures', {}));
-            const [unit, setUnit] = useState(() => loadStr('w3x5_unit', 'lbs'));
-            const [restDuration, setRestDuration] = useState(() => parseInt(loadStr('w3x5_restDuration', String(DEFAULT_REST_SECONDS))));
-            const [hasOnboarded, setHasOnboarded] = useState(() => loadStr('w3x5_onboarded', '') === 'true');
-            const [deadliftTransitioned, setDeadliftTransitioned] = useState(() => loadStr('w3x5_dlTransitioned', '') === 'true');
-            const [deadliftThreshold, setDeadliftThreshold] = useState(() => parseFloat(loadStr('w3x5_dlThreshold', String(DEFAULT_DEADLIFT_THRESHOLD_LBS))));
-            const [dlPromptDismissedAt, setDlPromptDismissedAt] = useState(() => parseFloat(loadStr('w3x5_dlDismissedAt', '0')));
-
-            // --- Session State ---
-            const [activeTab, setActiveTab] = useState('workout'); // workout | history | progress | settings
-            const [currentSession, setCurrentSession] = useState(null);
-            const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
-            const [setResults, setSetResults] = useState([]); // array of { status: 'pending'|'complete'|'failed', weight: number }
-            const [showOnboarding, setShowOnboarding] = useState(!hasOnboarded);
-            const [onboardingStep, setOnboardingStep] = useState(0);
-            const [tempWeights, setTempWeights] = useState({});
-            const [showPlateCalc, setShowPlateCalc] = useState(false);
-            const [plateCalcWeight, setPlateCalcWeight] = useState('');
-            const [showDlPrompt, setShowDlPrompt] = useState(false);
-            const [pendingDlConfirm, setPendingDlConfirm] = useState(false);
-
-            // --- Timer State ---
-            const [timerActive, setTimerActive] = useState(false);
-            const [timeLeft, setTimeLeft] = useState(restDuration);
-            const timerRef = useRef(null);
-            const beepFiredRef = useRef(false);
-
-            // --- Persist on change ---
-            useEffect(() => saveJSON('w3x5_history', workouts), [workouts]);
-            useEffect(() => saveJSON('w3x5_startWeights', startingWeights), [startingWeights]);
-            useEffect(() => saveJSON('w3x5_failures', failureTracker), [failureTracker]);
-            useEffect(() => { localStorage.setItem('w3x5_unit', unit); }, [unit]);
-            useEffect(() => { localStorage.setItem('w3x5_restDuration', String(restDuration)); }, [restDuration]);
-            useEffect(() => { localStorage.setItem('w3x5_dlTransitioned', String(deadliftTransitioned)); }, [deadliftTransitioned]);
-            useEffect(() => { localStorage.setItem('w3x5_dlThreshold', String(deadliftThreshold)); }, [deadliftThreshold]);
-            useEffect(() => { localStorage.setItem('w3x5_dlDismissedAt', String(dlPromptDismissedAt)); }, [dlPromptDismissedAt]);
-
-            // --- Workout Templates ---
-            const getDeadliftSets = useCallback(() => deadliftTransitioned ? 1 : 3, [deadliftTransitioned]);
-
-            const workoutA = useMemo(() => [
-                { name: 'Squat', targetReps: 5, sets: 3 },
-                { name: 'Bench Press', targetReps: 5, sets: 3 },
-                { name: 'Barbell Row', targetReps: 5, sets: 3 },
-            ], []);
-
-            const workoutB = useMemo(() => [
-                { name: 'Squat', targetReps: 5, sets: 3 },
-                { name: 'Overhead Press', targetReps: 5, sets: 3 },
-                { name: 'Deadlift', targetReps: 5, sets: getDeadliftSets() },
-            ], [getDeadliftSets]);
-
-            const allExerciseNames = ['Squat', 'Bench Press', 'Barbell Row', 'Overhead Press', 'Deadlift'];
-
-            const getNextWorkout = useCallback(() => {
-                if (!workouts.length) return { type: 'A', exercises: workoutA };
-                return workouts[workouts.length - 1].type === 'A'
-                    ? { type: 'B', exercises: workoutB }
-                    : { type: 'A', exercises: workoutA };
-            }, [workouts, workoutA, workoutB]);
-
-            const currentWorkout = useMemo(() => {
-                if (currentSession) {
-                    return { type: currentSession.type, exercises: currentSession.type === 'A' ? workoutA : workoutB };
-                }
-                return getNextWorkout();
-            }, [currentSession, workoutA, workoutB, getNextWorkout]);
-
-            const currentExercise = currentWorkout.exercises[currentExerciseIndex];
-
-            // --- Weight Suggestion ---
-            const getSuggestedWeight = useCallback((exerciseName) => {
-                const lastSession = [...workouts].reverse().find(w => w.exercises?.some(e => e.name === exerciseName));
-                const sw = startingWeights[exerciseName] || (unit === 'kg' ? 20 : 45);
-                if (!lastSession) return sw;
-
-                const ex = lastSession.exercises.find(e => e.name === exerciseName);
-                if (!ex?.sets?.length) return sw;
-
-                const lastWeight = parseFloat(ex.sets[0].weight) || sw;
-                const failures = failureTracker[exerciseName] || 0;
-                const increment = getIncrement(exerciseName, unit, deadliftTransitioned);
-                const barWeight = getBarWeight(unit);
-
-                if (failures >= 3) {
-                    const deloaded = roundToIncrement(lastWeight * 0.9, increment);
-                    return Math.max(deloaded, barWeight);
-                }
-
-                const targetReps = ex.targetReps || 5;
-                const targetSets = ex.targetSets || 3;
-                const allComplete = ex.sets.length >= targetSets && ex.sets.every(s => parseInt(s.reps) >= targetReps);
-                if (allComplete) return lastWeight + increment;
-                return lastWeight;
-            }, [workouts, startingWeights, failureTracker, unit, deadliftTransitioned]);
-
-            // --- Timer ---
-            useEffect(() => {
-                if (timerActive && timeLeft > 0) {
-                    timerRef.current = setTimeout(() => setTimeLeft(t => t - 1), 1000);
-                } else if (timerActive && timeLeft <= 0) {
-                    setTimerActive(false);
-                    if (!beepFiredRef.current) {
-                        playBeep();
-                        if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
-                        beepFiredRef.current = true;
-                    }
-                }
-                return () => clearTimeout(timerRef.current);
-            }, [timerActive, timeLeft]);
-
-            const startTimer = useCallback(() => {
-                beepFiredRef.current = false;
-                setTimeLeft(restDuration);
-                setTimerActive(true);
-            }, [restDuration]);
-
-            const stopTimer = useCallback(() => {
-                setTimerActive(false);
-                setTimeLeft(restDuration);
-            }, [restDuration]);
-
-            const formatTime = (secs) => `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')}`;
-
-            // --- PRs & Stats ---
-            const personalRecords = useMemo(() => calculatePRs(workouts), [workouts]);
-            const streak = useMemo(() => calculateStreak(workouts), [workouts]);
-
-            // --- Deadlift Transition Check ---
-            const checkDeadliftTransition = useCallback((weight) => {
-                if (deadliftTransitioned) return;
-                const threshold = unit === 'kg' ? (deadliftThreshold * 0.453592) : deadliftThreshold;
-                const effectiveThreshold = unit === 'kg' ? roundToIncrement(threshold, 2.5) : deadliftThreshold;
-                if (weight >= effectiveThreshold) {
-                    if (dlPromptDismissedAt === 0 || weight >= dlPromptDismissedAt + 10) {
-                        setShowDlPrompt(true);
-                    }
-                }
-            }, [deadliftTransitioned, deadliftThreshold, unit, dlPromptDismissedAt]);
-
-            // --- Start Workout ---
-            const startWorkout = useCallback(() => {
-                const next = getNextWorkout();
-                setCurrentSession({ date: new Date().toISOString(), type: next.type, exercises: [] });
-                setCurrentExerciseIndex(0);
-                const ex = next.exercises[0];
-                const w = getSuggestedWeight(ex.name);
-                setSetResults(Array(ex.sets).fill(null).map(() => ({ status: 'pending', weight: w })));
-                setActiveTab('workout');
-            }, [getNextWorkout, getSuggestedWeight]);
-
-            // --- Initialize sets for current exercise ---
-            const initSetsForExercise = useCallback((exerciseIdx, workout) => {
-                const ex = workout.exercises[exerciseIdx];
-                if (!ex) return;
-                const w = getSuggestedWeight(ex.name);
-                setSetResults(Array(ex.sets).fill(null).map(() => ({ status: 'pending', weight: w })));
-            }, [getSuggestedWeight]);
-
-            // --- Log Set ---
-            const logSet = useCallback((setIdx, status) => {
-                setSetResults(prev => {
-                    const next = [...prev];
-                    next[setIdx] = { ...next[setIdx], status };
-                    return next;
-                });
-                // Auto-start rest timer
-                startTimer();
-            }, [startTimer]);
-
-            // --- Complete Exercise ---
-            const completeExercise = useCallback(() => {
-                if (!currentExercise || !currentSession) return;
-
-                const completedSets = setResults.map((s, i) => ({
-                    weight: String(s.weight),
-                    reps: s.status === 'complete' ? String(currentExercise.targetReps) : s.status === 'failed' ? '0' : '0',
-                }));
-
-                const exerciseData = {
-                    name: currentExercise.name,
-                    sets: completedSets,
-                    targetReps: currentExercise.targetReps,
-                    targetSets: currentExercise.sets,
-                };
-
-                const allSuccess = setResults.every(s => s.status === 'complete');
-                const newFailures = { ...failureTracker };
-                if (allSuccess) {
-                    newFailures[currentExercise.name] = 0;
-                    // Check deadlift transition
-                    if (currentExercise.name === 'Deadlift') {
-                        checkDeadliftTransition(setResults[0]?.weight || 0);
-                    }
-                } else {
-                    newFailures[currentExercise.name] = (newFailures[currentExercise.name] || 0) + 1;
-                }
-                setFailureTracker(newFailures);
-
-                const updatedSession = {
-                    ...currentSession,
-                    exercises: [...currentSession.exercises, exerciseData],
-                };
-
-                stopTimer();
-
-                if (currentExerciseIndex < currentWorkout.exercises.length - 1) {
-                    setCurrentSession(updatedSession);
-                    const nextIdx = currentExerciseIndex + 1;
-                    setCurrentExerciseIndex(nextIdx);
-                    initSetsForExercise(nextIdx, currentWorkout);
-                } else {
-                    // Workout complete
-                    setWorkouts(prev => [...prev, updatedSession]);
-                    setCurrentSession(null);
-                    setCurrentExerciseIndex(0);
-                }
-            }, [currentExercise, currentSession, setResults, failureTracker, currentExerciseIndex, currentWorkout, stopTimer, checkDeadliftTransition, initSetsForExercise]);
-
-            // --- Deadlift Transition Handlers ---
-            const confirmDlTransition = useCallback(() => {
-                setDeadliftTransitioned(true);
-                setShowDlPrompt(false);
-                // Log transition in a special way
-                const note = { date: new Date().toISOString(), type: 'NOTE', exercises: [{ name: 'Deadlift Transition', sets: [{ weight: 'Switched to 1x5 conventional', reps: '0' }] }] };
-                setWorkouts(prev => [...prev, note]);
-            }, []);
-
-            const dismissDlPrompt = useCallback(() => {
-                const currentDlWeight = getSuggestedWeight('Deadlift');
-                setDlPromptDismissedAt(currentDlWeight);
-                localStorage.setItem('w3x5_dlDismissedAt', String(currentDlWeight));
-                setShowDlPrompt(false);
-            }, [getSuggestedWeight]);
-
-            // --- Onboarding ---
-            const completeOnboarding = useCallback(() => {
-                setStartingWeights(tempWeights);
-                setHasOnboarded(true);
-                localStorage.setItem('w3x5_onboarded', 'true');
-                setShowOnboarding(false);
-            }, [tempWeights]);
-
-            // --- Reset ---
-            const resetAll = useCallback(() => {
-                if (confirm('This will delete ALL workout data and settings. Are you sure?')) {
-                    if (confirm('Final confirmation: Reset everything and return to setup?')) {
-                        Object.keys(localStorage).filter(k => k.startsWith('w3x5_')).forEach(k => localStorage.removeItem(k));
-                        window.location.reload();
-                    }
-                }
-            }, []);
-
-            // --- Unit display helper ---
-            const wu = unit; // shorthand for unit label
-
-            // ============================================================
-            // RENDER: ONBOARDING
-            // ============================================================
-            if (showOnboarding) {
-                if (onboardingStep === 0) {
-                    return (
-                        <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
-                            <div className="max-w-md w-full bg-slate-800 rounded-2xl p-8 border border-slate-700">
-                                <div className="text-center mb-8">
-                                    <div className="inline-flex items-center justify-center w-20 h-20 bg-indigo-600 rounded-2xl mb-6">
-                                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M14.4 14.4L9.6 9.6"/><path d="M18.657 21.485a2 2 0 1 1-2.829-2.828l-1.767 1.768a2 2 0 1 1-2.829-2.829l6.364-6.364a2 2 0 1 1 2.829 2.829l-1.768 1.767a2 2 0 1 1 2.828 2.829z"/></svg>
-                                    </div>
-                                    <h1 className="text-3xl font-black text-white mb-2">3x5 Strength</h1>
-                                    <p className="text-slate-400">Progressive barbell training</p>
-                                </div>
-
-                                <div className="space-y-3 mb-8">
-                                    {[
-                                        ['Progressive Overload', 'Add weight every successful session'],
-                                        ['A/B Split', 'Alternate two full-body workouts'],
-                                        ['Track Everything', 'Log sets, view charts, hit PRs'],
-                                    ].map(([title, desc], i) => (
-                                        <div key={i} className="flex items-start gap-3 bg-slate-700/50 p-4 rounded-xl border border-slate-600">
-                                            <div className="flex-shrink-0 w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white font-bold text-sm">{i + 1}</div>
-                                            <div><div className="text-white font-semibold">{title}</div><div className="text-slate-400 text-sm">{desc}</div></div>
-                                        </div>
-                                    ))}
-                                </div>
-
-                                <div className="bg-slate-700/50 rounded-xl p-4 mb-6 border border-slate-600">
-                                    <label className="block text-white font-semibold mb-3">Unit Preference</label>
-                                    <div className="flex gap-3">
-                                        {['lbs', 'kg'].map(u => (
-                                            <button key={u} onClick={() => setUnit(u)}
-                                                className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all ${unit === u ? 'bg-indigo-600 text-white' : 'bg-slate-600 text-slate-300 hover:bg-slate-500'}`}>
-                                                {u.toUpperCase()}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                <button onClick={() => {
-                                    // Prefill defaults
-                                    const defaults = {};
-                                    allExerciseNames.forEach(n => { defaults[n] = unit === 'kg' ? 20 : 45; });
-                                    setTempWeights(defaults);
-                                    setOnboardingStep(1);
-                                }} className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 rounded-xl text-lg transition-colors" style={{minHeight:'52px'}}>
-                                    Set Starting Weights &rarr;
-                                </button>
-                            </div>
-                        </div>
-                    );
-                }
-
-                // Step 1: Starting Weights
-                const filled = allExerciseNames.filter(n => tempWeights[n] && parseFloat(tempWeights[n]) > 0).length;
-                return (
-                    <div className="min-h-screen bg-slate-900 p-4">
-                        <div className="max-w-md mx-auto pt-8">
-                            <div className="bg-slate-800 rounded-2xl p-6 border border-slate-700">
-                                <h2 className="text-2xl font-black text-white mb-1">Starting Weights</h2>
-                                <p className="text-slate-400 text-sm mb-6">Start light. You'll add {unit === 'kg' ? '1.25-2.5' : '2.5-5'} {wu} each session.</p>
-
-                                <div className="space-y-3 mb-6">
-                                    {allExerciseNames.map(name => (
-                                        <div key={name} className="bg-slate-700/50 rounded-xl p-4 border border-slate-600">
-                                            <label className="block text-white font-semibold mb-2">{name}</label>
-                                            <div className="flex items-center gap-3">
-                                                <input type="number" inputMode="decimal" value={tempWeights[name] || ''}
-                                                    onChange={e => setTempWeights(p => ({ ...p, [name]: e.target.value }))}
-                                                    className="flex-1 bg-slate-600 text-white text-xl font-bold rounded-lg px-4 py-3 border border-slate-500 focus:border-indigo-500 focus:outline-none" placeholder={unit === 'kg' ? '20' : '45'} />
-                                                <span className="text-slate-400 font-semibold">{wu}</span>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-
-                                <div className="bg-blue-900/30 border border-blue-700/50 rounded-xl p-3 mb-4">
-                                    <p className="text-blue-200 text-sm">Tip: Start with the empty bar ({unit === 'kg' ? '20 kg' : '45 lbs'}) for most lifts if you're new.</p>
-                                </div>
-
-                                <div className="w-full bg-slate-700 rounded-full h-2 mb-4">
-                                    <div className="bg-indigo-600 h-2 rounded-full transition-all" style={{ width: `${(filled / allExerciseNames.length) * 100}%` }} />
-                                </div>
-
-                                <div className="flex gap-3">
-                                    <button onClick={() => setOnboardingStep(0)} className="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-bold py-4 rounded-xl transition-colors" style={{minHeight:'52px'}}>Back</button>
-                                    <button onClick={completeOnboarding}
-                                        disabled={filled < allExerciseNames.length}
-                                        className="flex-1 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold py-4 rounded-xl transition-colors" style={{minHeight:'52px'}}>
-                                        Start Training
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                );
-            }
-
-            // ============================================================
-            // RENDER: ACTIVE WORKOUT
-            // ============================================================
-            if (currentSession) {
-                const ex = currentExercise;
-                const suggestedWeight = getSuggestedWeight(ex.name);
-                const allSetsResolved = setResults.every(s => s.status !== 'pending');
-                const failCount = failureTracker[ex.name] || 0;
-                const isDeload = failCount >= 3;
-
-                return (
-                    <div className="min-h-screen bg-slate-900 flex flex-col">
-                        {/* Deadlift Transition Prompt */}
-                        {showDlPrompt && (
-                            <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4" onClick={() => {}}>
-                                <div className="bg-slate-800 rounded-2xl p-6 max-w-sm w-full border border-yellow-600">
-                                    <h3 className="text-xl font-black text-yellow-400 mb-3">Barbell Territory!</h3>
-                                    <p className="text-slate-300 mb-4">You're approaching <strong>{deadliftThreshold} {wu}</strong> on deadlift. Want to switch to conventional deadlift at <strong>1x5</strong> with +{unit === 'kg' ? '2.5' : '5'} {wu} progression?</p>
-                                    <div className="flex gap-3">
-                                        <button onClick={dismissDlPrompt} className="flex-1 bg-slate-700 text-white font-bold py-3 rounded-xl" style={{minHeight:'48px'}}>Not Yet</button>
-                                        <button onClick={confirmDlTransition} className="flex-1 bg-yellow-600 text-white font-bold py-3 rounded-xl" style={{minHeight:'48px'}}>Switch to 1x5</button>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Plate Calculator Modal */}
-                        {showPlateCalc && (
-                            <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4" onClick={() => setShowPlateCalc(false)}>
-                                <div className="bg-slate-800 rounded-2xl p-6 max-w-sm w-full border border-slate-600" onClick={e => e.stopPropagation()}>
-                                    <div className="flex items-center justify-between mb-4">
-                                        <h3 className="text-xl font-black text-white">Plate Calculator</h3>
-                                        <button onClick={() => setShowPlateCalc(false)} className="text-slate-400 hover:text-white text-2xl">&times;</button>
-                                    </div>
-                                    <div className="mb-4">
-                                        <label className="block text-slate-400 text-sm mb-1">Target Weight ({wu})</label>
-                                        <input type="number" inputMode="decimal" value={plateCalcWeight}
-                                            onChange={e => setPlateCalcWeight(e.target.value)}
-                                            className="w-full bg-slate-700 text-white text-2xl font-bold rounded-lg px-4 py-3 border border-slate-600 focus:border-indigo-500 focus:outline-none text-center" />
-                                    </div>
-                                    {(() => {
-                                        const w = parseFloat(plateCalcWeight);
-                                        const bw = getBarWeight(unit);
-                                        if (!w || w < bw) return <p className="text-slate-400 text-center">Enter a weight &ge; {bw} {wu}</p>;
-                                        const res = calculatePlates(w, unit);
-                                        return (
-                                            <div className="space-y-3">
-                                                <div className="bg-slate-700/50 rounded-xl p-4 text-center border border-slate-600">
-                                                    <div className="text-slate-400 text-sm mb-1">Each Side</div>
-                                                    <div className="text-3xl font-black text-white">{res.perSide} {wu}</div>
-                                                </div>
-                                                {res.plates.length > 0 ? (
-                                                    <div className="flex flex-wrap gap-2 justify-center">
-                                                        {res.plates.map((p, i) => (
-                                                            <div key={i} className="bg-indigo-600 rounded-lg px-3 py-2 text-white font-bold">{p}</div>
-                                                        ))}
-                                                    </div>
-                                                ) : <p className="text-slate-400 text-center text-sm">Bar only</p>}
-                                                {res.remaining > 0 && (
-                                                    <div className="bg-yellow-900/30 border border-yellow-700/50 rounded-lg p-2 text-center">
-                                                        <span className="text-yellow-400 text-sm">Remaining: {res.remaining} {wu}/side (no matching plate)</span>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        );
-                                    })()}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Header */}
-                        <div className="bg-slate-800 border-b border-slate-700 px-4 py-3">
-                            <div className="max-w-lg mx-auto flex items-center justify-between">
-                                <div>
-                                    <div className="text-slate-400 text-xs font-medium">Workout {currentWorkout.type}</div>
-                                    <div className="text-white text-lg font-black">{ex.name}</div>
-                                </div>
-                                <div className="text-right">
-                                    <div className="text-slate-400 text-xs">Exercise</div>
-                                    <div className="text-white font-bold">{currentExerciseIndex + 1}/{currentWorkout.exercises.length}</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="flex-1 overflow-y-auto px-4 py-4">
-                            <div className="max-w-lg mx-auto space-y-4">
-                                {/* Weight Display */}
-                                <div className="bg-slate-800 rounded-xl p-5 border border-slate-700">
-                                    <div className="text-slate-400 text-sm mb-1">Target Weight</div>
-                                    <div className="text-4xl font-black text-white mb-1">{suggestedWeight} {wu}</div>
-                                    <div className="text-slate-500 text-sm">{ex.sets} &times; {ex.targetReps} reps</div>
-                                    {isDeload && (
-                                        <div className="mt-2 bg-yellow-900/30 border border-yellow-700/50 rounded-lg px-3 py-2">
-                                            <span className="text-yellow-400 text-sm font-semibold">Deload: 3 consecutive failures. Weight reduced 10%.</span>
-                                        </div>
-                                    )}
-                                    <div className="flex gap-2 mt-3">
-                                        <button onClick={() => { setPlateCalcWeight(String(suggestedWeight)); setShowPlateCalc(true); }}
-                                            className="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-2 rounded-lg text-sm transition-colors" style={{minHeight:'40px'}}>
-                                            Plates
-                                        </button>
-                                    </div>
-                                </div>
-
-                                {/* Rest Timer */}
-                                {timerActive && (
-                                    <div className={`rounded-xl p-4 border text-center ${timeLeft <= 0 ? 'bg-green-900/30 border-green-600' : 'bg-slate-800 border-slate-700'}`}>
-                                        <div className="text-slate-400 text-sm mb-1">{timeLeft <= 0 ? 'Rest Complete!' : 'Rest Timer'}</div>
-                                        <div className={`text-4xl font-black ${timeLeft <= 10 && timeLeft > 0 ? 'text-red-400' : timeLeft <= 0 ? 'text-green-400' : 'text-white'}`}>
-                                            {formatTime(Math.max(0, timeLeft))}
-                                        </div>
-                                        <button onClick={stopTimer} className="mt-2 text-slate-400 hover:text-white text-sm underline">Skip</button>
-                                    </div>
-                                )}
-
-                                {/* Sets */}
-                                <div className="space-y-3">
-                                    {setResults.map((set, idx) => (
-                                        <div key={idx} className={`rounded-xl p-4 border transition-all ${
-                                            set.status === 'complete' ? 'bg-green-900/20 border-green-700' :
-                                            set.status === 'failed' ? 'bg-red-900/20 border-red-700' :
-                                            'bg-slate-800 border-slate-700'
-                                        }`}>
-                                            <div className="flex items-center justify-between mb-3">
-                                                <div>
-                                                    <span className="text-white font-bold">Set {idx + 1}</span>
-                                                    <span className="text-slate-400 text-sm ml-2">{set.weight} {wu} &times; {ex.targetReps}</span>
-                                                </div>
-                                                {set.status === 'complete' && <span className="text-green-400 font-bold text-lg">&#10003;</span>}
-                                                {set.status === 'failed' && <span className="text-red-400 font-bold text-lg">&#10007;</span>}
-                                            </div>
-                                            {set.status === 'pending' && (
-                                                <div className="flex gap-3">
-                                                    <button onClick={() => logSet(idx, 'complete')}
-                                                        className="flex-1 bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-lg transition-colors" style={{minHeight:'48px'}}>
-                                                        &#10003; Complete
-                                                    </button>
-                                                    <button onClick={() => logSet(idx, 'failed')}
-                                                        className="flex-1 bg-red-600 hover:bg-red-500 text-white font-bold py-3 rounded-lg transition-colors" style={{minHeight:'48px'}}>
-                                                        &#10007; Failed
-                                                    </button>
-                                                </div>
-                                            )}
-                                            {set.status !== 'pending' && (
-                                                <button onClick={() => setSetResults(prev => {
-                                                    const n = [...prev]; n[idx] = { ...n[idx], status: 'pending' }; return n;
-                                                })} className="text-slate-500 hover:text-slate-300 text-xs underline">Undo</button>
-                                            )}
-                                        </div>
-                                    ))}
-                                </div>
-
-                                {/* Next / Complete Button */}
-                                <button onClick={completeExercise} disabled={!allSetsResolved}
-                                    className="w-full bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed text-white font-black py-4 rounded-xl text-lg transition-colors" style={{minHeight:'56px'}}>
-                                    {currentExerciseIndex < currentWorkout.exercises.length - 1 ? 'Next Exercise \u2192' : 'Complete Workout \u2713'}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                );
-            }
-
-            // ============================================================
-            // RENDER: WORKOUT COMPLETE (just finished)
-            // ============================================================
-            const justFinished = workouts.length > 0 && (() => {
-                const last = workouts[workouts.length - 1];
-                if (last.type === 'NOTE') return false;
-                const ld = new Date(last.date);
-                const now = new Date();
-                return ld.getDate() === now.getDate() && ld.getMonth() === now.getMonth() && ld.getFullYear() === now.getFullYear();
-            })();
-
-            // ============================================================
-            // TAB: WORKOUT
-            // ============================================================
-            const renderWorkoutTab = () => {
-                if (justFinished && !currentSession) {
-                    const last = workouts.filter(w => w.type !== 'NOTE').pop();
-                    if (!last) return renderNextWorkout();
-                    const vol = calculateVolume(last.exercises);
-                    const msg = MOTIVATIONAL_MESSAGES[Math.floor(Math.random() * MOTIVATIONAL_MESSAGES.length)];
-                    // Check PRs
-                    const newPRs = [];
-                    last.exercises?.forEach(ex => {
-                        const pr = personalRecords[ex.name];
-                        if (pr) {
-                            const maxW = Math.max(...(ex.sets?.map(s => parseFloat(s.weight) || 0) || [0]));
-                            if (maxW > 0 && maxW >= pr.maxWeight) newPRs.push(ex.name);
-                        }
-                    });
-                    return (
-                        <div className="space-y-4">
-                            <div className="bg-slate-800 rounded-xl p-6 border border-slate-700 text-center">
-                                <div className="text-5xl mb-4">&#127942;</div>
-                                <h2 className="text-2xl font-black text-white mb-2">Workout Complete!</h2>
-                                <p className="text-slate-400 italic mb-4">"{msg}"</p>
-
-                                {newPRs.length > 0 && (
-                                    <div className="bg-yellow-900/30 border border-yellow-600 rounded-xl p-3 mb-4">
-                                        <div className="text-yellow-400 font-bold mb-1">New PR{newPRs.length > 1 ? 's' : ''}!</div>
-                                        {newPRs.map(n => <div key={n} className="text-yellow-200 text-sm">{n}</div>)}
-                                    </div>
-                                )}
-
-                                <div className="grid grid-cols-2 gap-3 mb-4">
-                                    <div className="bg-slate-700/50 rounded-xl p-3 border border-slate-600">
-                                        <div className="text-slate-400 text-xs">Volume</div>
-                                        <div className="text-xl font-black text-white">{(vol / 1000).toFixed(1)}K {wu}</div>
-                                    </div>
-                                    <div className="bg-slate-700/50 rounded-xl p-3 border border-slate-600">
-                                        <div className="text-slate-400 text-xs">Streak</div>
-                                        <div className="text-xl font-black text-white">{streak.current}</div>
-                                    </div>
-                                </div>
-
-                                <div className="bg-slate-700/50 rounded-xl p-3 mb-4 border border-slate-600">
-                                    <div className="text-slate-400 text-xs mb-2">Session Summary</div>
-                                    {last.exercises?.map(ex => (
-                                        <div key={ex.name} className="flex justify-between py-1">
-                                            <span className="text-white text-sm font-semibold">{ex.name}</span>
-                                            <span className="text-slate-400 text-sm">{ex.sets?.[0]?.weight} {wu} &times; {ex.sets?.length} sets</span>
-                                        </div>
-                                    ))}
-                                </div>
-
-                                <button onClick={() => { if (confirm('Start another workout today?')) startWorkout(); }}
-                                    className="text-slate-500 hover:text-slate-300 text-sm underline">
-                                    Do another workout
-                                </button>
-                            </div>
-                        </div>
-                    );
-                }
-                return renderNextWorkout();
-            };
-
-            const renderNextWorkout = () => {
-                const next = getNextWorkout();
-                return (
-                    <div className="space-y-4">
-                        <div className="bg-slate-800 rounded-xl p-5 border border-slate-700">
-                            <div className="text-slate-400 text-sm mb-1">Next Workout</div>
-                            <h2 className="text-3xl font-black text-white mb-4">Workout {next.type}</h2>
-                            <div className="space-y-2 mb-5">
-                                {next.exercises.map((ex, i) => {
-                                    const w = getSuggestedWeight(ex.name);
-                                    const fails = failureTracker[ex.name] || 0;
-                                    return (
-                                        <div key={i} className="bg-slate-700/50 rounded-lg p-3 flex justify-between items-center border border-slate-600">
-                                            <div>
-                                                <div className="text-white font-semibold">{ex.name}</div>
-                                                <div className="text-slate-400 text-xs">{ex.sets} &times; {ex.targetReps}</div>
-                                            </div>
-                                            <div className="text-right">
-                                                <div className="text-white font-bold">{w} {wu}</div>
-                                                {fails >= 3 && <div className="text-yellow-400 text-xs">DELOAD</div>}
-                                                {fails > 0 && fails < 3 && <div className="text-red-400 text-xs">{fails}/3 fails</div>}
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                            <button onClick={startWorkout}
-                                className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-black py-4 rounded-xl text-lg transition-colors" style={{minHeight:'56px'}}>
-                                Start Workout
-                            </button>
-                        </div>
-
-                        {/* Stats */}
-                        {workouts.filter(w => w.type !== 'NOTE').length > 0 && (
-                            <div className="bg-slate-800 rounded-xl p-5 border border-slate-700">
-                                <div className="grid grid-cols-3 gap-3">
-                                    <div className="text-center">
-                                        <div className="text-2xl font-black text-white">{workouts.filter(w => w.type !== 'NOTE').length}</div>
-                                        <div className="text-slate-400 text-xs">Workouts</div>
-                                    </div>
-                                    <div className="text-center">
-                                        <div className="text-2xl font-black text-white">{streak.current}</div>
-                                        <div className="text-slate-400 text-xs">Streak</div>
-                                    </div>
-                                    <div className="text-center">
-                                        <div className="text-2xl font-black text-white">{streak.longest}</div>
-                                        <div className="text-slate-400 text-xs">Best</div>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                );
-            };
-
-            // ============================================================
-            // TAB: HISTORY
-            // ============================================================
-            const renderHistoryTab = () => {
-                const realWorkouts = workouts.filter(w => w.type !== 'NOTE');
-                if (!realWorkouts.length) {
-                    return (
-                        <div className="bg-slate-800 rounded-xl p-8 border border-slate-700 text-center">
-                            <div className="text-4xl mb-3">&#128203;</div>
-                            <p className="text-slate-400">No workouts yet. Complete your first session!</p>
-                        </div>
-                    );
-                }
-                return (
-                    <div className="space-y-3">
-                        {realWorkouts.slice().reverse().map((w, i) => (
-                            <div key={i} className="bg-slate-800 rounded-xl p-4 border border-slate-700">
-                                <div className="flex justify-between items-start mb-3">
-                                    <div>
-                                        <div className="text-white font-bold">Workout {w.type}</div>
-                                        <div className="text-slate-400 text-sm">{formatDate(w.date)}</div>
-                                    </div>
-                                    <div className="text-slate-500 text-xs">{new Date(w.date).toLocaleDateString()}</div>
-                                </div>
-                                <div className="space-y-2">
-                                    {w.exercises?.map((ex, j) => (
-                                        <div key={j} className="bg-slate-700/50 rounded-lg p-3 border border-slate-600">
-                                            <div className="text-white font-semibold text-sm mb-1">{ex.name}</div>
-                                            <div className="flex flex-wrap gap-2">
-                                                {ex.sets?.map((s, k) => {
-                                                    const reps = parseInt(s.reps) || 0;
-                                                    const isSuccess = reps >= (ex.targetReps || 5);
-                                                    return (
-                                                        <div key={k} className={`rounded px-2 py-1 text-xs font-bold ${isSuccess ? 'bg-green-900/40 text-green-400 border border-green-800' : 'bg-red-900/40 text-red-400 border border-red-800'}`}>
-                                                            {s.weight} {wu} &times; {s.reps}
-                                                        </div>
-                                                    );
-                                                })}
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                );
-            };
-
-            // ============================================================
-            // TAB: PROGRESS
-            // ============================================================
-            const renderProgressTab = () => {
-                const realWorkouts = workouts.filter(w => w.type !== 'NOTE');
-                if (!realWorkouts.length) {
-                    return (
-                        <div className="bg-slate-800 rounded-xl p-8 border border-slate-700 text-center">
-                            <div className="text-4xl mb-3">&#128200;</div>
-                            <p className="text-slate-400">Complete workouts to see progress charts.</p>
-                        </div>
-                    );
-                }
-
-                return (
-                    <div className="space-y-6">
-                        {/* PRs Section */}
-                        <div className="bg-slate-800 rounded-xl p-5 border border-slate-700">
-                            <h3 className="text-lg font-bold text-white mb-3">Personal Records</h3>
-                            {Object.keys(personalRecords).length === 0 ? (
-                                <p className="text-slate-400 text-sm">No PRs yet.</p>
-                            ) : (
-                                <div className="grid grid-cols-1 gap-2">
-                                    {Object.entries(personalRecords).map(([name, pr]) => (
-                                        <div key={name} className="bg-slate-700/50 rounded-lg p-3 flex justify-between items-center border border-slate-600">
-                                            <span className="text-white font-semibold text-sm">{name}</span>
-                                            <div className="text-right">
-                                                <div className="text-white font-bold">{pr.maxWeight} {wu}</div>
-                                                <div className="text-slate-400 text-xs">Est. 1RM: {pr.estimated1RM} {wu}</div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Charts */}
-                        {allExerciseNames.map(name => {
-                            const data = [];
-                            let prWeight = 0;
-                            let prIdx = -1;
-                            realWorkouts.forEach((w, wi) => {
-                                const ex = w.exercises?.find(e => e.name === name);
-                                if (ex?.sets?.length) {
-                                    const wt = parseFloat(ex.sets[0].weight) || 0;
-                                    data.push({ session: data.length + 1, weight: wt, date: formatDate(w.date) });
-                                    if (wt > prWeight) { prWeight = wt; prIdx = data.length - 1; }
-                                }
-                            });
-                            if (!data.length) return null;
-
-                            const latest = data[data.length - 1].weight;
-                            const first = data[0].weight;
-                            const gain = latest - first;
-
-                            return (
-                                <div key={name} className="bg-slate-800 rounded-xl p-5 border border-slate-700">
-                                    <div className="flex justify-between items-start mb-3">
-                                        <h3 className="text-lg font-bold text-white">{name}</h3>
-                                        <div className="text-right">
-                                            <div className="text-white font-bold">{latest} {wu}</div>
-                                            <div className={`text-xs font-semibold ${gain >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                                                {gain >= 0 ? '+' : ''}{gain} {wu}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div style={{ width: '100%', height: 160 }}>
-                                        <ResponsiveContainer>
-                                            <LineChart data={data.slice(-20)} margin={{ top: 10, right: 10, bottom: 0, left: -20 }}>
-                                                <XAxis dataKey="session" tick={{ fill: '#64748b', fontSize: 11 }} axisLine={{ stroke: '#334155' }} tickLine={false} />
-                                                <YAxis tick={{ fill: '#64748b', fontSize: 11 }} axisLine={{ stroke: '#334155' }} tickLine={false} domain={['dataMin - 5', 'dataMax + 5']} />
-                                                <Tooltip contentStyle={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 8, color: '#fff', fontSize: 12 }}
-                                                    formatter={(val) => [`${val} ${wu}`, 'Weight']} />
-                                                <Line type="monotone" dataKey="weight" stroke="#6366f1" strokeWidth={2} dot={{ fill: '#6366f1', r: 3 }} activeDot={{ r: 5 }} />
-                                                {prIdx >= 0 && prIdx >= data.length - 20 && (
-                                                    <ReferenceDot x={data[prIdx].session} y={data[prIdx].weight}
-                                                        r={6} fill="#eab308" stroke="#eab308" />
-                                                )}
-                                            </LineChart>
-                                        </ResponsiveContainer>
-                                    </div>
-                                    {prWeight > 0 && <div className="text-yellow-400 text-xs mt-1">&#9733; PR: {prWeight} {wu}</div>}
-                                </div>
-                            );
-                        })}
-                    </div>
-                );
-            };
-
-            // ============================================================
-            // TAB: SETTINGS
-            // ============================================================
-            const [editingWeights, setEditingWeights] = useState(false);
-            const [tempEditWeights, setTempEditWeights] = useState({});
-
-            const renderSettingsTab = () => {
-                return (
-                    <div className="space-y-4">
-                        {/* Unit Toggle */}
-                        <div className="bg-slate-800 rounded-xl p-5 border border-slate-700">
-                            <label className="block text-white font-semibold mb-3">Unit</label>
-                            <div className="flex gap-3">
-                                {['lbs', 'kg'].map(u => (
-                                    <button key={u} onClick={() => setUnit(u)}
-                                        className={`flex-1 py-3 rounded-xl font-bold transition-colors ${unit === u ? 'bg-indigo-600 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`} style={{minHeight:'48px'}}>
-                                        {u.toUpperCase()}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Rest Timer */}
-                        <div className="bg-slate-800 rounded-xl p-5 border border-slate-700">
-                            <label className="block text-white font-semibold mb-3">Rest Timer</label>
-                            <div className="grid grid-cols-4 gap-2">
-                                {REST_OPTIONS.map(opt => (
-                                    <button key={opt.value} onClick={() => setRestDuration(opt.value)}
-                                        className={`py-3 rounded-xl font-bold text-sm transition-colors ${restDuration === opt.value ? 'bg-indigo-600 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`} style={{minHeight:'48px'}}>
-                                        {opt.label}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Current Weights */}
-                        <div className="bg-slate-800 rounded-xl p-5 border border-slate-700">
-                            <div className="flex items-center justify-between mb-3">
-                                <label className="text-white font-semibold">Current Weights</label>
-                                {!editingWeights ? (
-                                    <button onClick={() => {
-                                        const w = {};
-                                        allExerciseNames.forEach(n => { w[n] = getSuggestedWeight(n); });
-                                        setTempEditWeights(w);
-                                        setEditingWeights(true);
-                                    }} className="text-indigo-400 hover:text-indigo-300 text-sm font-semibold">Edit</button>
-                                ) : (
-                                    <div className="flex gap-2">
-                                        <button onClick={() => setEditingWeights(false)} className="text-slate-400 hover:text-slate-300 text-sm">Cancel</button>
-                                        <button onClick={() => {
-                                            setStartingWeights(tempEditWeights);
-                                            // Reset failure tracker since weights are manually set
-                                            setFailureTracker({});
-                                            setEditingWeights(false);
-                                        }} className="text-green-400 hover:text-green-300 text-sm font-semibold">Save</button>
-                                    </div>
-                                )}
-                            </div>
-                            <div className="space-y-2">
-                                {allExerciseNames.map(name => (
-                                    <div key={name} className="bg-slate-700/50 rounded-lg p-3 flex justify-between items-center border border-slate-600">
-                                        <span className="text-white text-sm font-semibold">{name}</span>
-                                        {editingWeights ? (
-                                            <input type="number" inputMode="decimal" value={tempEditWeights[name] || ''}
-                                                onChange={e => setTempEditWeights(p => ({ ...p, [name]: e.target.value }))}
-                                                className="w-24 bg-slate-600 text-white text-right font-bold rounded px-2 py-1 border border-slate-500 focus:border-indigo-500 focus:outline-none" />
-                                        ) : (
-                                            <span className="text-slate-300 font-bold">{getSuggestedWeight(name)} {wu}</span>
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Deadlift Transition Threshold */}
-                        <div className="bg-slate-800 rounded-xl p-5 border border-slate-700">
-                            <label className="block text-white font-semibold mb-2">Deadlift Transition Threshold</label>
-                            <p className="text-slate-400 text-sm mb-3">When deadlift reaches this weight, you'll be prompted to switch from 3x5 to 1x5 conventional.</p>
-                            <div className="flex items-center gap-3">
-                                <input type="number" inputMode="decimal" value={deadliftThreshold}
-                                    onChange={e => setDeadliftThreshold(parseFloat(e.target.value) || 0)}
-                                    className="flex-1 bg-slate-700 text-white text-lg font-bold rounded-lg px-4 py-3 border border-slate-600 focus:border-indigo-500 focus:outline-none" />
-                                <span className="text-slate-400 font-semibold">{wu}</span>
-                            </div>
-                            {deadliftTransitioned && (
-                                <div className="mt-3 bg-green-900/30 border border-green-700/50 rounded-lg p-2">
-                                    <span className="text-green-400 text-sm">&#10003; Transitioned to 1x5 conventional deadlift (+{unit === 'kg' ? '2.5' : '5'} {wu}/session)</span>
-                                </div>
-                            )}
-                            {deadliftTransitioned && (
-                                <button onClick={() => { if (confirm('Revert deadlift back to 3x5?')) { setDeadliftTransitioned(false); localStorage.setItem('w3x5_dlTransitioned', 'false'); } }}
-                                    className="mt-2 text-slate-500 hover:text-slate-300 text-xs underline">Revert to 3x5</button>
-                            )}
-                        </div>
-
-                        {/* Plate Calculator */}
-                        <div className="bg-slate-800 rounded-xl p-5 border border-slate-700">
-                            <label className="block text-white font-semibold mb-3">Plate Calculator</label>
-                            <div className="flex items-center gap-3 mb-3">
-                                <input type="number" inputMode="decimal" value={plateCalcWeight}
-                                    onChange={e => setPlateCalcWeight(e.target.value)}
-                                    className="flex-1 bg-slate-700 text-white text-lg font-bold rounded-lg px-4 py-3 border border-slate-600 focus:border-indigo-500 focus:outline-none" placeholder={`Weight in ${wu}`} />
-                                <span className="text-slate-400 font-semibold">{wu}</span>
-                            </div>
-                            {(() => {
-                                const w = parseFloat(plateCalcWeight);
-                                const bw = getBarWeight(unit);
-                                if (!w || w < bw) return null;
-                                const res = calculatePlates(w, unit);
-                                return (
-                                    <div className="bg-slate-700/50 rounded-lg p-3 border border-slate-600">
-                                        <div className="text-slate-400 text-sm mb-1">Each side: <strong className="text-white">{res.perSide} {wu}</strong></div>
-                                        <div className="flex flex-wrap gap-2">
-                                            {res.plates.length ? res.plates.map((p, i) => (
-                                                <span key={i} className="bg-indigo-600 rounded px-2 py-1 text-white text-sm font-bold">{p}</span>
-                                            )) : <span className="text-slate-400 text-sm">Bar only</span>}
-                                        </div>
-                                        {res.remaining > 0 && <div className="text-yellow-400 text-xs mt-1">+{res.remaining} {wu}/side unmatched</div>}
-                                    </div>
-                                );
-                            })()}
-                        </div>
-
-                        {/* Data */}
-                        <div className="bg-slate-800 rounded-xl p-5 border border-slate-700 space-y-3">
-                            <label className="block text-white font-semibold">Data Management</label>
-                            <button onClick={() => {
-                                if (!workouts.length) { alert('No data to export.'); return; }
-                                const rows = [['Date','Type','Exercise','Set','Weight','Reps']];
-                                workouts.filter(w => w.type !== 'NOTE').forEach(w => {
-                                    w.exercises?.forEach(ex => {
-                                        ex.sets?.forEach((s, si) => {
-                                            rows.push([new Date(w.date).toLocaleDateString(), w.type, ex.name, si+1, s.weight, s.reps]);
-                                        });
-                                    });
-                                });
-                                const blob = new Blob([rows.map(r => r.join(',')).join('\n')], { type: 'text/csv' });
-                                const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-                                a.download = `3x5-export-${new Date().toISOString().split('T')[0]}.csv`; a.click();
-                            }} className="w-full bg-green-700 hover:bg-green-600 text-white font-bold py-3 rounded-xl transition-colors" style={{minHeight:'48px'}}>
-                                Export CSV
-                            </button>
-                            <button onClick={resetAll}
-                                className="w-full bg-red-900/50 hover:bg-red-900/80 border border-red-700 text-red-400 font-bold py-3 rounded-xl transition-colors" style={{minHeight:'48px'}}>
-                                Reset All Data
-                            </button>
-                        </div>
-                    </div>
-                );
-            };
-
-            // ============================================================
-            // MAIN LAYOUT WITH BOTTOM TABS
-            // ============================================================
-            const tabs = [
-                { id: 'workout', label: 'Workout', icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14.4 14.4L9.6 9.6"/><path d="M18.657 21.485a2 2 0 1 1-2.829-2.828l-1.767 1.768a2 2 0 1 1-2.829-2.829l6.364-6.364a2 2 0 1 1 2.829 2.829l-1.768 1.767a2 2 0 1 1 2.828 2.829z"/></svg> },
-                { id: 'history', label: 'History', icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> },
-                { id: 'progress', label: 'Progress', icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg> },
-                { id: 'settings', label: 'Settings', icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/></svg> },
-            ];
-
-            return (
-                <div className="min-h-screen bg-slate-900 flex flex-col">
-                    {/* Content Area */}
-                    <div className="flex-1 overflow-y-auto px-4 py-4 pb-24">
-                        <div className="max-w-lg mx-auto">
-                            {activeTab === 'workout' && renderWorkoutTab()}
-                            {activeTab === 'history' && renderHistoryTab()}
-                            {activeTab === 'progress' && renderProgressTab()}
-                            {activeTab === 'settings' && renderSettingsTab()}
-                        </div>
-                    </div>
-
-                    {/* Bottom Tab Bar */}
-                    <div className="fixed bottom-0 left-0 right-0 bg-slate-800 border-t border-slate-700 safe-area-bottom">
-                        <div className="max-w-lg mx-auto flex">
-                            {tabs.map(tab => (
-                                <button key={tab.id} onClick={() => setActiveTab(tab.id)}
-                                    className={`flex-1 flex flex-col items-center py-3 transition-colors ${activeTab === tab.id ? 'text-indigo-400' : 'text-slate-500 hover:text-slate-300'}`}
-                                    style={{minHeight:'56px'}}>
-                                    {tab.icon}
-                                    <span className="text-xs font-semibold mt-1">{tab.label}</span>
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            );
-        }
-
-        ReactDOM.render(<WorkoutApp />, document.getElementById('root'));
-
-        // Register service worker
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js').catch(() => {});
-            });
-        }
+        }, 15000);
     </script>
+    <script>const {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo
+} = React;
+
+// Lightweight SVG Line Chart component (replaces Recharts CDN dependency)
+const SimpleLineChart = ({
+  data,
+  dataKey,
+  xKey,
+  unit,
+  prIndex
+}) => {
+  if (!data || data.length === 0) return null;
+  const values = data.map(d => d[dataKey]);
+  const minVal = Math.min(...values);
+  const maxVal = Math.max(...values);
+  const range = maxVal - minVal || 1;
+  const W = 300,
+    H = 140,
+    PAD = 30,
+    PADT = 15,
+    PADR = 10;
+  const plotW = W - PAD - PADR;
+  const plotH = H - PADT - 25;
+  const pts = data.map((d, i) => ({
+    x: PAD + (data.length === 1 ? plotW / 2 : i / (data.length - 1) * plotW),
+    y: PADT + plotH - (d[dataKey] - minVal) / range * plotH,
+    val: d[dataKey],
+    label: d[xKey]
+  }));
+  const pathD = pts.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x},${p.y}`).join(' ');
+  const [hover, setHover] = useState(null);
+  return /*#__PURE__*/React.createElement("svg", {
+    viewBox: `0 0 ${W} ${H}`,
+    className: "w-full",
+    style: {
+      height: 160
+    },
+    onMouseLeave: () => setHover(null),
+    onTouchEnd: () => setHover(null)
+  }, /*#__PURE__*/React.createElement("text", {
+    x: PAD - 4,
+    y: PADT + 4,
+    fill: "#64748b",
+    fontSize: "9",
+    textAnchor: "end"
+  }, maxVal), /*#__PURE__*/React.createElement("text", {
+    x: PAD - 4,
+    y: PADT + plotH + 4,
+    fill: "#64748b",
+    fontSize: "9",
+    textAnchor: "end"
+  }, minVal), /*#__PURE__*/React.createElement("line", {
+    x1: PAD,
+    y1: PADT,
+    x2: PAD + plotW,
+    y2: PADT,
+    stroke: "#1e293b",
+    strokeWidth: "0.5"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: PAD,
+    y1: PADT + plotH,
+    x2: PAD + plotW,
+    y2: PADT + plotH,
+    stroke: "#1e293b",
+    strokeWidth: "0.5"
+  }), /*#__PURE__*/React.createElement("path", {
+    d: pathD,
+    fill: "none",
+    stroke: "#6366f1",
+    strokeWidth: "2",
+    strokeLinejoin: "round",
+    strokeLinecap: "round"
+  }), pts.map((p, i) => /*#__PURE__*/React.createElement("g", {
+    key: i
+  }, /*#__PURE__*/React.createElement("circle", {
+    cx: p.x,
+    cy: p.y,
+    r: prIndex === i ? 5 : 3,
+    fill: prIndex === i ? '#eab308' : '#6366f1',
+    stroke: prIndex === i ? '#eab308' : 'none',
+    strokeWidth: "1"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: p.x,
+    cy: p.y,
+    r: 12,
+    fill: "transparent",
+    onMouseEnter: () => setHover(i),
+    onTouchStart: e => {
+      e.preventDefault();
+      setHover(i);
+    }
+  }))), data.length > 1 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("text", {
+    x: pts[0].x,
+    y: H - 4,
+    fill: "#64748b",
+    fontSize: "8",
+    textAnchor: "start"
+  }, data[0][xKey]), /*#__PURE__*/React.createElement("text", {
+    x: pts[pts.length - 1].x,
+    y: H - 4,
+    fill: "#64748b",
+    fontSize: "8",
+    textAnchor: "end"
+  }, data[data.length - 1][xKey])), hover !== null && hover >= 0 && hover < pts.length && /*#__PURE__*/React.createElement("g", null, /*#__PURE__*/React.createElement("rect", {
+    x: pts[hover].x - 30,
+    y: pts[hover].y - 28,
+    width: "60",
+    height: "20",
+    rx: "4",
+    fill: "#1e293b",
+    stroke: "#334155",
+    strokeWidth: "0.5"
+  }), /*#__PURE__*/React.createElement("text", {
+    x: pts[hover].x,
+    y: pts[hover].y - 14,
+    fill: "white",
+    fontSize: "10",
+    fontWeight: "bold",
+    textAnchor: "middle"
+  }, pts[hover].val, " ", unit)));
+};
+
+// ============================================================
+// CONSTANTS
+// ============================================================
+const BAR_WEIGHT_LBS = 45;
+const BAR_WEIGHT_KG = 20;
+const PLATES_LBS = [45, 35, 25, 10, 5, 2.5];
+const PLATES_KG = [20, 15, 10, 5, 2.5, 1.25];
+const DEFAULT_REST_SECONDS = 90;
+const REST_OPTIONS = [{
+  label: '60s',
+  value: 60
+}, {
+  label: '90s',
+  value: 90
+}, {
+  label: '3 min',
+  value: 180
+}, {
+  label: '5 min',
+  value: 300
+}];
+const DEFAULT_STARTING_WEIGHTS_LBS = {
+  'Squat': 45,
+  'Bench Press': 45,
+  'Barbell Row': 45,
+  'Overhead Press': 45,
+  'Deadlift': 45
+};
+const DEFAULT_DEADLIFT_THRESHOLD_LBS = 135;
+const DEFAULT_DEADLIFT_THRESHOLD_KG = 60;
+const MOTIVATIONAL_MESSAGES = ["Beast mode activated!", "Consistency is the key to greatness.", "You showed up. That's what champions do.", "Stronger than yesterday.", "Iron sharpens iron.", "Another step toward your best self.", "The bar doesn't lie. You earned this.", "Discipline beats motivation every time."];
+
+// ============================================================
+// UTILITY FUNCTIONS
+// ============================================================
+const roundToIncrement = (val, increment) => Math.round(val / increment) * increment;
+const getIncrement = (exerciseName, unit, deadliftTransitioned) => {
+  if (exerciseName === 'Deadlift' && deadliftTransitioned) {
+    return unit === 'kg' ? 2.5 : 5;
+  }
+  return unit === 'kg' ? 1.25 : 2.5;
+};
+const getBarWeight = unit => unit === 'kg' ? BAR_WEIGHT_KG : BAR_WEIGHT_LBS;
+const convertWeight = (lbs, toUnit) => {
+  if (toUnit === 'kg') return roundToIncrement(lbs * 0.453592, 1.25);
+  return lbs;
+};
+const calculatePlates = (targetWeight, unit) => {
+  const barWeight = getBarWeight(unit);
+  const plates = unit === 'kg' ? PLATES_KG : PLATES_LBS;
+  let perSide = (targetWeight - barWeight) / 2;
+  if (perSide < 0) return {
+    plates: [],
+    remaining: 0,
+    perSide: 0
+  };
+  const result = [];
+  let rem = Math.round(perSide * 100);
+  for (const plate of plates) {
+    const p = Math.round(plate * 100);
+    while (rem >= p) {
+      result.push(plate);
+      rem -= p;
+    }
+  }
+  return {
+    plates: result,
+    remaining: Math.round(rem) / 100,
+    perSide: Math.round(perSide * 100) / 100
+  };
+};
+const calculateWarmupSets = (workingWeight, unit) => {
+  const barWeight = getBarWeight(unit);
+  if (workingWeight <= barWeight) return [{
+    weight: barWeight,
+    reps: 5,
+    label: 'Bar only'
+  }];
+  const sets = [{
+    weight: barWeight,
+    reps: 5,
+    label: 'Bar warm-up'
+  }];
+  const pcts = [0.4, 0.6, 0.8];
+  const reps = [5, 5, 3];
+  const inc = unit === 'kg' ? 2.5 : 5;
+  pcts.forEach((p, i) => {
+    const w = roundToIncrement(workingWeight * p, inc);
+    if (w > barWeight) sets.push({
+      weight: w,
+      reps: reps[i],
+      label: `${Math.round(p * 100)}% warm-up`
+    });
+  });
+  return sets;
+};
+const estimate1RM = (weight, reps) => {
+  if (weight <= 0 || reps <= 0) return 0;
+  if (reps === 1) return weight;
+  return Math.round(weight * (1 + Math.min(reps, 12) / 30));
+};
+const calculateVolume = exercises => {
+  let total = 0;
+  exercises?.forEach(ex => ex.sets?.forEach(s => {
+    total += (parseFloat(s.weight) || 0) * (parseInt(s.reps) || 0);
+  }));
+  return total;
+};
+const calculateStreak = workouts => {
+  if (!workouts.length) return {
+    current: 0,
+    longest: 0
+  };
+  const dates = [...new Set(workouts.map(w => {
+    const d = new Date(w.date);
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+  }))].sort((a, b) => b - a);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  let current = 0;
+  if (Math.floor((today - dates[0]) / 86400000) <= 2) {
+    current = 1;
+    for (let i = 1; i < dates.length; i++) {
+      if (Math.floor((dates[i - 1] - dates[i]) / 86400000) <= 3) current++;else break;
+    }
+  }
+  let longest = 1,
+    temp = 1;
+  for (let i = 1; i < dates.length; i++) {
+    if (Math.floor((dates[i - 1] - dates[i]) / 86400000) <= 3) {
+      temp++;
+      longest = Math.max(longest, temp);
+    } else temp = 1;
+  }
+  return {
+    current,
+    longest: Math.max(longest, current)
+  };
+};
+const calculatePRs = workouts => {
+  const prs = {};
+  workouts.forEach(w => w.exercises?.forEach(ex => {
+    if (!prs[ex.name]) prs[ex.name] = {
+      maxWeight: 0,
+      maxWeightDate: null,
+      estimated1RM: 0
+    };
+    const pr = prs[ex.name];
+    ex.sets?.forEach(s => {
+      const wt = parseFloat(s.weight) || 0;
+      const rp = parseInt(s.reps) || 0;
+      if (wt > pr.maxWeight) {
+        pr.maxWeight = wt;
+        pr.maxWeightDate = w.date;
+      }
+      const e = estimate1RM(wt, rp);
+      if (e > pr.estimated1RM) pr.estimated1RM = e;
+    });
+  }));
+  return prs;
+};
+const formatDate = date => {
+  const d = new Date(date);
+  const now = new Date();
+  const diff = Math.floor((now - d) / 86400000);
+  if (diff === 0) return 'Today';
+  if (diff === 1) return 'Yesterday';
+  if (diff < 7) return `${diff} days ago`;
+  return d.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  });
+};
+const playBeep = () => {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.frequency.value = 880;
+    osc.type = 'sine';
+    gain.gain.setValueAtTime(0.5, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.5);
+    // Second beep
+    setTimeout(() => {
+      try {
+        const osc2 = ctx.createOscillator();
+        const gain2 = ctx.createGain();
+        osc2.connect(gain2);
+        gain2.connect(ctx.destination);
+        osc2.frequency.value = 1100;
+        osc2.type = 'sine';
+        gain2.gain.setValueAtTime(0.5, ctx.currentTime);
+        gain2.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+        osc2.start(ctx.currentTime);
+        osc2.stop(ctx.currentTime + 0.5);
+      } catch (e) {}
+    }, 300);
+  } catch (e) {/* Web Audio not available */}
+};
+
+// ============================================================
+// STORAGE HELPERS
+// ============================================================
+const loadJSON = (key, fallback) => {
+  try {
+    const v = localStorage.getItem(key);
+    return v ? JSON.parse(v) : fallback;
+  } catch (e) {
+    return fallback;
+  }
+};
+const saveJSON = (key, value) => {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (e) {
+    console.warn('Storage write failed:', e);
+  }
+};
+const loadStr = (key, fallback) => {
+  try {
+    return localStorage.getItem(key) || fallback;
+  } catch (e) {
+    return fallback;
+  }
+};
+
+// ============================================================
+// MAIN APP COMPONENT
+// ============================================================
+function WorkoutApp() {
+  // --- Persisted State ---
+  const [workouts, setWorkouts] = useState(() => loadJSON('w3x5_history', []));
+  const [startingWeights, setStartingWeights] = useState(() => loadJSON('w3x5_startWeights', {}));
+  const [failureTracker, setFailureTracker] = useState(() => loadJSON('w3x5_failures', {}));
+  const [unit, setUnit] = useState(() => loadStr('w3x5_unit', 'lbs'));
+  const [restDuration, setRestDuration] = useState(() => parseInt(loadStr('w3x5_restDuration', String(DEFAULT_REST_SECONDS))));
+  const [hasOnboarded, setHasOnboarded] = useState(() => loadStr('w3x5_onboarded', '') === 'true');
+  const [deadliftTransitioned, setDeadliftTransitioned] = useState(() => loadStr('w3x5_dlTransitioned', '') === 'true');
+  const [deadliftThreshold, setDeadliftThreshold] = useState(() => parseFloat(loadStr('w3x5_dlThreshold', String(DEFAULT_DEADLIFT_THRESHOLD_LBS))));
+  const [dlPromptDismissedAt, setDlPromptDismissedAt] = useState(() => parseFloat(loadStr('w3x5_dlDismissedAt', '0')));
+
+  // --- Session State ---
+  const [activeTab, setActiveTab] = useState('workout'); // workout | history | progress | settings
+  const [currentSession, setCurrentSession] = useState(null);
+  const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
+  const [setResults, setSetResults] = useState([]); // array of { status: 'pending'|'complete'|'failed', weight: number }
+  const [showOnboarding, setShowOnboarding] = useState(!hasOnboarded);
+  const [onboardingStep, setOnboardingStep] = useState(0);
+  const [tempWeights, setTempWeights] = useState({});
+  const [showPlateCalc, setShowPlateCalc] = useState(false);
+  const [plateCalcWeight, setPlateCalcWeight] = useState('');
+  const [showDlPrompt, setShowDlPrompt] = useState(false);
+  const [pendingDlConfirm, setPendingDlConfirm] = useState(false);
+
+  // --- Timer State ---
+  const [timerActive, setTimerActive] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(restDuration);
+  const timerRef = useRef(null);
+  const beepFiredRef = useRef(false);
+
+  // --- Persist on change ---
+  useEffect(() => saveJSON('w3x5_history', workouts), [workouts]);
+  useEffect(() => saveJSON('w3x5_startWeights', startingWeights), [startingWeights]);
+  useEffect(() => saveJSON('w3x5_failures', failureTracker), [failureTracker]);
+  useEffect(() => {
+    localStorage.setItem('w3x5_unit', unit);
+  }, [unit]);
+  useEffect(() => {
+    localStorage.setItem('w3x5_restDuration', String(restDuration));
+  }, [restDuration]);
+  useEffect(() => {
+    localStorage.setItem('w3x5_dlTransitioned', String(deadliftTransitioned));
+  }, [deadliftTransitioned]);
+  useEffect(() => {
+    localStorage.setItem('w3x5_dlThreshold', String(deadliftThreshold));
+  }, [deadliftThreshold]);
+  useEffect(() => {
+    localStorage.setItem('w3x5_dlDismissedAt', String(dlPromptDismissedAt));
+  }, [dlPromptDismissedAt]);
+
+  // --- Workout Templates ---
+  const getDeadliftSets = useCallback(() => deadliftTransitioned ? 1 : 3, [deadliftTransitioned]);
+  const workoutA = useMemo(() => [{
+    name: 'Squat',
+    targetReps: 5,
+    sets: 3
+  }, {
+    name: 'Bench Press',
+    targetReps: 5,
+    sets: 3
+  }, {
+    name: 'Barbell Row',
+    targetReps: 5,
+    sets: 3
+  }], []);
+  const workoutB = useMemo(() => [{
+    name: 'Squat',
+    targetReps: 5,
+    sets: 3
+  }, {
+    name: 'Overhead Press',
+    targetReps: 5,
+    sets: 3
+  }, {
+    name: 'Deadlift',
+    targetReps: 5,
+    sets: getDeadliftSets()
+  }], [getDeadliftSets]);
+  const allExerciseNames = ['Squat', 'Bench Press', 'Barbell Row', 'Overhead Press', 'Deadlift'];
+  const getNextWorkout = useCallback(() => {
+    const realWorkouts = workouts.filter(w => w.type === 'A' || w.type === 'B');
+    if (!realWorkouts.length) return {
+      type: 'A',
+      exercises: workoutA
+    };
+    return realWorkouts[realWorkouts.length - 1].type === 'A' ? {
+      type: 'B',
+      exercises: workoutB
+    } : {
+      type: 'A',
+      exercises: workoutA
+    };
+  }, [workouts, workoutA, workoutB]);
+  const currentWorkout = useMemo(() => {
+    if (currentSession) {
+      return {
+        type: currentSession.type,
+        exercises: currentSession.type === 'A' ? workoutA : workoutB
+      };
+    }
+    return getNextWorkout();
+  }, [currentSession, workoutA, workoutB, getNextWorkout]);
+  const currentExercise = currentWorkout.exercises[currentExerciseIndex];
+
+  // --- Weight Suggestion ---
+  const getSuggestedWeight = useCallback(exerciseName => {
+    const lastSession = [...workouts].reverse().find(w => w.exercises?.some(e => e.name === exerciseName));
+    const sw = startingWeights[exerciseName] || (unit === 'kg' ? 20 : 45);
+    if (!lastSession) return sw;
+    const ex = lastSession.exercises.find(e => e.name === exerciseName);
+    if (!ex?.sets?.length) return sw;
+    const lastWeight = parseFloat(ex.sets[0].weight) || sw;
+    const failures = failureTracker[exerciseName] || 0;
+    const increment = getIncrement(exerciseName, unit, deadliftTransitioned);
+    const barWeight = getBarWeight(unit);
+    if (failures >= 3) {
+      const deloaded = roundToIncrement(lastWeight * 0.9, increment);
+      return Math.max(deloaded, barWeight);
+    }
+    const targetReps = ex.targetReps || 5;
+    const targetSets = ex.targetSets || 3;
+    const allComplete = ex.sets.length >= targetSets && ex.sets.every(s => parseInt(s.reps) >= targetReps);
+    if (allComplete) return lastWeight + increment;
+    return lastWeight;
+  }, [workouts, startingWeights, failureTracker, unit, deadliftTransitioned]);
+
+  // --- Timer ---
+  useEffect(() => {
+    if (timerActive && timeLeft > 0) {
+      timerRef.current = setTimeout(() => setTimeLeft(t => t - 1), 1000);
+    } else if (timerActive && timeLeft <= 0) {
+      setTimerActive(false);
+      if (!beepFiredRef.current) {
+        playBeep();
+        if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+        beepFiredRef.current = true;
+      }
+    }
+    return () => clearTimeout(timerRef.current);
+  }, [timerActive, timeLeft]);
+  const startTimer = useCallback(() => {
+    beepFiredRef.current = false;
+    setTimeLeft(restDuration);
+    setTimerActive(true);
+  }, [restDuration]);
+  const stopTimer = useCallback(() => {
+    setTimerActive(false);
+    setTimeLeft(restDuration);
+  }, [restDuration]);
+  const formatTime = secs => `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')}`;
+
+  // --- PRs & Stats ---
+  const personalRecords = useMemo(() => calculatePRs(workouts), [workouts]);
+  const streak = useMemo(() => calculateStreak(workouts), [workouts]);
+
+  // --- Deadlift Transition Check ---
+  const checkDeadliftTransition = useCallback(weight => {
+    if (deadliftTransitioned) return;
+    const threshold = unit === 'kg' ? deadliftThreshold * 0.453592 : deadliftThreshold;
+    const effectiveThreshold = unit === 'kg' ? roundToIncrement(threshold, 2.5) : deadliftThreshold;
+    if (weight >= effectiveThreshold) {
+      if (dlPromptDismissedAt === 0 || weight >= dlPromptDismissedAt + 10) {
+        setShowDlPrompt(true);
+      }
+    }
+  }, [deadliftTransitioned, deadliftThreshold, unit, dlPromptDismissedAt]);
+
+  // --- Start Workout ---
+  const startWorkout = useCallback(() => {
+    const next = getNextWorkout();
+    setCurrentSession({
+      date: new Date().toISOString(),
+      type: next.type,
+      exercises: []
+    });
+    setCurrentExerciseIndex(0);
+    const ex = next.exercises[0];
+    const w = getSuggestedWeight(ex.name);
+    setSetResults(Array(ex.sets).fill(null).map(() => ({
+      status: 'pending',
+      weight: w
+    })));
+    setActiveTab('workout');
+  }, [getNextWorkout, getSuggestedWeight]);
+
+  // --- Initialize sets for current exercise ---
+  const initSetsForExercise = useCallback((exerciseIdx, workout) => {
+    const ex = workout.exercises[exerciseIdx];
+    if (!ex) return;
+    const w = getSuggestedWeight(ex.name);
+    setSetResults(Array(ex.sets).fill(null).map(() => ({
+      status: 'pending',
+      weight: w
+    })));
+  }, [getSuggestedWeight]);
+
+  // --- Log Set ---
+  const logSet = useCallback((setIdx, status) => {
+    setSetResults(prev => {
+      const next = [...prev];
+      next[setIdx] = {
+        ...next[setIdx],
+        status
+      };
+      return next;
+    });
+    // Auto-start rest timer
+    startTimer();
+  }, [startTimer]);
+
+  // --- Complete Exercise ---
+  const completeExercise = useCallback(() => {
+    if (!currentExercise || !currentSession) return;
+    const completedSets = setResults.map((s, i) => ({
+      weight: String(s.weight),
+      reps: s.status === 'complete' ? String(currentExercise.targetReps) : s.status === 'failed' ? '0' : '0'
+    }));
+    const exerciseData = {
+      name: currentExercise.name,
+      sets: completedSets,
+      targetReps: currentExercise.targetReps,
+      targetSets: currentExercise.sets
+    };
+    const allSuccess = setResults.every(s => s.status === 'complete');
+    const newFailures = {
+      ...failureTracker
+    };
+    if (allSuccess) {
+      newFailures[currentExercise.name] = 0;
+      // Check deadlift transition
+      if (currentExercise.name === 'Deadlift') {
+        checkDeadliftTransition(setResults[0]?.weight || 0);
+      }
+    } else {
+      newFailures[currentExercise.name] = (newFailures[currentExercise.name] || 0) + 1;
+    }
+    setFailureTracker(newFailures);
+    const updatedSession = {
+      ...currentSession,
+      exercises: [...currentSession.exercises, exerciseData]
+    };
+    stopTimer();
+    if (currentExerciseIndex < currentWorkout.exercises.length - 1) {
+      setCurrentSession(updatedSession);
+      const nextIdx = currentExerciseIndex + 1;
+      setCurrentExerciseIndex(nextIdx);
+      initSetsForExercise(nextIdx, currentWorkout);
+    } else {
+      // Workout complete
+      setWorkouts(prev => [...prev, updatedSession]);
+      setCurrentSession(null);
+      setCurrentExerciseIndex(0);
+    }
+  }, [currentExercise, currentSession, setResults, failureTracker, currentExerciseIndex, currentWorkout, stopTimer, checkDeadliftTransition, initSetsForExercise]);
+
+  // --- Deadlift Transition Handlers ---
+  const confirmDlTransition = useCallback(() => {
+    setDeadliftTransitioned(true);
+    setShowDlPrompt(false);
+    // Log transition in a special way
+    const note = {
+      date: new Date().toISOString(),
+      type: 'NOTE',
+      exercises: [{
+        name: 'Deadlift Transition',
+        sets: [{
+          weight: 'Switched to 1x5 conventional',
+          reps: '0'
+        }]
+      }]
+    };
+    setWorkouts(prev => [...prev, note]);
+  }, []);
+  const dismissDlPrompt = useCallback(() => {
+    const currentDlWeight = getSuggestedWeight('Deadlift');
+    setDlPromptDismissedAt(currentDlWeight);
+    localStorage.setItem('w3x5_dlDismissedAt', String(currentDlWeight));
+    setShowDlPrompt(false);
+  }, [getSuggestedWeight]);
+
+  // --- Onboarding ---
+  const completeOnboarding = useCallback(() => {
+    setStartingWeights(tempWeights);
+    setHasOnboarded(true);
+    localStorage.setItem('w3x5_onboarded', 'true');
+    setShowOnboarding(false);
+  }, [tempWeights]);
+
+  // --- Reset ---
+  const resetAll = useCallback(() => {
+    if (confirm('This will delete ALL workout data and settings. Are you sure?')) {
+      if (confirm('Final confirmation: Reset everything and return to setup?')) {
+        Object.keys(localStorage).filter(k => k.startsWith('w3x5_')).forEach(k => localStorage.removeItem(k));
+        window.location.reload();
+      }
+    }
+  }, []);
+
+  // --- Unit display helper ---
+  const wu = unit; // shorthand for unit label
+
+  // ============================================================
+  // RENDER: ONBOARDING
+  // ============================================================
+  if (showOnboarding) {
+    if (onboardingStep === 0) {
+      return /*#__PURE__*/React.createElement("div", {
+        className: "min-h-screen bg-slate-900 flex items-center justify-center p-4"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "max-w-md w-full bg-slate-800 rounded-2xl p-8 border border-slate-700"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "text-center mb-8"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "inline-flex items-center justify-center w-20 h-20 bg-indigo-600 rounded-2xl mb-6"
+      }, /*#__PURE__*/React.createElement("svg", {
+        width: "48",
+        height: "48",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "white",
+        strokeWidth: "2"
+      }, /*#__PURE__*/React.createElement("path", {
+        d: "M14.4 14.4L9.6 9.6"
+      }), /*#__PURE__*/React.createElement("path", {
+        d: "M18.657 21.485a2 2 0 1 1-2.829-2.828l-1.767 1.768a2 2 0 1 1-2.829-2.829l6.364-6.364a2 2 0 1 1 2.829 2.829l-1.768 1.767a2 2 0 1 1 2.828 2.829z"
+      }))), /*#__PURE__*/React.createElement("h1", {
+        className: "text-3xl font-black text-white mb-2"
+      }, "3x5 Strength"), /*#__PURE__*/React.createElement("p", {
+        className: "text-slate-400"
+      }, "Progressive barbell training")), /*#__PURE__*/React.createElement("div", {
+        className: "space-y-3 mb-8"
+      }, [['Progressive Overload', 'Add weight every successful session'], ['A/B Split', 'Alternate two full-body workouts'], ['Track Everything', 'Log sets, view charts, hit PRs']].map(([title, desc], i) => /*#__PURE__*/React.createElement("div", {
+        key: i,
+        className: "flex items-start gap-3 bg-slate-700/50 p-4 rounded-xl border border-slate-600"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "flex-shrink-0 w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white font-bold text-sm"
+      }, i + 1), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+        className: "text-white font-semibold"
+      }, title), /*#__PURE__*/React.createElement("div", {
+        className: "text-slate-400 text-sm"
+      }, desc))))), /*#__PURE__*/React.createElement("div", {
+        className: "bg-slate-700/50 rounded-xl p-4 mb-6 border border-slate-600"
+      }, /*#__PURE__*/React.createElement("label", {
+        className: "block text-white font-semibold mb-3"
+      }, "Unit Preference"), /*#__PURE__*/React.createElement("div", {
+        className: "flex gap-3"
+      }, ['lbs', 'kg'].map(u => /*#__PURE__*/React.createElement("button", {
+        key: u,
+        onClick: () => setUnit(u),
+        className: `flex-1 py-3 rounded-xl font-bold text-sm transition-all ${unit === u ? 'bg-indigo-600 text-white' : 'bg-slate-600 text-slate-300 hover:bg-slate-500'}`
+      }, u.toUpperCase())))), /*#__PURE__*/React.createElement("button", {
+        onClick: () => {
+          // Prefill defaults
+          const defaults = {};
+          allExerciseNames.forEach(n => {
+            defaults[n] = unit === 'kg' ? 20 : 45;
+          });
+          setTempWeights(defaults);
+          setOnboardingStep(1);
+        },
+        className: "w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 rounded-xl text-lg transition-colors",
+        style: {
+          minHeight: '52px'
+        }
+      }, "Set Starting Weights \u2192")));
+    }
+
+    // Step 1: Starting Weights
+    const filled = allExerciseNames.filter(n => tempWeights[n] && parseFloat(tempWeights[n]) > 0).length;
+    return /*#__PURE__*/React.createElement("div", {
+      className: "min-h-screen bg-slate-900 p-4"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "max-w-md mx-auto pt-8"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "bg-slate-800 rounded-2xl p-6 border border-slate-700"
+    }, /*#__PURE__*/React.createElement("h2", {
+      className: "text-2xl font-black text-white mb-1"
+    }, "Starting Weights"), /*#__PURE__*/React.createElement("p", {
+      className: "text-slate-400 text-sm mb-6"
+    }, "Start light. You'll add ", unit === 'kg' ? '1.25-2.5' : '2.5-5', " ", wu, " each session."), /*#__PURE__*/React.createElement("div", {
+      className: "space-y-3 mb-6"
+    }, allExerciseNames.map(name => /*#__PURE__*/React.createElement("div", {
+      key: name,
+      className: "bg-slate-700/50 rounded-xl p-4 border border-slate-600"
+    }, /*#__PURE__*/React.createElement("label", {
+      className: "block text-white font-semibold mb-2"
+    }, name), /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-3"
+    }, /*#__PURE__*/React.createElement("input", {
+      type: "number",
+      inputMode: "decimal",
+      value: tempWeights[name] || '',
+      onChange: e => setTempWeights(p => ({
+        ...p,
+        [name]: e.target.value
+      })),
+      className: "flex-1 bg-slate-600 text-white text-xl font-bold rounded-lg px-4 py-3 border border-slate-500 focus:border-indigo-500 focus:outline-none",
+      placeholder: unit === 'kg' ? '20' : '45'
+    }), /*#__PURE__*/React.createElement("span", {
+      className: "text-slate-400 font-semibold"
+    }, wu))))), /*#__PURE__*/React.createElement("div", {
+      className: "bg-blue-900/30 border border-blue-700/50 rounded-xl p-3 mb-4"
+    }, /*#__PURE__*/React.createElement("p", {
+      className: "text-blue-200 text-sm"
+    }, "Tip: Start with the empty bar (", unit === 'kg' ? '20 kg' : '45 lbs', ") for most lifts if you're new.")), /*#__PURE__*/React.createElement("div", {
+      className: "w-full bg-slate-700 rounded-full h-2 mb-4"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "bg-indigo-600 h-2 rounded-full transition-all",
+      style: {
+        width: `${filled / allExerciseNames.length * 100}%`
+      }
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "flex gap-3"
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: () => setOnboardingStep(0),
+      className: "flex-1 bg-slate-700 hover:bg-slate-600 text-white font-bold py-4 rounded-xl transition-colors",
+      style: {
+        minHeight: '52px'
+      }
+    }, "Back"), /*#__PURE__*/React.createElement("button", {
+      onClick: completeOnboarding,
+      disabled: filled < allExerciseNames.length,
+      className: "flex-1 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold py-4 rounded-xl transition-colors",
+      style: {
+        minHeight: '52px'
+      }
+    }, "Start Training")))));
+  }
+
+  // ============================================================
+  // RENDER: ACTIVE WORKOUT
+  // ============================================================
+  if (currentSession) {
+    const ex = currentExercise;
+    const suggestedWeight = getSuggestedWeight(ex.name);
+    const allSetsResolved = setResults.every(s => s.status !== 'pending');
+    const failCount = failureTracker[ex.name] || 0;
+    const isDeload = failCount >= 3;
+    return /*#__PURE__*/React.createElement("div", {
+      className: "min-h-screen bg-slate-900 flex flex-col"
+    }, showDlPrompt && /*#__PURE__*/React.createElement("div", {
+      className: "fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4",
+      onClick: () => {}
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "bg-slate-800 rounded-2xl p-6 max-w-sm w-full border border-yellow-600"
+    }, /*#__PURE__*/React.createElement("h3", {
+      className: "text-xl font-black text-yellow-400 mb-3"
+    }, "Barbell Territory!"), /*#__PURE__*/React.createElement("p", {
+      className: "text-slate-300 mb-4"
+    }, "You're approaching ", /*#__PURE__*/React.createElement("strong", null, deadliftThreshold, " ", wu), " on deadlift. Want to switch to conventional deadlift at ", /*#__PURE__*/React.createElement("strong", null, "1x5"), " with +", unit === 'kg' ? '2.5' : '5', " ", wu, " progression?"), /*#__PURE__*/React.createElement("div", {
+      className: "flex gap-3"
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: dismissDlPrompt,
+      className: "flex-1 bg-slate-700 text-white font-bold py-3 rounded-xl",
+      style: {
+        minHeight: '48px'
+      }
+    }, "Not Yet"), /*#__PURE__*/React.createElement("button", {
+      onClick: confirmDlTransition,
+      className: "flex-1 bg-yellow-600 text-white font-bold py-3 rounded-xl",
+      style: {
+        minHeight: '48px'
+      }
+    }, "Switch to 1x5")))), showPlateCalc && /*#__PURE__*/React.createElement("div", {
+      className: "fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4",
+      onClick: () => setShowPlateCalc(false)
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "bg-slate-800 rounded-2xl p-6 max-w-sm w-full border border-slate-600",
+      onClick: e => e.stopPropagation()
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center justify-between mb-4"
+    }, /*#__PURE__*/React.createElement("h3", {
+      className: "text-xl font-black text-white"
+    }, "Plate Calculator"), /*#__PURE__*/React.createElement("button", {
+      onClick: () => setShowPlateCalc(false),
+      className: "text-slate-400 hover:text-white text-2xl"
+    }, "\xD7")), /*#__PURE__*/React.createElement("div", {
+      className: "mb-4"
+    }, /*#__PURE__*/React.createElement("label", {
+      className: "block text-slate-400 text-sm mb-1"
+    }, "Target Weight (", wu, ")"), /*#__PURE__*/React.createElement("input", {
+      type: "number",
+      inputMode: "decimal",
+      value: plateCalcWeight,
+      onChange: e => setPlateCalcWeight(e.target.value),
+      className: "w-full bg-slate-700 text-white text-2xl font-bold rounded-lg px-4 py-3 border border-slate-600 focus:border-indigo-500 focus:outline-none text-center"
+    })), (() => {
+      const w = parseFloat(plateCalcWeight);
+      const bw = getBarWeight(unit);
+      if (!w || w < bw) return /*#__PURE__*/React.createElement("p", {
+        className: "text-slate-400 text-center"
+      }, "Enter a weight \u2265 ", bw, " ", wu);
+      const res = calculatePlates(w, unit);
+      return /*#__PURE__*/React.createElement("div", {
+        className: "space-y-3"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "bg-slate-700/50 rounded-xl p-4 text-center border border-slate-600"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "text-slate-400 text-sm mb-1"
+      }, "Each Side"), /*#__PURE__*/React.createElement("div", {
+        className: "text-3xl font-black text-white"
+      }, res.perSide, " ", wu)), res.plates.length > 0 ? /*#__PURE__*/React.createElement("div", {
+        className: "flex flex-wrap gap-2 justify-center"
+      }, res.plates.map((p, i) => /*#__PURE__*/React.createElement("div", {
+        key: i,
+        className: "bg-indigo-600 rounded-lg px-3 py-2 text-white font-bold"
+      }, p))) : /*#__PURE__*/React.createElement("p", {
+        className: "text-slate-400 text-center text-sm"
+      }, "Bar only"), res.remaining > 0 && /*#__PURE__*/React.createElement("div", {
+        className: "bg-yellow-900/30 border border-yellow-700/50 rounded-lg p-2 text-center"
+      }, /*#__PURE__*/React.createElement("span", {
+        className: "text-yellow-400 text-sm"
+      }, "Remaining: ", res.remaining, " ", wu, "/side (no matching plate)")));
+    })())), /*#__PURE__*/React.createElement("div", {
+      className: "bg-slate-800 border-b border-slate-700 px-4 py-3"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "max-w-lg mx-auto flex items-center justify-between"
+    }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+      className: "text-slate-400 text-xs font-medium"
+    }, "Workout ", currentWorkout.type), /*#__PURE__*/React.createElement("div", {
+      className: "text-white text-lg font-black"
+    }, ex.name)), /*#__PURE__*/React.createElement("div", {
+      className: "text-right"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "text-slate-400 text-xs"
+    }, "Exercise"), /*#__PURE__*/React.createElement("div", {
+      className: "text-white font-bold"
+    }, currentExerciseIndex + 1, "/", currentWorkout.exercises.length)))), /*#__PURE__*/React.createElement("div", {
+      className: "flex-1 overflow-y-auto px-4 py-4"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "max-w-lg mx-auto space-y-4"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "bg-slate-800 rounded-xl p-5 border border-slate-700"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "text-slate-400 text-sm mb-1"
+    }, "Target Weight"), /*#__PURE__*/React.createElement("div", {
+      className: "text-4xl font-black text-white mb-1"
+    }, suggestedWeight, " ", wu), /*#__PURE__*/React.createElement("div", {
+      className: "text-slate-500 text-sm"
+    }, ex.sets, " \xD7 ", ex.targetReps, " reps"), isDeload && /*#__PURE__*/React.createElement("div", {
+      className: "mt-2 bg-yellow-900/30 border border-yellow-700/50 rounded-lg px-3 py-2"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-yellow-400 text-sm font-semibold"
+    }, "Deload: 3 consecutive failures. Weight reduced 10%.")), /*#__PURE__*/React.createElement("div", {
+      className: "flex gap-2 mt-3"
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: () => {
+        setPlateCalcWeight(String(suggestedWeight));
+        setShowPlateCalc(true);
+      },
+      className: "flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-2 rounded-lg text-sm transition-colors",
+      style: {
+        minHeight: '40px'
+      }
+    }, "Plates"))), timerActive && /*#__PURE__*/React.createElement("div", {
+      className: `rounded-xl p-4 border text-center ${timeLeft <= 0 ? 'bg-green-900/30 border-green-600' : 'bg-slate-800 border-slate-700'}`
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "text-slate-400 text-sm mb-1"
+    }, timeLeft <= 0 ? 'Rest Complete!' : 'Rest Timer'), /*#__PURE__*/React.createElement("div", {
+      className: `text-4xl font-black ${timeLeft <= 10 && timeLeft > 0 ? 'text-red-400' : timeLeft <= 0 ? 'text-green-400' : 'text-white'}`
+    }, formatTime(Math.max(0, timeLeft))), /*#__PURE__*/React.createElement("button", {
+      onClick: stopTimer,
+      className: "mt-2 text-slate-400 hover:text-white text-sm underline"
+    }, "Skip")), /*#__PURE__*/React.createElement("div", {
+      className: "space-y-3"
+    }, setResults.map((set, idx) => /*#__PURE__*/React.createElement("div", {
+      key: idx,
+      className: `rounded-xl p-4 border transition-all ${set.status === 'complete' ? 'bg-green-900/20 border-green-700' : set.status === 'failed' ? 'bg-red-900/20 border-red-700' : 'bg-slate-800 border-slate-700'}`
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center justify-between mb-3"
+    }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
+      className: "text-white font-bold"
+    }, "Set ", idx + 1), /*#__PURE__*/React.createElement("span", {
+      className: "text-slate-400 text-sm ml-2"
+    }, set.weight, " ", wu, " \xD7 ", ex.targetReps)), set.status === 'complete' && /*#__PURE__*/React.createElement("span", {
+      className: "text-green-400 font-bold text-lg"
+    }, "\u2713"), set.status === 'failed' && /*#__PURE__*/React.createElement("span", {
+      className: "text-red-400 font-bold text-lg"
+    }, "\u2717")), set.status === 'pending' && /*#__PURE__*/React.createElement("div", {
+      className: "flex gap-3"
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: () => logSet(idx, 'complete'),
+      className: "flex-1 bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-lg transition-colors",
+      style: {
+        minHeight: '48px'
+      }
+    }, "\u2713 Complete"), /*#__PURE__*/React.createElement("button", {
+      onClick: () => logSet(idx, 'failed'),
+      className: "flex-1 bg-red-600 hover:bg-red-500 text-white font-bold py-3 rounded-lg transition-colors",
+      style: {
+        minHeight: '48px'
+      }
+    }, "\u2717 Failed")), set.status !== 'pending' && /*#__PURE__*/React.createElement("button", {
+      onClick: () => setSetResults(prev => {
+        const n = [...prev];
+        n[idx] = {
+          ...n[idx],
+          status: 'pending'
+        };
+        return n;
+      }),
+      className: "text-slate-500 hover:text-slate-300 text-xs underline"
+    }, "Undo")))), /*#__PURE__*/React.createElement("button", {
+      onClick: completeExercise,
+      disabled: !allSetsResolved,
+      className: "w-full bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed text-white font-black py-4 rounded-xl text-lg transition-colors",
+      style: {
+        minHeight: '56px'
+      }
+    }, currentExerciseIndex < currentWorkout.exercises.length - 1 ? 'Next Exercise \u2192' : 'Complete Workout \u2713'))));
+  }
+
+  // ============================================================
+  // RENDER: WORKOUT COMPLETE (just finished)
+  // ============================================================
+  const justFinished = workouts.length > 0 && (() => {
+    const realWorkouts = workouts.filter(w => w.type === 'A' || w.type === 'B');
+    if (!realWorkouts.length) return false;
+    const last = realWorkouts[realWorkouts.length - 1];
+    const ld = new Date(last.date);
+    const now = new Date();
+    return ld.getDate() === now.getDate() && ld.getMonth() === now.getMonth() && ld.getFullYear() === now.getFullYear();
+  })();
+
+  // ============================================================
+  // TAB: WORKOUT
+  // ============================================================
+  const renderWorkoutTab = () => {
+    if (justFinished && !currentSession) {
+      const last = workouts.filter(w => w.type !== 'NOTE').pop();
+      if (!last) return renderNextWorkout();
+      const vol = calculateVolume(last.exercises);
+      const msg = MOTIVATIONAL_MESSAGES[Math.floor(Math.random() * MOTIVATIONAL_MESSAGES.length)];
+      // Check PRs
+      const newPRs = [];
+      last.exercises?.forEach(ex => {
+        const pr = personalRecords[ex.name];
+        if (pr) {
+          const maxW = Math.max(...(ex.sets?.map(s => parseFloat(s.weight) || 0) || [0]));
+          if (maxW > 0 && maxW >= pr.maxWeight) newPRs.push(ex.name);
+        }
+      });
+      return /*#__PURE__*/React.createElement("div", {
+        className: "space-y-4"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "bg-slate-800 rounded-xl p-6 border border-slate-700 text-center"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "text-5xl mb-4"
+      }, "\uD83C\uDFC6"), /*#__PURE__*/React.createElement("h2", {
+        className: "text-2xl font-black text-white mb-2"
+      }, "Workout Complete!"), /*#__PURE__*/React.createElement("p", {
+        className: "text-slate-400 italic mb-4"
+      }, "\"", msg, "\""), newPRs.length > 0 && /*#__PURE__*/React.createElement("div", {
+        className: "bg-yellow-900/30 border border-yellow-600 rounded-xl p-3 mb-4"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "text-yellow-400 font-bold mb-1"
+      }, "New PR", newPRs.length > 1 ? 's' : '', "!"), newPRs.map(n => /*#__PURE__*/React.createElement("div", {
+        key: n,
+        className: "text-yellow-200 text-sm"
+      }, n))), /*#__PURE__*/React.createElement("div", {
+        className: "grid grid-cols-2 gap-3 mb-4"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "bg-slate-700/50 rounded-xl p-3 border border-slate-600"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "text-slate-400 text-xs"
+      }, "Volume"), /*#__PURE__*/React.createElement("div", {
+        className: "text-xl font-black text-white"
+      }, (vol / 1000).toFixed(1), "K ", wu)), /*#__PURE__*/React.createElement("div", {
+        className: "bg-slate-700/50 rounded-xl p-3 border border-slate-600"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "text-slate-400 text-xs"
+      }, "Streak"), /*#__PURE__*/React.createElement("div", {
+        className: "text-xl font-black text-white"
+      }, streak.current))), /*#__PURE__*/React.createElement("div", {
+        className: "bg-slate-700/50 rounded-xl p-3 mb-4 border border-slate-600"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "text-slate-400 text-xs mb-2"
+      }, "Session Summary"), last.exercises?.map(ex => /*#__PURE__*/React.createElement("div", {
+        key: ex.name,
+        className: "flex justify-between py-1"
+      }, /*#__PURE__*/React.createElement("span", {
+        className: "text-white text-sm font-semibold"
+      }, ex.name), /*#__PURE__*/React.createElement("span", {
+        className: "text-slate-400 text-sm"
+      }, ex.sets?.[0]?.weight, " ", wu, " \xD7 ", ex.sets?.length, " sets")))), /*#__PURE__*/React.createElement("button", {
+        onClick: () => {
+          if (confirm('Start another workout today?')) startWorkout();
+        },
+        className: "text-slate-500 hover:text-slate-300 text-sm underline"
+      }, "Do another workout")));
+    }
+    return renderNextWorkout();
+  };
+  const renderNextWorkout = () => {
+    const next = getNextWorkout();
+    return /*#__PURE__*/React.createElement("div", {
+      className: "space-y-4"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "bg-slate-800 rounded-xl p-5 border border-slate-700"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "text-slate-400 text-sm mb-1"
+    }, "Next Workout"), /*#__PURE__*/React.createElement("h2", {
+      className: "text-3xl font-black text-white mb-4"
+    }, "Workout ", next.type), /*#__PURE__*/React.createElement("div", {
+      className: "space-y-2 mb-5"
+    }, next.exercises.map((ex, i) => {
+      const w = getSuggestedWeight(ex.name);
+      const fails = failureTracker[ex.name] || 0;
+      return /*#__PURE__*/React.createElement("div", {
+        key: i,
+        className: "bg-slate-700/50 rounded-lg p-3 flex justify-between items-center border border-slate-600"
+      }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+        className: "text-white font-semibold"
+      }, ex.name), /*#__PURE__*/React.createElement("div", {
+        className: "text-slate-400 text-xs"
+      }, ex.sets, " \xD7 ", ex.targetReps)), /*#__PURE__*/React.createElement("div", {
+        className: "text-right"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "text-white font-bold"
+      }, w, " ", wu), fails >= 3 && /*#__PURE__*/React.createElement("div", {
+        className: "text-yellow-400 text-xs"
+      }, "DELOAD"), fails > 0 && fails < 3 && /*#__PURE__*/React.createElement("div", {
+        className: "text-red-400 text-xs"
+      }, fails, "/3 fails")));
+    })), /*#__PURE__*/React.createElement("button", {
+      onClick: startWorkout,
+      className: "w-full bg-indigo-600 hover:bg-indigo-500 text-white font-black py-4 rounded-xl text-lg transition-colors",
+      style: {
+        minHeight: '56px'
+      }
+    }, "Start Workout")), workouts.filter(w => w.type !== 'NOTE').length > 0 && /*#__PURE__*/React.createElement("div", {
+      className: "bg-slate-800 rounded-xl p-5 border border-slate-700"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "grid grid-cols-3 gap-3"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "text-center"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "text-2xl font-black text-white"
+    }, workouts.filter(w => w.type !== 'NOTE').length), /*#__PURE__*/React.createElement("div", {
+      className: "text-slate-400 text-xs"
+    }, "Workouts")), /*#__PURE__*/React.createElement("div", {
+      className: "text-center"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "text-2xl font-black text-white"
+    }, streak.current), /*#__PURE__*/React.createElement("div", {
+      className: "text-slate-400 text-xs"
+    }, "Streak")), /*#__PURE__*/React.createElement("div", {
+      className: "text-center"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "text-2xl font-black text-white"
+    }, streak.longest), /*#__PURE__*/React.createElement("div", {
+      className: "text-slate-400 text-xs"
+    }, "Best")))));
+  };
+
+  // ============================================================
+  // TAB: HISTORY
+  // ============================================================
+  const renderHistoryTab = () => {
+    const realWorkouts = workouts.filter(w => w.type !== 'NOTE');
+    if (!realWorkouts.length) {
+      return /*#__PURE__*/React.createElement("div", {
+        className: "bg-slate-800 rounded-xl p-8 border border-slate-700 text-center"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "text-4xl mb-3"
+      }, "\uD83D\uDCCB"), /*#__PURE__*/React.createElement("p", {
+        className: "text-slate-400"
+      }, "No workouts yet. Complete your first session!"));
+    }
+    return /*#__PURE__*/React.createElement("div", {
+      className: "space-y-3"
+    }, realWorkouts.slice().reverse().map((w, i) => /*#__PURE__*/React.createElement("div", {
+      key: i,
+      className: "bg-slate-800 rounded-xl p-4 border border-slate-700"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex justify-between items-start mb-3"
+    }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+      className: "text-white font-bold"
+    }, "Workout ", w.type), /*#__PURE__*/React.createElement("div", {
+      className: "text-slate-400 text-sm"
+    }, formatDate(w.date))), /*#__PURE__*/React.createElement("div", {
+      className: "text-slate-500 text-xs"
+    }, new Date(w.date).toLocaleDateString())), /*#__PURE__*/React.createElement("div", {
+      className: "space-y-2"
+    }, w.exercises?.map((ex, j) => /*#__PURE__*/React.createElement("div", {
+      key: j,
+      className: "bg-slate-700/50 rounded-lg p-3 border border-slate-600"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "text-white font-semibold text-sm mb-1"
+    }, ex.name), /*#__PURE__*/React.createElement("div", {
+      className: "flex flex-wrap gap-2"
+    }, ex.sets?.map((s, k) => {
+      const reps = parseInt(s.reps) || 0;
+      const isSuccess = reps >= (ex.targetReps || 5);
+      return /*#__PURE__*/React.createElement("div", {
+        key: k,
+        className: `rounded px-2 py-1 text-xs font-bold ${isSuccess ? 'bg-green-900/40 text-green-400 border border-green-800' : 'bg-red-900/40 text-red-400 border border-red-800'}`
+      }, s.weight, " ", wu, " \xD7 ", s.reps);
+    }))))))));
+  };
+
+  // ============================================================
+  // TAB: PROGRESS
+  // ============================================================
+  const renderProgressTab = () => {
+    const realWorkouts = workouts.filter(w => w.type !== 'NOTE');
+    if (!realWorkouts.length) {
+      return /*#__PURE__*/React.createElement("div", {
+        className: "bg-slate-800 rounded-xl p-8 border border-slate-700 text-center"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "text-4xl mb-3"
+      }, "\uD83D\uDCC8"), /*#__PURE__*/React.createElement("p", {
+        className: "text-slate-400"
+      }, "Complete workouts to see progress charts."));
+    }
+    return /*#__PURE__*/React.createElement("div", {
+      className: "space-y-6"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "bg-slate-800 rounded-xl p-5 border border-slate-700"
+    }, /*#__PURE__*/React.createElement("h3", {
+      className: "text-lg font-bold text-white mb-3"
+    }, "Personal Records"), Object.keys(personalRecords).length === 0 ? /*#__PURE__*/React.createElement("p", {
+      className: "text-slate-400 text-sm"
+    }, "No PRs yet.") : /*#__PURE__*/React.createElement("div", {
+      className: "grid grid-cols-1 gap-2"
+    }, Object.entries(personalRecords).map(([name, pr]) => /*#__PURE__*/React.createElement("div", {
+      key: name,
+      className: "bg-slate-700/50 rounded-lg p-3 flex justify-between items-center border border-slate-600"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-white font-semibold text-sm"
+    }, name), /*#__PURE__*/React.createElement("div", {
+      className: "text-right"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "text-white font-bold"
+    }, pr.maxWeight, " ", wu), /*#__PURE__*/React.createElement("div", {
+      className: "text-slate-400 text-xs"
+    }, "Est. 1RM: ", pr.estimated1RM, " ", wu)))))), allExerciseNames.map(name => {
+      const data = [];
+      let prWeight = 0;
+      let prIdx = -1;
+      realWorkouts.forEach((w, wi) => {
+        const ex = w.exercises?.find(e => e.name === name);
+        if (ex?.sets?.length) {
+          const wt = parseFloat(ex.sets[0].weight) || 0;
+          data.push({
+            session: data.length + 1,
+            weight: wt,
+            date: formatDate(w.date)
+          });
+          if (wt > prWeight) {
+            prWeight = wt;
+            prIdx = data.length - 1;
+          }
+        }
+      });
+      if (!data.length) return null;
+      const latest = data[data.length - 1].weight;
+      const first = data[0].weight;
+      const gain = latest - first;
+      return /*#__PURE__*/React.createElement("div", {
+        key: name,
+        className: "bg-slate-800 rounded-xl p-5 border border-slate-700"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "flex justify-between items-start mb-3"
+      }, /*#__PURE__*/React.createElement("h3", {
+        className: "text-lg font-bold text-white"
+      }, name), /*#__PURE__*/React.createElement("div", {
+        className: "text-right"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "text-white font-bold"
+      }, latest, " ", wu), /*#__PURE__*/React.createElement("div", {
+        className: `text-xs font-semibold ${gain >= 0 ? 'text-green-400' : 'text-red-400'}`
+      }, gain >= 0 ? '+' : '', gain, " ", wu))), /*#__PURE__*/React.createElement(SimpleLineChart, {
+        data: data.slice(-20),
+        dataKey: "weight",
+        xKey: "session",
+        unit: wu,
+        prIndex: prIdx >= data.length - 20 ? prIdx - Math.max(0, data.length - 20) : -1
+      }), prWeight > 0 && /*#__PURE__*/React.createElement("div", {
+        className: "text-yellow-400 text-xs mt-1"
+      }, "\u2605 PR: ", prWeight, " ", wu));
+    }));
+  };
+
+  // ============================================================
+  // TAB: SETTINGS
+  // ============================================================
+  const [editingWeights, setEditingWeights] = useState(false);
+  const [tempEditWeights, setTempEditWeights] = useState({});
+  const renderSettingsTab = () => {
+    return /*#__PURE__*/React.createElement("div", {
+      className: "space-y-4"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "bg-slate-800 rounded-xl p-5 border border-slate-700"
+    }, /*#__PURE__*/React.createElement("label", {
+      className: "block text-white font-semibold mb-3"
+    }, "Unit"), /*#__PURE__*/React.createElement("div", {
+      className: "flex gap-3"
+    }, ['lbs', 'kg'].map(u => /*#__PURE__*/React.createElement("button", {
+      key: u,
+      onClick: () => setUnit(u),
+      className: `flex-1 py-3 rounded-xl font-bold transition-colors ${unit === u ? 'bg-indigo-600 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`,
+      style: {
+        minHeight: '48px'
+      }
+    }, u.toUpperCase())))), /*#__PURE__*/React.createElement("div", {
+      className: "bg-slate-800 rounded-xl p-5 border border-slate-700"
+    }, /*#__PURE__*/React.createElement("label", {
+      className: "block text-white font-semibold mb-3"
+    }, "Rest Timer"), /*#__PURE__*/React.createElement("div", {
+      className: "grid grid-cols-4 gap-2"
+    }, REST_OPTIONS.map(opt => /*#__PURE__*/React.createElement("button", {
+      key: opt.value,
+      onClick: () => setRestDuration(opt.value),
+      className: `py-3 rounded-xl font-bold text-sm transition-colors ${restDuration === opt.value ? 'bg-indigo-600 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`,
+      style: {
+        minHeight: '48px'
+      }
+    }, opt.label)))), /*#__PURE__*/React.createElement("div", {
+      className: "bg-slate-800 rounded-xl p-5 border border-slate-700"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center justify-between mb-3"
+    }, /*#__PURE__*/React.createElement("label", {
+      className: "text-white font-semibold"
+    }, "Current Weights"), !editingWeights ? /*#__PURE__*/React.createElement("button", {
+      onClick: () => {
+        const w = {};
+        allExerciseNames.forEach(n => {
+          w[n] = getSuggestedWeight(n);
+        });
+        setTempEditWeights(w);
+        setEditingWeights(true);
+      },
+      className: "text-indigo-400 hover:text-indigo-300 text-sm font-semibold"
+    }, "Edit") : /*#__PURE__*/React.createElement("div", {
+      className: "flex gap-2"
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: () => setEditingWeights(false),
+      className: "text-slate-400 hover:text-slate-300 text-sm"
+    }, "Cancel"), /*#__PURE__*/React.createElement("button", {
+      onClick: () => {
+        setStartingWeights(tempEditWeights);
+        // Reset failure tracker since weights are manually set
+        setFailureTracker({});
+        setEditingWeights(false);
+      },
+      className: "text-green-400 hover:text-green-300 text-sm font-semibold"
+    }, "Save"))), /*#__PURE__*/React.createElement("div", {
+      className: "space-y-2"
+    }, allExerciseNames.map(name => /*#__PURE__*/React.createElement("div", {
+      key: name,
+      className: "bg-slate-700/50 rounded-lg p-3 flex justify-between items-center border border-slate-600"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-white text-sm font-semibold"
+    }, name), editingWeights ? /*#__PURE__*/React.createElement("input", {
+      type: "number",
+      inputMode: "decimal",
+      value: tempEditWeights[name] || '',
+      onChange: e => setTempEditWeights(p => ({
+        ...p,
+        [name]: e.target.value
+      })),
+      className: "w-24 bg-slate-600 text-white text-right font-bold rounded px-2 py-1 border border-slate-500 focus:border-indigo-500 focus:outline-none"
+    }) : /*#__PURE__*/React.createElement("span", {
+      className: "text-slate-300 font-bold"
+    }, getSuggestedWeight(name), " ", wu))))), /*#__PURE__*/React.createElement("div", {
+      className: "bg-slate-800 rounded-xl p-5 border border-slate-700"
+    }, /*#__PURE__*/React.createElement("label", {
+      className: "block text-white font-semibold mb-2"
+    }, "Deadlift Transition Threshold"), /*#__PURE__*/React.createElement("p", {
+      className: "text-slate-400 text-sm mb-3"
+    }, "When deadlift reaches this weight, you'll be prompted to switch from 3x5 to 1x5 conventional."), /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-3"
+    }, /*#__PURE__*/React.createElement("input", {
+      type: "number",
+      inputMode: "decimal",
+      value: deadliftThreshold,
+      onChange: e => setDeadliftThreshold(parseFloat(e.target.value) || 0),
+      className: "flex-1 bg-slate-700 text-white text-lg font-bold rounded-lg px-4 py-3 border border-slate-600 focus:border-indigo-500 focus:outline-none"
+    }), /*#__PURE__*/React.createElement("span", {
+      className: "text-slate-400 font-semibold"
+    }, wu)), deadliftTransitioned && /*#__PURE__*/React.createElement("div", {
+      className: "mt-3 bg-green-900/30 border border-green-700/50 rounded-lg p-2"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-green-400 text-sm"
+    }, "\u2713 Transitioned to 1x5 conventional deadlift (+", unit === 'kg' ? '2.5' : '5', " ", wu, "/session)")), deadliftTransitioned && /*#__PURE__*/React.createElement("button", {
+      onClick: () => {
+        if (confirm('Revert deadlift back to 3x5?')) {
+          setDeadliftTransitioned(false);
+          localStorage.setItem('w3x5_dlTransitioned', 'false');
+        }
+      },
+      className: "mt-2 text-slate-500 hover:text-slate-300 text-xs underline"
+    }, "Revert to 3x5")), /*#__PURE__*/React.createElement("div", {
+      className: "bg-slate-800 rounded-xl p-5 border border-slate-700"
+    }, /*#__PURE__*/React.createElement("label", {
+      className: "block text-white font-semibold mb-3"
+    }, "Plate Calculator"), /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-3 mb-3"
+    }, /*#__PURE__*/React.createElement("input", {
+      type: "number",
+      inputMode: "decimal",
+      value: plateCalcWeight,
+      onChange: e => setPlateCalcWeight(e.target.value),
+      className: "flex-1 bg-slate-700 text-white text-lg font-bold rounded-lg px-4 py-3 border border-slate-600 focus:border-indigo-500 focus:outline-none",
+      placeholder: `Weight in ${wu}`
+    }), /*#__PURE__*/React.createElement("span", {
+      className: "text-slate-400 font-semibold"
+    }, wu)), (() => {
+      const w = parseFloat(plateCalcWeight);
+      const bw = getBarWeight(unit);
+      if (!w || w < bw) return null;
+      const res = calculatePlates(w, unit);
+      return /*#__PURE__*/React.createElement("div", {
+        className: "bg-slate-700/50 rounded-lg p-3 border border-slate-600"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "text-slate-400 text-sm mb-1"
+      }, "Each side: ", /*#__PURE__*/React.createElement("strong", {
+        className: "text-white"
+      }, res.perSide, " ", wu)), /*#__PURE__*/React.createElement("div", {
+        className: "flex flex-wrap gap-2"
+      }, res.plates.length ? res.plates.map((p, i) => /*#__PURE__*/React.createElement("span", {
+        key: i,
+        className: "bg-indigo-600 rounded px-2 py-1 text-white text-sm font-bold"
+      }, p)) : /*#__PURE__*/React.createElement("span", {
+        className: "text-slate-400 text-sm"
+      }, "Bar only")), res.remaining > 0 && /*#__PURE__*/React.createElement("div", {
+        className: "text-yellow-400 text-xs mt-1"
+      }, "+", res.remaining, " ", wu, "/side unmatched"));
+    })()), /*#__PURE__*/React.createElement("div", {
+      className: "bg-slate-800 rounded-xl p-5 border border-slate-700 space-y-3"
+    }, /*#__PURE__*/React.createElement("label", {
+      className: "block text-white font-semibold"
+    }, "Data Management"), /*#__PURE__*/React.createElement("button", {
+      onClick: () => {
+        if (!workouts.length) {
+          alert('No data to export.');
+          return;
+        }
+        const rows = [['Date', 'Type', 'Exercise', 'Set', 'Weight', 'Reps']];
+        workouts.filter(w => w.type !== 'NOTE').forEach(w => {
+          w.exercises?.forEach(ex => {
+            ex.sets?.forEach((s, si) => {
+              rows.push([new Date(w.date).toLocaleDateString(), w.type, ex.name, si + 1, s.weight, s.reps]);
+            });
+          });
+        });
+        const blob = new Blob([rows.map(r => r.join(',')).join('\n')], {
+          type: 'text/csv'
+        });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `3x5-export-${new Date().toISOString().split('T')[0]}.csv`;
+        a.click();
+      },
+      className: "w-full bg-green-700 hover:bg-green-600 text-white font-bold py-3 rounded-xl transition-colors",
+      style: {
+        minHeight: '48px'
+      }
+    }, "Export CSV"), /*#__PURE__*/React.createElement("button", {
+      onClick: resetAll,
+      className: "w-full bg-red-900/50 hover:bg-red-900/80 border border-red-700 text-red-400 font-bold py-3 rounded-xl transition-colors",
+      style: {
+        minHeight: '48px'
+      }
+    }, "Reset All Data")));
+  };
+
+  // ============================================================
+  // MAIN LAYOUT WITH BOTTOM TABS
+  // ============================================================
+  const tabs = [{
+    id: 'workout',
+    label: 'Workout',
+    icon: /*#__PURE__*/React.createElement("svg", {
+      width: "22",
+      height: "22",
+      viewBox: "0 0 24 24",
+      fill: "none",
+      stroke: "currentColor",
+      strokeWidth: "2"
+    }, /*#__PURE__*/React.createElement("path", {
+      d: "M14.4 14.4L9.6 9.6"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M18.657 21.485a2 2 0 1 1-2.829-2.828l-1.767 1.768a2 2 0 1 1-2.829-2.829l6.364-6.364a2 2 0 1 1 2.829 2.829l-1.768 1.767a2 2 0 1 1 2.828 2.829z"
+    }))
+  }, {
+    id: 'history',
+    label: 'History',
+    icon: /*#__PURE__*/React.createElement("svg", {
+      width: "22",
+      height: "22",
+      viewBox: "0 0 24 24",
+      fill: "none",
+      stroke: "currentColor",
+      strokeWidth: "2"
+    }, /*#__PURE__*/React.createElement("rect", {
+      x: "3",
+      y: "4",
+      width: "18",
+      height: "18",
+      rx: "2"
+    }), /*#__PURE__*/React.createElement("line", {
+      x1: "16",
+      y1: "2",
+      x2: "16",
+      y2: "6"
+    }), /*#__PURE__*/React.createElement("line", {
+      x1: "8",
+      y1: "2",
+      x2: "8",
+      y2: "6"
+    }), /*#__PURE__*/React.createElement("line", {
+      x1: "3",
+      y1: "10",
+      x2: "21",
+      y2: "10"
+    }))
+  }, {
+    id: 'progress',
+    label: 'Progress',
+    icon: /*#__PURE__*/React.createElement("svg", {
+      width: "22",
+      height: "22",
+      viewBox: "0 0 24 24",
+      fill: "none",
+      stroke: "currentColor",
+      strokeWidth: "2"
+    }, /*#__PURE__*/React.createElement("polyline", {
+      points: "23 6 13.5 15.5 8.5 10.5 1 18"
+    }), /*#__PURE__*/React.createElement("polyline", {
+      points: "17 6 23 6 23 12"
+    }))
+  }, {
+    id: 'settings',
+    label: 'Settings',
+    icon: /*#__PURE__*/React.createElement("svg", {
+      width: "22",
+      height: "22",
+      viewBox: "0 0 24 24",
+      fill: "none",
+      stroke: "currentColor",
+      strokeWidth: "2"
+    }, /*#__PURE__*/React.createElement("circle", {
+      cx: "12",
+      cy: "12",
+      r: "3"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"
+    }))
+  }];
+  return /*#__PURE__*/React.createElement("div", {
+    className: "min-h-screen bg-slate-900 flex flex-col"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex-1 overflow-y-auto px-4 py-4 pb-24"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "max-w-lg mx-auto"
+  }, activeTab === 'workout' && renderWorkoutTab(), activeTab === 'history' && renderHistoryTab(), activeTab === 'progress' && renderProgressTab(), activeTab === 'settings' && renderSettingsTab())), /*#__PURE__*/React.createElement("div", {
+    className: "fixed bottom-0 left-0 right-0 bg-slate-800 border-t border-slate-700 safe-area-bottom"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "max-w-lg mx-auto flex"
+  }, tabs.map(tab => /*#__PURE__*/React.createElement("button", {
+    key: tab.id,
+    onClick: () => setActiveTab(tab.id),
+    className: `flex-1 flex flex-col items-center py-3 transition-colors ${activeTab === tab.id ? 'text-indigo-400' : 'text-slate-500 hover:text-slate-300'}`,
+    style: {
+      minHeight: '56px'
+    }
+  }, tab.icon, /*#__PURE__*/React.createElement("span", {
+    className: "text-xs font-semibold mt-1"
+  }, tab.label))))));
+}
+clearTimeout(window.__loadTimer);
+ReactDOM.render(/*#__PURE__*/React.createElement(WorkoutApp, null), document.getElementById('root'));
+
+// Register service worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  });
+}</script>
 </body>
 </html>
