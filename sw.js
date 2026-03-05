@@ -1,5 +1,5 @@
 // Service Worker v2 - network-first with cache fallback
-const CACHE_NAME = '3x5-strength-v2';
+const CACHE_NAME = '3x5-strength-v3';
 
 self.addEventListener('install', (event) => {
   // Force activate immediately, don't wait for old SW
