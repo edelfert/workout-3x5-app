@@ -740,6 +740,8 @@ function WorkoutApp() {
   const [failedSetIdx, setFailedSetIdx] = useState(null); // index of set being marked as failed
   const [plateCalcWeight, setPlateCalcWeight] = useState('');
   const [showDlPrompt, setShowDlPrompt] = useState(false);
+  const [editingWeights, setEditingWeights] = useState(false);
+  const [tempEditWeights, setTempEditWeights] = useState({});
   const setResultsRef = useRef([]);
 
   // --- Timer State ---
@@ -1656,8 +1658,6 @@ function WorkoutApp() {
   // ============================================================
   // TAB: SETTINGS
   // ============================================================
-  const [editingWeights, setEditingWeights] = useState(false);
-  const [tempEditWeights, setTempEditWeights] = useState({});
   const renderSettingsTab = () => {
     return /*#__PURE__*/React.createElement("div", {
       className: "space-y-4"
