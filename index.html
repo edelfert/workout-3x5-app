@@ -333,6 +333,13 @@ function(a,b,c){if(!Vd(b))throw Error(m(200));return Wd(null,a,b,!1,c)};Q.unmoun
     </div>
     <script>
         // Show error if app fails to load within 15 seconds
+        // Global error handler to show JS errors on screen (for debugging)
+        window.onerror = function(msg, url, line, col, err) {
+            var el = document.getElementById('root');
+            if (el) {
+                el.innerHTML = '<div style="padding:20px;color:#f87171;font-family:monospace;font-size:14px;background:#0f172a;min-height:100vh"><h2 style="color:white;margin-bottom:10px">JavaScript Error</h2><pre style="white-space:pre-wrap;word-break:break-all">' + msg + '\nLine: ' + line + ', Col: ' + col + '</pre><pre style="white-space:pre-wrap;word-break:break-all;margin-top:10px;color:#94a3b8;font-size:12px">' + (err && err.stack ? err.stack : '') + '</pre><button onclick="location.reload()" style="margin-top:16px;background:#6366f1;color:white;border:none;padding:12px 24px;border-radius:8px;font-weight:bold;cursor:pointer">Reload</button></div>';
+            }
+        };
         window.__loadTimer = setTimeout(function() {
             var el = document.getElementById('root');
             if (el && (!window.React || !el.querySelector('[data-reactroot]'))) {
@@ -1919,8 +1926,44 @@ function WorkoutApp() {
   }, tab.label))))));
 }
 clearTimeout(window.__loadTimer);
+
+// Error boundary to catch React render errors and show them on screen
+class ErrorBoundary extends React.Component {
+  constructor(props) { super(props); this.state = { error: null }; }
+  static getDerivedStateFromError(error) { return { error }; }
+  componentDidCatch(error, info) {
+    console.error('React error:', error, info);
+  }
+  render() {
+    if (this.state.error) {
+      return React.createElement('div', {
+        style: { padding: '20px', color: '#f87171', fontFamily: 'monospace', fontSize: '14px', background: '#0f172a', minHeight: '100vh' }
+      },
+        React.createElement('h2', { style: { color: 'white', marginBottom: '10px' } }, 'Something went wrong'),
+        React.createElement('pre', { style: { whiteSpace: 'pre-wrap', wordBreak: 'break-all' } }, String(this.state.error)),
+        React.createElement('pre', { style: { whiteSpace: 'pre-wrap', wordBreak: 'break-all', marginTop: '10px', color: '#94a3b8', fontSize: '12px' } }, this.state.error?.stack || ''),
+        React.createElement('button', {
+          onClick: () => { this.setState({ error: null }); },
+          style: { marginTop: '16px', background: '#6366f1', color: 'white', border: 'none', padding: '12px 24px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }
+        }, 'Try Again'),
+        React.createElement('button', {
+          onClick: () => {
+            Object.keys(localStorage).filter(k => k.startsWith('w3x5_')).forEach(k => localStorage.removeItem(k));
+            location.reload();
+          },
+          style: { marginTop: '16px', marginLeft: '10px', background: '#dc2626', color: 'white', border: 'none', padding: '12px 24px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }
+        }, 'Reset All Data')
+      );
+    }
+    return this.props.children;
+  }
+}
+
 // React 18 UMD build doesn't expose createRoot — use ReactDOM.render for UMD compatibility
-ReactDOM.render(/*#__PURE__*/React.createElement(WorkoutApp, null), document.getElementById('root'));
+ReactDOM.render(
+  React.createElement(ErrorBoundary, null, React.createElement(WorkoutApp, null)),
+  document.getElementById('root')
+);
 
 // Register service worker
 if ('serviceWorker' in navigator) {
