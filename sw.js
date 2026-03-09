@@ -1,4 +1,4 @@
-// Service Worker v2 - network-first with cache fallback
+// Service Worker v3 - network-first with cache fallback
 const CACHE_NAME = '3x5-strength-v3';
 
 self.addEventListener('install', (event) => {

@@ -243,9 +243,9 @@ const calculatePlates = (targetWeight, unit) => {
 const calculateWarmupSets = (workingWeight, unit) => {
   const barWeight = getBarWeight(unit);
   if (workingWeight <= barWeight) return [{
-    weight: barWeight,
+    weight: workingWeight,
     reps: 5,
-    label: 'Bar only'
+    label: workingWeight < barWeight ? 'Light warm-up' : 'Bar only'
   }];
   const sets = [{
     weight: barWeight,
@@ -255,13 +255,17 @@ const calculateWarmupSets = (workingWeight, unit) => {
   const pcts = [0.4, 0.6, 0.8];
   const reps = [5, 5, 3];
   const inc = unit === 'kg' ? 2.5 : 5;
+  let lastW = barWeight;
   pcts.forEach((p, i) => {
     const w = roundToIncrement(workingWeight * p, inc);
-    if (w > barWeight) sets.push({
-      weight: w,
-      reps: reps[i],
-      label: `${Math.round(p * 100)}% warm-up`
-    });
+    if (w > barWeight && w !== lastW) {
+      sets.push({
+        weight: w,
+        reps: reps[i],
+        label: `${Math.round(p * 100)}% warm-up`
+      });
+      lastW = w;
+    }
   });
   return sets;
 };
@@ -333,7 +337,10 @@ const calculatePRs = workouts => {
 const formatDate = date => {
   const d = new Date(date);
   const now = new Date();
-  const diff = Math.floor((now - d) / 86400000);
+  // Compare using local dates to avoid timezone issues near midnight
+  const dLocal = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const nowLocal = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const diff = Math.round((nowLocal - dLocal) / 86400000);
   if (diff === 0) return 'Today';
   if (diff === 1) return 'Yesterday';
   if (diff < 7) return `${diff} days ago`;
@@ -414,25 +421,30 @@ function WorkoutApp() {
   const [deadliftTransitioned, setDeadliftTransitioned] = useState(() => loadStr('w3x5_dlTransitioned', '') === 'true');
   const [deadliftThreshold, setDeadliftThreshold] = useState(() => parseFloat(loadStr('w3x5_dlThreshold', String(DEFAULT_DEADLIFT_THRESHOLD_LBS))));
   const [dlPromptDismissedAt, setDlPromptDismissedAt] = useState(() => parseFloat(loadStr('w3x5_dlDismissedAt', '0')));
+  const [weightOverrides, setWeightOverrides] = useState(() => loadJSON('w3x5_weightOverrides', {}));
 
   // --- Session State ---
   const [activeTab, setActiveTab] = useState('workout'); // workout | history | progress | settings
   const [currentSession, setCurrentSession] = useState(null);
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
-  const [setResults, setSetResults] = useState([]); // array of { status: 'pending'|'complete'|'failed', weight: number }
+  const [setResults, setSetResults] = useState([]); // array of { status: 'pending'|'complete'|'failed', weight: number, reps: number }
   const [showOnboarding, setShowOnboarding] = useState(!hasOnboarded);
   const [onboardingStep, setOnboardingStep] = useState(0);
   const [tempWeights, setTempWeights] = useState({});
   const [showPlateCalc, setShowPlateCalc] = useState(false);
+  const [failedSetIdx, setFailedSetIdx] = useState(null); // index of set being marked as failed
   const [plateCalcWeight, setPlateCalcWeight] = useState('');
   const [showDlPrompt, setShowDlPrompt] = useState(false);
-  const [pendingDlConfirm, setPendingDlConfirm] = useState(false);
+  const setResultsRef = useRef([]);
 
   // --- Timer State ---
   const [timerActive, setTimerActive] = useState(false);
   const [timeLeft, setTimeLeft] = useState(restDuration);
   const timerRef = useRef(null);
   const beepFiredRef = useRef(false);
+
+  // Keep ref in sync
+  useEffect(() => { setResultsRef.current = setResults; }, [setResults]);
 
   // --- Persist on change ---
   useEffect(() => saveJSON('w3x5_history', workouts), [workouts]);
@@ -453,6 +465,7 @@ function WorkoutApp() {
   useEffect(() => {
     localStorage.setItem('w3x5_dlDismissedAt', String(dlPromptDismissedAt));
   }, [dlPromptDismissedAt]);
+  useEffect(() => saveJSON('w3x5_weightOverrides', weightOverrides), [weightOverrides]);
 
   // --- Workout Templates ---
   const getDeadliftSets = useCallback(() => deadliftTransitioned ? 1 : 3, [deadliftTransitioned]);
@@ -510,7 +523,11 @@ function WorkoutApp() {
 
   // --- Weight Suggestion ---
   const getSuggestedWeight = useCallback(exerciseName => {
-    const lastSession = [...workouts].reverse().find(w => w.exercises?.some(e => e.name === exerciseName));
+    // Manual override from settings takes priority
+    if (weightOverrides[exerciseName] !== undefined) {
+      return weightOverrides[exerciseName];
+    }
+    const lastSession = [...workouts].filter(w => w.type === 'A' || w.type === 'B').reverse().find(w => w.exercises?.some(e => e.name === exerciseName));
     const sw = startingWeights[exerciseName] || (unit === 'kg' ? 20 : 45);
     if (!lastSession) return sw;
     const ex = lastSession.exercises.find(e => e.name === exerciseName);
@@ -518,17 +535,16 @@ function WorkoutApp() {
     const lastWeight = parseFloat(ex.sets[0].weight) || sw;
     const failures = failureTracker[exerciseName] || 0;
     const increment = getIncrement(exerciseName, unit, deadliftTransitioned);
-    const barWeight = getBarWeight(unit);
     if (failures >= 3) {
       const deloaded = roundToIncrement(lastWeight * 0.9, increment);
-      return Math.max(deloaded, barWeight);
+      return Math.max(deloaded, increment);
     }
     const targetReps = ex.targetReps || 5;
     const targetSets = ex.targetSets || 3;
     const allComplete = ex.sets.length >= targetSets && ex.sets.every(s => parseInt(s.reps) >= targetReps);
     if (allComplete) return lastWeight + increment;
     return lastWeight;
-  }, [workouts, startingWeights, failureTracker, unit, deadliftTransitioned]);
+  }, [workouts, startingWeights, weightOverrides, failureTracker, unit, deadliftTransitioned]);
 
   // --- Timer ---
   useEffect(() => {
@@ -558,18 +574,19 @@ function WorkoutApp() {
   // --- PRs & Stats ---
   const personalRecords = useMemo(() => calculatePRs(workouts), [workouts]);
   const streak = useMemo(() => calculateStreak(workouts), [workouts]);
+  const motivationalMessage = useMemo(() => MOTIVATIONAL_MESSAGES[Math.floor(Math.random() * MOTIVATIONAL_MESSAGES.length)], [workouts.length]);
 
   // --- Deadlift Transition Check ---
   const checkDeadliftTransition = useCallback(weight => {
     if (deadliftTransitioned) return;
-    const threshold = unit === 'kg' ? deadliftThreshold * 0.453592 : deadliftThreshold;
-    const effectiveThreshold = unit === 'kg' ? roundToIncrement(threshold, 2.5) : deadliftThreshold;
+    // Threshold is stored in the user's current unit, no conversion needed
+    const effectiveThreshold = deadliftThreshold;
     if (weight >= effectiveThreshold) {
       if (dlPromptDismissedAt === 0 || weight >= dlPromptDismissedAt + 10) {
         setShowDlPrompt(true);
       }
     }
-  }, [deadliftTransitioned, deadliftThreshold, unit, dlPromptDismissedAt]);
+  }, [deadliftTransitioned, deadliftThreshold, dlPromptDismissedAt]);
 
   // --- Start Workout ---
   const startWorkout = useCallback(() => {
@@ -584,10 +601,19 @@ function WorkoutApp() {
     const w = getSuggestedWeight(ex.name);
     setSetResults(Array(ex.sets).fill(null).map(() => ({
       status: 'pending',
-      weight: w
+      weight: w,
+      reps: 0
     })));
+    // Clear this exercise's weight override now that it's been consumed
+    if (weightOverrides[ex.name] !== undefined) {
+      setWeightOverrides(prev => {
+        const next = {...prev};
+        delete next[ex.name];
+        return next;
+      });
+    }
     setActiveTab('workout');
-  }, [getNextWorkout, getSuggestedWeight]);
+  }, [getNextWorkout, getSuggestedWeight, weightOverrides]);
 
   // --- Initialize sets for current exercise ---
   const initSetsForExercise = useCallback((exerciseIdx, workout) => {
@@ -596,17 +622,27 @@ function WorkoutApp() {
     const w = getSuggestedWeight(ex.name);
     setSetResults(Array(ex.sets).fill(null).map(() => ({
       status: 'pending',
-      weight: w
+      weight: w,
+      reps: 0
     })));
-  }, [getSuggestedWeight]);
+    // Clear this exercise's weight override now that it's been consumed
+    if (weightOverrides[ex.name] !== undefined) {
+      setWeightOverrides(prev => {
+        const next = {...prev};
+        delete next[ex.name];
+        return next;
+      });
+    }
+  }, [getSuggestedWeight, weightOverrides]);
 
   // --- Log Set ---
-  const logSet = useCallback((setIdx, status) => {
+  const logSet = useCallback((setIdx, status, reps) => {
     setSetResults(prev => {
       const next = [...prev];
       next[setIdx] = {
         ...next[setIdx],
-        status
+        status,
+        reps: reps !== undefined ? reps : next[setIdx].reps
       };
       return next;
     });
@@ -617,9 +653,10 @@ function WorkoutApp() {
   // --- Complete Exercise ---
   const completeExercise = useCallback(() => {
     if (!currentExercise || !currentSession) return;
-    const completedSets = setResults.map((s, i) => ({
+    const results = setResultsRef.current;
+    const completedSets = results.map((s, i) => ({
       weight: String(s.weight),
-      reps: s.status === 'complete' ? String(currentExercise.targetReps) : s.status === 'failed' ? '0' : '0'
+      reps: String(s.status === 'complete' ? currentExercise.targetReps : (s.reps || 0))
     }));
     const exerciseData = {
       name: currentExercise.name,
@@ -627,7 +664,7 @@ function WorkoutApp() {
       targetReps: currentExercise.targetReps,
       targetSets: currentExercise.sets
     };
-    const allSuccess = setResults.every(s => s.status === 'complete');
+    const allSuccess = results.every(s => s.status === 'complete');
     const newFailures = {
       ...failureTracker
     };
@@ -635,7 +672,7 @@ function WorkoutApp() {
       newFailures[currentExercise.name] = 0;
       // Check deadlift transition
       if (currentExercise.name === 'Deadlift') {
-        checkDeadliftTransition(setResults[0]?.weight || 0);
+        checkDeadliftTransition(results[0]?.weight || 0);
       }
     } else {
       newFailures[currentExercise.name] = (newFailures[currentExercise.name] || 0) + 1;
@@ -646,6 +683,7 @@ function WorkoutApp() {
       exercises: [...currentSession.exercises, exerciseData]
     };
     stopTimer();
+    setFailedSetIdx(null);
     if (currentExerciseIndex < currentWorkout.exercises.length - 1) {
       setCurrentSession(updatedSession);
       const nextIdx = currentExerciseIndex + 1;
@@ -657,7 +695,7 @@ function WorkoutApp() {
       setCurrentSession(null);
       setCurrentExerciseIndex(0);
     }
-  }, [currentExercise, currentSession, setResults, failureTracker, currentExerciseIndex, currentWorkout, stopTimer, checkDeadliftTransition, initSetsForExercise]);
+  }, [currentExercise, currentSession, failureTracker, currentExerciseIndex, currentWorkout, stopTimer, checkDeadliftTransition, initSetsForExercise]);
 
   // --- Deadlift Transition Handlers ---
   const confirmDlTransition = useCallback(() => {
@@ -680,17 +718,25 @@ function WorkoutApp() {
   const dismissDlPrompt = useCallback(() => {
     const currentDlWeight = getSuggestedWeight('Deadlift');
     setDlPromptDismissedAt(currentDlWeight);
-    localStorage.setItem('w3x5_dlDismissedAt', String(currentDlWeight));
     setShowDlPrompt(false);
   }, [getSuggestedWeight]);
 
   // --- Onboarding ---
   const completeOnboarding = useCallback(() => {
-    setStartingWeights(tempWeights);
+    const parsed = {};
+    Object.entries(tempWeights).forEach(([k, v]) => {
+      parsed[k] = parseFloat(v) || 0;
+    });
+    setStartingWeights(parsed);
+    // Set deadlift threshold appropriate for the chosen unit
+    if (!localStorage.getItem('w3x5_dlThreshold')) {
+      const dlDefault = unit === 'kg' ? DEFAULT_DEADLIFT_THRESHOLD_KG : DEFAULT_DEADLIFT_THRESHOLD_LBS;
+      setDeadliftThreshold(dlDefault);
+    }
     setHasOnboarded(true);
     localStorage.setItem('w3x5_onboarded', 'true');
     setShowOnboarding(false);
-  }, [tempWeights]);
+  }, [tempWeights, unit]);
 
   // --- Reset ---
   const resetAll = useCallback(() => {
@@ -702,8 +748,36 @@ function WorkoutApp() {
     }
   }, []);
 
-  // --- Unit display helper ---
-  const wu = unit; // shorthand for unit label
+  // --- Plate result helper ---
+  const renderPlateResult = useCallback((weight) => {
+    const w = parseFloat(weight);
+    const bw = getBarWeight(unit);
+    if (!w || w <= 0) return null;
+    if (w < bw) return /*#__PURE__*/React.createElement("p", {
+      className: "text-slate-400 text-center text-sm"
+    }, "Below bar weight (", bw, " ", unit, ") \u2014 use dumbbells or lighter equipment");
+    const res = calculatePlates(w, unit);
+    return /*#__PURE__*/React.createElement("div", {
+      className: "space-y-3"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "bg-slate-700/50 rounded-xl p-4 text-center border border-slate-600"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "text-slate-400 text-sm mb-1"
+    }, "Each Side"), /*#__PURE__*/React.createElement("div", {
+      className: "text-3xl font-black text-white"
+    }, res.perSide, " ", unit)), res.plates.length > 0 ? /*#__PURE__*/React.createElement("div", {
+      className: "flex flex-wrap gap-2 justify-center"
+    }, res.plates.map((p, i) => /*#__PURE__*/React.createElement("div", {
+      key: i,
+      className: "bg-indigo-600 rounded-lg px-3 py-2 text-white font-bold"
+    }, p))) : /*#__PURE__*/React.createElement("p", {
+      className: "text-slate-400 text-center text-sm"
+    }, "Bar only"), res.remaining > 0 && /*#__PURE__*/React.createElement("div", {
+      className: "bg-yellow-900/30 border border-yellow-700/50 rounded-lg p-2 text-center"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-yellow-400 text-sm"
+    }, "+", res.remaining, " ", unit, "/side unmatched")));
+  }, [unit]);
 
   // ============================================================
   // RENDER: ONBOARDING
@@ -759,7 +833,7 @@ function WorkoutApp() {
           // Prefill defaults
           const defaults = {};
           allExerciseNames.forEach(n => {
-            defaults[n] = unit === 'kg' ? 20 : 45;
+            defaults[n] = unit === 'kg' ? 20 : 45; // default to bar weight, user can go lower
           });
           setTempWeights(defaults);
           setOnboardingStep(1);
@@ -783,7 +857,7 @@ function WorkoutApp() {
       className: "text-2xl font-black text-white mb-1"
     }, "Starting Weights"), /*#__PURE__*/React.createElement("p", {
       className: "text-slate-400 text-sm mb-6"
-    }, "Start light. You'll add ", unit === 'kg' ? '1.25-2.5' : '2.5-5', " ", wu, " each session."), /*#__PURE__*/React.createElement("div", {
+    }, "Start light. You'll add ", unit === 'kg' ? '1.25-2.5' : '2.5-5', " ", unit, " each session."), /*#__PURE__*/React.createElement("div", {
       className: "space-y-3 mb-6"
     }, allExerciseNames.map(name => /*#__PURE__*/React.createElement("div", {
       key: name,
@@ -804,11 +878,11 @@ function WorkoutApp() {
       placeholder: unit === 'kg' ? '20' : '45'
     }), /*#__PURE__*/React.createElement("span", {
       className: "text-slate-400 font-semibold"
-    }, wu))))), /*#__PURE__*/React.createElement("div", {
+    }, unit))))), /*#__PURE__*/React.createElement("div", {
       className: "bg-blue-900/30 border border-blue-700/50 rounded-xl p-3 mb-4"
     }, /*#__PURE__*/React.createElement("p", {
       className: "text-blue-200 text-sm"
-    }, "Tip: Start with the empty bar (", unit === 'kg' ? '20 kg' : '45 lbs', ") for most lifts if you're new.")), /*#__PURE__*/React.createElement("div", {
+    }, "Tip: Start with the empty bar (", unit === 'kg' ? '20 kg' : '45 lbs', ") or lower if using dumbbells.")), /*#__PURE__*/React.createElement("div", {
       className: "w-full bg-slate-700 rounded-full h-2 mb-4"
     }, /*#__PURE__*/React.createElement("div", {
       className: "bg-indigo-600 h-2 rounded-full transition-all",
@@ -853,7 +927,7 @@ function WorkoutApp() {
       className: "text-xl font-black text-yellow-400 mb-3"
     }, "Barbell Territory!"), /*#__PURE__*/React.createElement("p", {
       className: "text-slate-300 mb-4"
-    }, "You're approaching ", /*#__PURE__*/React.createElement("strong", null, deadliftThreshold, " ", wu), " on deadlift. Want to switch to conventional deadlift at ", /*#__PURE__*/React.createElement("strong", null, "1x5"), " with +", unit === 'kg' ? '2.5' : '5', " ", wu, " progression?"), /*#__PURE__*/React.createElement("div", {
+    }, "You're approaching ", /*#__PURE__*/React.createElement("strong", null, deadliftThreshold, " ", unit), " on deadlift. Want to switch to conventional deadlift at ", /*#__PURE__*/React.createElement("strong", null, "1x5"), " with +", unit === 'kg' ? '2.5' : '5', " ", unit, " progression?"), /*#__PURE__*/React.createElement("div", {
       className: "flex gap-3"
     }, /*#__PURE__*/React.createElement("button", {
       onClick: dismissDlPrompt,
@@ -884,40 +958,13 @@ function WorkoutApp() {
       className: "mb-4"
     }, /*#__PURE__*/React.createElement("label", {
       className: "block text-slate-400 text-sm mb-1"
-    }, "Target Weight (", wu, ")"), /*#__PURE__*/React.createElement("input", {
+    }, "Target Weight (", unit, ")"), /*#__PURE__*/React.createElement("input", {
       type: "number",
       inputMode: "decimal",
       value: plateCalcWeight,
       onChange: e => setPlateCalcWeight(e.target.value),
       className: "w-full bg-slate-700 text-white text-2xl font-bold rounded-lg px-4 py-3 border border-slate-600 focus:border-indigo-500 focus:outline-none text-center"
-    })), (() => {
-      const w = parseFloat(plateCalcWeight);
-      const bw = getBarWeight(unit);
-      if (!w || w < bw) return /*#__PURE__*/React.createElement("p", {
-        className: "text-slate-400 text-center"
-      }, "Enter a weight \u2265 ", bw, " ", wu);
-      const res = calculatePlates(w, unit);
-      return /*#__PURE__*/React.createElement("div", {
-        className: "space-y-3"
-      }, /*#__PURE__*/React.createElement("div", {
-        className: "bg-slate-700/50 rounded-xl p-4 text-center border border-slate-600"
-      }, /*#__PURE__*/React.createElement("div", {
-        className: "text-slate-400 text-sm mb-1"
-      }, "Each Side"), /*#__PURE__*/React.createElement("div", {
-        className: "text-3xl font-black text-white"
-      }, res.perSide, " ", wu)), res.plates.length > 0 ? /*#__PURE__*/React.createElement("div", {
-        className: "flex flex-wrap gap-2 justify-center"
-      }, res.plates.map((p, i) => /*#__PURE__*/React.createElement("div", {
-        key: i,
-        className: "bg-indigo-600 rounded-lg px-3 py-2 text-white font-bold"
-      }, p))) : /*#__PURE__*/React.createElement("p", {
-        className: "text-slate-400 text-center text-sm"
-      }, "Bar only"), res.remaining > 0 && /*#__PURE__*/React.createElement("div", {
-        className: "bg-yellow-900/30 border border-yellow-700/50 rounded-lg p-2 text-center"
-      }, /*#__PURE__*/React.createElement("span", {
-        className: "text-yellow-400 text-sm"
-      }, "Remaining: ", res.remaining, " ", wu, "/side (no matching plate)")));
-    })())), /*#__PURE__*/React.createElement("div", {
+    })), renderPlateResult(plateCalcWeight))), /*#__PURE__*/React.createElement("div", {
       className: "bg-slate-800 border-b border-slate-700 px-4 py-3"
     }, /*#__PURE__*/React.createElement("div", {
       className: "max-w-lg mx-auto flex items-center justify-between"
@@ -941,7 +988,7 @@ function WorkoutApp() {
       className: "text-slate-400 text-sm mb-1"
     }, "Target Weight"), /*#__PURE__*/React.createElement("div", {
       className: "text-4xl font-black text-white mb-1"
-    }, suggestedWeight, " ", wu), /*#__PURE__*/React.createElement("div", {
+    }, suggestedWeight, " ", unit), /*#__PURE__*/React.createElement("div", {
       className: "text-slate-500 text-sm"
     }, ex.sets, " \xD7 ", ex.targetReps, " reps"), isDeload && /*#__PURE__*/React.createElement("div", {
       className: "mt-2 bg-yellow-900/30 border border-yellow-700/50 rounded-lg px-3 py-2"
@@ -978,20 +1025,33 @@ function WorkoutApp() {
       className: "text-white font-bold"
     }, "Set ", idx + 1), /*#__PURE__*/React.createElement("span", {
       className: "text-slate-400 text-sm ml-2"
-    }, set.weight, " ", wu, " \xD7 ", ex.targetReps)), set.status === 'complete' && /*#__PURE__*/React.createElement("span", {
+    }, set.weight, " ", unit, " \xD7 ", ex.targetReps)), set.status === 'complete' && /*#__PURE__*/React.createElement("span", {
       className: "text-green-400 font-bold text-lg"
     }, "\u2713"), set.status === 'failed' && /*#__PURE__*/React.createElement("span", {
       className: "text-red-400 font-bold text-lg"
-    }, "\u2717")), set.status === 'pending' && /*#__PURE__*/React.createElement("div", {
+    }, set.reps, "/", ex.targetReps)), set.status === 'pending' && failedSetIdx === idx && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+      className: "text-slate-400 text-sm mb-2"
+    }, "How many reps did you complete?"), /*#__PURE__*/React.createElement("div", {
+      className: "flex flex-wrap gap-2"
+    }, Array.from({length: ex.targetReps}, (_, r) => /*#__PURE__*/React.createElement("button", {
+      key: r,
+      onClick: () => { logSet(idx, 'failed', r); setFailedSetIdx(null); },
+      className: "bg-red-600 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-lg transition-colors",
+      style: { minHeight: '40px', minWidth: '40px' }
+    }, r)), /*#__PURE__*/React.createElement("button", {
+      onClick: () => setFailedSetIdx(null),
+      className: "bg-slate-700 hover:bg-slate-600 text-slate-300 font-bold py-2 px-4 rounded-lg transition-colors",
+      style: { minHeight: '40px' }
+    }, "Cancel"))), set.status === 'pending' && failedSetIdx !== idx && /*#__PURE__*/React.createElement("div", {
       className: "flex gap-3"
     }, /*#__PURE__*/React.createElement("button", {
-      onClick: () => logSet(idx, 'complete'),
+      onClick: () => logSet(idx, 'complete', ex.targetReps),
       className: "flex-1 bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-lg transition-colors",
       style: {
         minHeight: '48px'
       }
     }, "\u2713 Complete"), /*#__PURE__*/React.createElement("button", {
-      onClick: () => logSet(idx, 'failed'),
+      onClick: () => setFailedSetIdx(idx),
       className: "flex-1 bg-red-600 hover:bg-red-500 text-white font-bold py-3 rounded-lg transition-colors",
       style: {
         minHeight: '48px'
@@ -1036,15 +1096,15 @@ function WorkoutApp() {
       const last = workouts.filter(w => w.type !== 'NOTE').pop();
       if (!last) return renderNextWorkout();
       const vol = calculateVolume(last.exercises);
-      const msg = MOTIVATIONAL_MESSAGES[Math.floor(Math.random() * MOTIVATIONAL_MESSAGES.length)];
-      // Check PRs
+      const msg = motivationalMessage;
+      // Check PRs — compare against records BEFORE this workout
       const newPRs = [];
+      const priorWorkouts = workouts.filter(w => w.type !== 'NOTE').slice(0, -1);
+      const priorPRs = calculatePRs(priorWorkouts);
       last.exercises?.forEach(ex => {
-        const pr = personalRecords[ex.name];
-        if (pr) {
-          const maxW = Math.max(...(ex.sets?.map(s => parseFloat(s.weight) || 0) || [0]));
-          if (maxW > 0 && maxW >= pr.maxWeight) newPRs.push(ex.name);
-        }
+        const maxW = Math.max(...(ex.sets?.map(s => parseFloat(s.weight) || 0) || [0]));
+        const priorMax = priorPRs[ex.name]?.maxWeight || 0;
+        if (maxW > 0 && maxW > priorMax) newPRs.push(ex.name);
       });
       return /*#__PURE__*/React.createElement("div", {
         className: "space-y-4"
@@ -1071,7 +1131,7 @@ function WorkoutApp() {
         className: "text-slate-400 text-xs"
       }, "Volume"), /*#__PURE__*/React.createElement("div", {
         className: "text-xl font-black text-white"
-      }, (vol / 1000).toFixed(1), "K ", wu)), /*#__PURE__*/React.createElement("div", {
+      }, (vol / 1000).toFixed(1), "K ", unit)), /*#__PURE__*/React.createElement("div", {
         className: "bg-slate-700/50 rounded-xl p-3 border border-slate-600"
       }, /*#__PURE__*/React.createElement("div", {
         className: "text-slate-400 text-xs"
@@ -1088,7 +1148,7 @@ function WorkoutApp() {
         className: "text-white text-sm font-semibold"
       }, ex.name), /*#__PURE__*/React.createElement("span", {
         className: "text-slate-400 text-sm"
-      }, ex.sets?.[0]?.weight, " ", wu, " \xD7 ", ex.sets?.length, " sets")))), /*#__PURE__*/React.createElement("button", {
+      }, ex.sets?.[0]?.weight, " ", unit, " \xD7 ", ex.sets?.length, " sets")))), /*#__PURE__*/React.createElement("button", {
         onClick: () => {
           if (confirm('Start another workout today?')) startWorkout();
         },
@@ -1123,7 +1183,7 @@ function WorkoutApp() {
         className: "text-right"
       }, /*#__PURE__*/React.createElement("div", {
         className: "text-white font-bold"
-      }, w, " ", wu), fails >= 3 && /*#__PURE__*/React.createElement("div", {
+      }, w, " ", unit), fails >= 3 && /*#__PURE__*/React.createElement("div", {
         className: "text-yellow-400 text-xs"
       }, "DELOAD"), fails > 0 && fails < 3 && /*#__PURE__*/React.createElement("div", {
         className: "text-red-400 text-xs"
@@ -1201,7 +1261,7 @@ function WorkoutApp() {
       return /*#__PURE__*/React.createElement("div", {
         key: k,
         className: `rounded px-2 py-1 text-xs font-bold ${isSuccess ? 'bg-green-900/40 text-green-400 border border-green-800' : 'bg-red-900/40 text-red-400 border border-red-800'}`
-      }, s.weight, " ", wu, " \xD7 ", s.reps);
+      }, s.weight, " ", unit, " \xD7 ", s.reps);
     }))))))));
   };
 
@@ -1238,9 +1298,9 @@ function WorkoutApp() {
       className: "text-right"
     }, /*#__PURE__*/React.createElement("div", {
       className: "text-white font-bold"
-    }, pr.maxWeight, " ", wu), /*#__PURE__*/React.createElement("div", {
+    }, pr.maxWeight, " ", unit), /*#__PURE__*/React.createElement("div", {
       className: "text-slate-400 text-xs"
-    }, "Est. 1RM: ", pr.estimated1RM, " ", wu)))))), allExerciseNames.map(name => {
+    }, "Est. 1RM: ", pr.estimated1RM, " ", unit)))))), allExerciseNames.map(name => {
       const data = [];
       let prWeight = 0;
       let prIdx = -1;
@@ -1274,17 +1334,17 @@ function WorkoutApp() {
         className: "text-right"
       }, /*#__PURE__*/React.createElement("div", {
         className: "text-white font-bold"
-      }, latest, " ", wu), /*#__PURE__*/React.createElement("div", {
+      }, latest, " ", unit), /*#__PURE__*/React.createElement("div", {
         className: `text-xs font-semibold ${gain >= 0 ? 'text-green-400' : 'text-red-400'}`
-      }, gain >= 0 ? '+' : '', gain, " ", wu))), /*#__PURE__*/React.createElement(SimpleLineChart, {
+      }, gain >= 0 ? '+' : '', gain, " ", unit))), /*#__PURE__*/React.createElement(SimpleLineChart, {
         data: data.slice(-20),
         dataKey: "weight",
         xKey: "session",
-        unit: wu,
+        unit: unit,
         prIndex: prIdx >= data.length - 20 ? prIdx - Math.max(0, data.length - 20) : -1
       }), prWeight > 0 && /*#__PURE__*/React.createElement("div", {
         className: "text-yellow-400 text-xs mt-1"
-      }, "\u2605 PR: ", prWeight, " ", wu));
+      }, "\u2605 PR: ", prWeight, " ", unit));
     }));
   };
 
@@ -1345,7 +1405,11 @@ function WorkoutApp() {
       className: "text-slate-400 hover:text-slate-300 text-sm"
     }, "Cancel"), /*#__PURE__*/React.createElement("button", {
       onClick: () => {
-        setStartingWeights(tempEditWeights);
+        const parsed = {};
+        Object.entries(tempEditWeights).forEach(([k, v]) => {
+          parsed[k] = parseFloat(v) || 0;
+        });
+        setWeightOverrides(parsed);
         // Reset failure tracker since weights are manually set
         setFailureTracker({});
         setEditingWeights(false);
@@ -1369,7 +1433,7 @@ function WorkoutApp() {
       className: "w-24 bg-slate-600 text-white text-right font-bold rounded px-2 py-1 border border-slate-500 focus:border-indigo-500 focus:outline-none"
     }) : /*#__PURE__*/React.createElement("span", {
       className: "text-slate-300 font-bold"
-    }, getSuggestedWeight(name), " ", wu))))), /*#__PURE__*/React.createElement("div", {
+    }, getSuggestedWeight(name), " ", unit))))), /*#__PURE__*/React.createElement("div", {
       className: "bg-slate-800 rounded-xl p-5 border border-slate-700"
     }, /*#__PURE__*/React.createElement("label", {
       className: "block text-white font-semibold mb-2"
@@ -1385,15 +1449,14 @@ function WorkoutApp() {
       className: "flex-1 bg-slate-700 text-white text-lg font-bold rounded-lg px-4 py-3 border border-slate-600 focus:border-indigo-500 focus:outline-none"
     }), /*#__PURE__*/React.createElement("span", {
       className: "text-slate-400 font-semibold"
-    }, wu)), deadliftTransitioned && /*#__PURE__*/React.createElement("div", {
+    }, unit)), deadliftTransitioned && /*#__PURE__*/React.createElement("div", {
       className: "mt-3 bg-green-900/30 border border-green-700/50 rounded-lg p-2"
     }, /*#__PURE__*/React.createElement("span", {
       className: "text-green-400 text-sm"
-    }, "\u2713 Transitioned to 1x5 conventional deadlift (+", unit === 'kg' ? '2.5' : '5', " ", wu, "/session)")), deadliftTransitioned && /*#__PURE__*/React.createElement("button", {
+    }, "\u2713 Transitioned to 1x5 conventional deadlift (+", unit === 'kg' ? '2.5' : '5', " ", unit, "/session)")), deadliftTransitioned && /*#__PURE__*/React.createElement("button", {
       onClick: () => {
         if (confirm('Revert deadlift back to 3x5?')) {
           setDeadliftTransitioned(false);
-          localStorage.setItem('w3x5_dlTransitioned', 'false');
         }
       },
       className: "mt-2 text-slate-500 hover:text-slate-300 text-xs underline"
@@ -1409,31 +1472,10 @@ function WorkoutApp() {
       value: plateCalcWeight,
       onChange: e => setPlateCalcWeight(e.target.value),
       className: "flex-1 bg-slate-700 text-white text-lg font-bold rounded-lg px-4 py-3 border border-slate-600 focus:border-indigo-500 focus:outline-none",
-      placeholder: `Weight in ${wu}`
+      placeholder: `Weight in ${unit}`
     }), /*#__PURE__*/React.createElement("span", {
       className: "text-slate-400 font-semibold"
-    }, wu)), (() => {
-      const w = parseFloat(plateCalcWeight);
-      const bw = getBarWeight(unit);
-      if (!w || w < bw) return null;
-      const res = calculatePlates(w, unit);
-      return /*#__PURE__*/React.createElement("div", {
-        className: "bg-slate-700/50 rounded-lg p-3 border border-slate-600"
-      }, /*#__PURE__*/React.createElement("div", {
-        className: "text-slate-400 text-sm mb-1"
-      }, "Each side: ", /*#__PURE__*/React.createElement("strong", {
-        className: "text-white"
-      }, res.perSide, " ", wu)), /*#__PURE__*/React.createElement("div", {
-        className: "flex flex-wrap gap-2"
-      }, res.plates.length ? res.plates.map((p, i) => /*#__PURE__*/React.createElement("span", {
-        key: i,
-        className: "bg-indigo-600 rounded px-2 py-1 text-white text-sm font-bold"
-      }, p)) : /*#__PURE__*/React.createElement("span", {
-        className: "text-slate-400 text-sm"
-      }, "Bar only")), res.remaining > 0 && /*#__PURE__*/React.createElement("div", {
-        className: "text-yellow-400 text-xs mt-1"
-      }, "+", res.remaining, " ", wu, "/side unmatched"));
-    })()), /*#__PURE__*/React.createElement("div", {
+    }, unit)), renderPlateResult(plateCalcWeight)), /*#__PURE__*/React.createElement("div", {
       className: "bg-slate-800 rounded-xl p-5 border border-slate-700 space-y-3"
     }, /*#__PURE__*/React.createElement("label", {
       className: "block text-white font-semibold"
@@ -1455,9 +1497,11 @@ function WorkoutApp() {
           type: 'text/csv'
         });
         const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
+        const url = URL.createObjectURL(blob);
+        a.href = url;
         a.download = `3x5-export-${new Date().toISOString().split('T')[0]}.csv`;
         a.click();
+        URL.revokeObjectURL(url);
       },
       className: "w-full bg-green-700 hover:bg-green-600 text-white font-bold py-3 rounded-xl transition-colors",
       style: {
@@ -1577,7 +1621,7 @@ function WorkoutApp() {
   }, tab.label))))));
 }
 clearTimeout(window.__loadTimer);
-ReactDOM.render(/*#__PURE__*/React.createElement(WorkoutApp, null), document.getElementById('root'));
+ReactDOM.createRoot(document.getElementById('root')).render(/*#__PURE__*/React.createElement(WorkoutApp, null));
 
 // Register service worker
 if ('serviceWorker' in navigator) {
