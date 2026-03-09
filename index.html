@@ -255,13 +255,17 @@ const calculateWarmupSets = (workingWeight, unit) => {
   const pcts = [0.4, 0.6, 0.8];
   const reps = [5, 5, 3];
   const inc = unit === 'kg' ? 2.5 : 5;
+  let lastW = barWeight;
   pcts.forEach((p, i) => {
     const w = roundToIncrement(workingWeight * p, inc);
-    if (w > barWeight) sets.push({
-      weight: w,
-      reps: reps[i],
-      label: `${Math.round(p * 100)}% warm-up`
-    });
+    if (w > barWeight && w !== lastW) {
+      sets.push({
+        weight: w,
+        reps: reps[i],
+        label: `${Math.round(p * 100)}% warm-up`
+      });
+      lastW = w;
+    }
   });
   return sets;
 };
@@ -428,6 +432,7 @@ function WorkoutApp() {
   const [onboardingStep, setOnboardingStep] = useState(0);
   const [tempWeights, setTempWeights] = useState({});
   const [showPlateCalc, setShowPlateCalc] = useState(false);
+  const [failedSetIdx, setFailedSetIdx] = useState(null); // index of set being marked as failed
   const [plateCalcWeight, setPlateCalcWeight] = useState('');
   const [showDlPrompt, setShowDlPrompt] = useState(false);
   const setResultsRef = useRef([]);
@@ -522,7 +527,7 @@ function WorkoutApp() {
     if (weightOverrides[exerciseName] !== undefined) {
       return weightOverrides[exerciseName];
     }
-    const lastSession = [...workouts].reverse().find(w => w.exercises?.some(e => e.name === exerciseName));
+    const lastSession = [...workouts].filter(w => w.type === 'A' || w.type === 'B').reverse().find(w => w.exercises?.some(e => e.name === exerciseName));
     const sw = startingWeights[exerciseName] || (unit === 'kg' ? 20 : 45);
     if (!lastSession) return sw;
     const ex = lastSession.exercises.find(e => e.name === exerciseName);
@@ -581,7 +586,7 @@ function WorkoutApp() {
         setShowDlPrompt(true);
       }
     }
-  }, [deadliftTransitioned, deadliftThreshold, unit, dlPromptDismissedAt]);
+  }, [deadliftTransitioned, deadliftThreshold, dlPromptDismissedAt]);
 
   // --- Start Workout ---
   const startWorkout = useCallback(() => {
@@ -599,10 +604,16 @@ function WorkoutApp() {
       weight: w,
       reps: 0
     })));
-    // Clear weight overrides now that they've been consumed
-    setWeightOverrides({});
+    // Clear this exercise's weight override now that it's been consumed
+    if (weightOverrides[ex.name] !== undefined) {
+      setWeightOverrides(prev => {
+        const next = {...prev};
+        delete next[ex.name];
+        return next;
+      });
+    }
     setActiveTab('workout');
-  }, [getNextWorkout, getSuggestedWeight]);
+  }, [getNextWorkout, getSuggestedWeight, weightOverrides]);
 
   // --- Initialize sets for current exercise ---
   const initSetsForExercise = useCallback((exerciseIdx, workout) => {
@@ -614,7 +625,15 @@ function WorkoutApp() {
       weight: w,
       reps: 0
     })));
-  }, [getSuggestedWeight]);
+    // Clear this exercise's weight override now that it's been consumed
+    if (weightOverrides[ex.name] !== undefined) {
+      setWeightOverrides(prev => {
+        const next = {...prev};
+        delete next[ex.name];
+        return next;
+      });
+    }
+  }, [getSuggestedWeight, weightOverrides]);
 
   // --- Log Set ---
   const logSet = useCallback((setIdx, status, reps) => {
@@ -664,6 +683,7 @@ function WorkoutApp() {
       exercises: [...currentSession.exercises, exerciseData]
     };
     stopTimer();
+    setFailedSetIdx(null);
     if (currentExerciseIndex < currentWorkout.exercises.length - 1) {
       setCurrentSession(updatedSession);
       const nextIdx = currentExerciseIndex + 1;
@@ -703,11 +723,20 @@ function WorkoutApp() {
 
   // --- Onboarding ---
   const completeOnboarding = useCallback(() => {
-    setStartingWeights(tempWeights);
+    const parsed = {};
+    Object.entries(tempWeights).forEach(([k, v]) => {
+      parsed[k] = parseFloat(v) || 0;
+    });
+    setStartingWeights(parsed);
+    // Set deadlift threshold appropriate for the chosen unit
+    if (!localStorage.getItem('w3x5_dlThreshold')) {
+      const dlDefault = unit === 'kg' ? DEFAULT_DEADLIFT_THRESHOLD_KG : DEFAULT_DEADLIFT_THRESHOLD_LBS;
+      setDeadliftThreshold(dlDefault);
+    }
     setHasOnboarded(true);
     localStorage.setItem('w3x5_onboarded', 'true');
     setShowOnboarding(false);
-  }, [tempWeights]);
+  }, [tempWeights, unit]);
 
   // --- Reset ---
   const resetAll = useCallback(() => {
@@ -1000,7 +1029,20 @@ function WorkoutApp() {
       className: "text-green-400 font-bold text-lg"
     }, "\u2713"), set.status === 'failed' && /*#__PURE__*/React.createElement("span", {
       className: "text-red-400 font-bold text-lg"
-    }, set.reps, "/", ex.targetReps)), set.status === 'pending' && /*#__PURE__*/React.createElement("div", {
+    }, set.reps, "/", ex.targetReps)), set.status === 'pending' && failedSetIdx === idx && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+      className: "text-slate-400 text-sm mb-2"
+    }, "How many reps did you complete?"), /*#__PURE__*/React.createElement("div", {
+      className: "flex flex-wrap gap-2"
+    }, Array.from({length: ex.targetReps}, (_, r) => /*#__PURE__*/React.createElement("button", {
+      key: r,
+      onClick: () => { logSet(idx, 'failed', r); setFailedSetIdx(null); },
+      className: "bg-red-600 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-lg transition-colors",
+      style: { minHeight: '40px', minWidth: '40px' }
+    }, r)), /*#__PURE__*/React.createElement("button", {
+      onClick: () => setFailedSetIdx(null),
+      className: "bg-slate-700 hover:bg-slate-600 text-slate-300 font-bold py-2 px-4 rounded-lg transition-colors",
+      style: { minHeight: '40px' }
+    }, "Cancel"))), set.status === 'pending' && failedSetIdx !== idx && /*#__PURE__*/React.createElement("div", {
       className: "flex gap-3"
     }, /*#__PURE__*/React.createElement("button", {
       onClick: () => logSet(idx, 'complete', ex.targetReps),
@@ -1009,10 +1051,7 @@ function WorkoutApp() {
         minHeight: '48px'
       }
     }, "\u2713 Complete"), /*#__PURE__*/React.createElement("button", {
-      onClick: () => {
-        const reps = prompt('How many reps did you complete?', '0');
-        if (reps !== null) logSet(idx, 'failed', Math.max(0, parseInt(reps) || 0));
-      },
+      onClick: () => setFailedSetIdx(idx),
       className: "flex-1 bg-red-600 hover:bg-red-500 text-white font-bold py-3 rounded-lg transition-colors",
       style: {
         minHeight: '48px'
