@@ -607,9 +607,9 @@ function WorkoutApp() {
     // Clear this exercise's weight override now that it's been consumed
     if (weightOverrides[ex.name] !== undefined) {
       setWeightOverrides(prev => {
-        const next = {...prev};
-        delete next[ex.name];
-        return next;
+        const updated = {...prev};
+        delete updated[ex.name];
+        return updated;
       });
     }
     setActiveTab('workout');
@@ -628,9 +628,9 @@ function WorkoutApp() {
     // Clear this exercise's weight override now that it's been consumed
     if (weightOverrides[ex.name] !== undefined) {
       setWeightOverrides(prev => {
-        const next = {...prev};
-        delete next[ex.name];
-        return next;
+        const updated = {...prev};
+        delete updated[ex.name];
+        return updated;
       });
     }
   }, [getSuggestedWeight, weightOverrides]);
@@ -1621,7 +1621,8 @@ function WorkoutApp() {
   }, tab.label))))));
 }
 clearTimeout(window.__loadTimer);
-ReactDOM.createRoot(document.getElementById('root')).render(/*#__PURE__*/React.createElement(WorkoutApp, null));
+// React 18 UMD build doesn't expose createRoot — use ReactDOM.render for UMD compatibility
+ReactDOM.render(/*#__PURE__*/React.createElement(WorkoutApp, null), document.getElementById('root'));
 
 // Register service worker
 if ('serviceWorker' in navigator) {
